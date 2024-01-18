@@ -2,6 +2,110 @@
 
 const io = require('./server').io;
 
+const allConnectedInquirers = {}
+const allConnectedRespondents = {}
+const allKnownOffers = {}
+
 io.on('connection', socket => {
     console.log(socket.id, "has connected.")
+    console.log(socket.handshake.auth.userInfo)
+
+    // check if socket is valid.
+    if (!socket.handshake.auth.userInfo) {
+        // socket is invalid, disconnect.
+        socket.disconnect()
+        console.log("could not find a valid auth object")
+        return;
+    }
+    const {uuid, userName, userEmail, isRespondent, isInquirer } = socket.handshake.auth.userInfo;
+     
+    // add the user to their category.
+    if (isInquirer) {
+        allConnectedInquirers[uuid] = {
+            userName, userEmail, isInquirer, socketId: socket.id
+        }
+    } else if (isRespondent) {
+        allConnectedRespondents[uuid] = {
+            userName, userEmail, isRespondent, socketId: socket.id
+        }
+    }
+
+    // listen for any new offers.
+    socket.on('newOffer', ({ offer, uuid }) => {
+        // add the offer to the list of all the known offers.
+        allKnownOffers[uuid] = {
+            uuid,
+            offer,
+            offererIceCandidates: [],
+            answer: null,
+            answerIceCandidates: []
+        }
+
+        // filter the respondent from the list of all respondents.
+        const respondentToSendTo = allConnectedRespondents[uuid];
+
+        console.log(allConnectedRespondents[uuid])
+        // check if the respondent exists.
+        if (respondentToSendTo) {
+            const socketId = respondentToSendTo.socketId;
+            socket.to(socketId).emit('newOfferAwaiting', allKnownOffers[uuid])
+        }
+        else {
+            console.log("The respondent could not be found.")
+        }
+
+    })
+
+    // listen for a new answer.
+    socket.on('newAnswer', ({ answer, uuid }) => {
+        // find the inquirer to send the answer to.
+        const inquirerToSendTo = allConnectedInquirers[uuid];
+
+        // check if the inquirer exists.
+        if (inquirerToSendTo) {
+            const socketId = inquirerToSendTo.socketId;
+            socket.to(socketId).emit('answerToInquirer', answer);
+        }
+        else {
+            console.log("The inquirer could not be found.");
+        }
+
+        const targetOffer = allKnownOffers[uuid];
+        targetOffer["answer"] = answer;
+
+    });
+
+    // listen for ice candidate from respondent
+    socket.on("iceFromRespondentToInquirer", ({ iceCandidate, uuid }) => {
+
+        const targetOffer = allKnownOffers[uuid];
+        targetOffer.answerIceCandidates.push(iceCandidate);
+
+    })
+
+    // listen for ice candidate from inquirer
+    socket.on("iceFromInquirerToRespondent", ({ iceCandidate, uuid }) => { 
+        const targetOffer = allKnownOffers[uuid];
+        targetOffer.offererIceCandidates.push(iceCandidate);
+    })
+
+    // request inquirer ICE.
+    socket.on("requestForInquirerIce", (uuid, ackFunc) => {
+        const targetOffer = allKnownOffers[uuid];
+        let iceCandidates = targetOffer["offererIceCandidates"];
+        console.log(iceCandidates, "ice was requested inquirer");
+        ackFunc(iceCandidates);
+    })
+
+    // request  for respondent ICE
+    socket.on("requestForRespondentIce", (uuid, ackFunc) => {
+        const targetOffer = allKnownOffers[uuid];
+        let iceCandidates = targetOffer["answerIceCandidates"];
+        console.log(iceCandidates, "ice was requested respondent");
+        ackFunc(iceCandidates);
+    })
+
+
+
+   
 })
