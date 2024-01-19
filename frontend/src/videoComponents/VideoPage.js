@@ -34,8 +34,6 @@ const VideoPage = () => {
     // current user details.
     const userDetails = useSelector(state => state.userDetails);
 
-    // store ice candidates in buffer in the case that a socket connection doesn't exist.
-    const [bufferedIceCandidates, setBufferedIceCandidates] = useState([])
 
     // get user's camera and microphone
     useEffect(() => {
@@ -45,6 +43,7 @@ const VideoPage = () => {
                 video: true,
                 audio: true
             }
+
 
             // attempt to get a stream.
             try {
@@ -221,7 +220,7 @@ const VideoPage = () => {
                 <ActionButtons largeFeedEl={largeFeedEl} smallFeedEl={smallFeedEl} />
                 <div className="container-fluid video-chat-wrapper">
                     <video id="large-feed" autoPlay controls playsInline ref={largeFeedEl}></video>
-                    <video id="small-feed" autoPlay controls playsInline ref={smallFeedEl}></video>
+                    <video id="small-feed" autoPlay controls playsInline ref={smallFeedEl} muted ></video>
                 </div>
             
             </div>
