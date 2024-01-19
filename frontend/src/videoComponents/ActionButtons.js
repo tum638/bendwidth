@@ -8,7 +8,7 @@ const ActionButtons = ({smallFeedEl, largeFeedEl}) => {
             <AudioButton />
             <VideoButton smallFeedEl={smallFeedEl}/>
             <ShareScreenButton />
-            <HangUpButton />
+            <HangUpButton smallFeedEl={smallFeedEl} largeFeedEl={largeFeedEl}/>
         </div>
     )
 }

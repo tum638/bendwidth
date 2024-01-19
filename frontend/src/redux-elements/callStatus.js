@@ -15,6 +15,7 @@ const initialState = {
     socket: null,
     offer: null, // this should be renamed to offerData as it contains more than just the offer and may cause ambiguity.
     answer: null,
+    status: "ongoing",
 }
 
 export const callStatusSlice = createSlice({
