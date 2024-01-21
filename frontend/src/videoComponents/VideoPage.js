@@ -1,8 +1,8 @@
 // 
 import './videoPage.css'
 import { addAnswer, updateCallStatus } from '../redux-elements/callStatus'
-import { UseSelector, useDispatch, useSelector} from 'react-redux'
-import { useEffect, useRef, useState } from 'react'
+import {useDispatch, useSelector} from 'react-redux'
+import { useEffect, useRef } from 'react'
 import createPeerConnection from './webRTCUtilities/createPeerConnection'
 import ActionButtons from './ActionButtons'
 import pair from '../redux-elements/pair'
@@ -37,7 +37,9 @@ const VideoPage = () => {
     // current user details.
     const userDetails = useSelector(state => state.userDetails);
 
+
     
+
     // get user's camera and microphone
     useEffect(() => {
         const fetchMedia = async () => {
@@ -229,7 +231,7 @@ const VideoPage = () => {
     return (
         <div>
             <div className="container-fluid">
-                <ActionButtons ref={controlButtons} largeFeedEl={largeFeedEl} smallFeedEl={smallFeedEl} />
+                <ActionButtons largeFeedEl={largeFeedEl} smallFeedEl={smallFeedEl} />
                 <div className="container-fluid video-chat-wrapper">
                     {callStatus.status !== "ongoing" ? <div className='info-box call-ended'>{callStatus.status === "localEnded" ? "You": "John Doe"} ended the call.</div> : <></>}
                     <video id="large-feed" autoPlay controls ref={largeFeedEl}></video>
