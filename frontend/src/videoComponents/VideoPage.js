@@ -57,6 +57,15 @@ const VideoPage = () => {
 
                 // establish a peer connection.
                 const { peerConnection, remoteStream } = await createPeerConnection(sendICECandidatesToServer);
+
+                // add event listener to peer to detect if other peer leaves call
+                peerConnection.oniceconnectionstatechange = () => {
+                    if (peerConnection.iceConnectionState == 'disconnected') {
+                        if (callStatus.status !== "localEnded") {
+                            dispatch(updateCallStatus(pair('status', 'remoteEnded')));
+                        }   
+                    }
+                }
                 dispatch(updateCallStatus(pair('peerConnection', peerConnection)));
                 dispatch(updateCallStatus(pair('remoteStream', remoteStream)));
                 
@@ -219,8 +228,10 @@ const VideoPage = () => {
             <div className="container-fluid">
                 <ActionButtons largeFeedEl={largeFeedEl} smallFeedEl={smallFeedEl} />
                 <div className="container-fluid video-chat-wrapper">
-                    <video id="large-feed" autoPlay controls playsInline ref={largeFeedEl}></video>
-                    <video id="small-feed" autoPlay controls playsInline ref={smallFeedEl} muted ></video>
+                    {callStatus.status !== "ongoing" ? <div className='info-box call-ended'>{callStatus.status === "localEnded" ? "You": "John Doe"} ended the call.</div> : <></>}
+                    <video id="large-feed" autoPlay controls ref={largeFeedEl}></video>
+                    <video id="small-feed" autoPlay controls ref={smallFeedEl} muted ></video>
+                    <div className='info-box captions-box'>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has</div>
                 </div>
             
             </div>
