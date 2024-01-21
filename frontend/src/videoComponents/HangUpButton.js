@@ -6,15 +6,19 @@ const HangUpButton = ({largeFeedEl, smallFeedEl}) => {
     const dispatch = useDispatch();
     const callStatus = useSelector(state => state.callStatus);
 
+
     const hangUpCall = () => {
         let pc = callStatus.peerConnection;
         pc.close();
         pc.onicecandidate = null;
         pc.onaddstream = null;
         pc = null;
-        dispatch(updateCallStatus(pair('status', 'complete')))
+        if (callStatus.status !== "remoteEnded") {
+            dispatch(updateCallStatus(pair('status', 'localEnded')))
+        }
         smallFeedEl.current.srcObject = null;
         largeFeedEl.current.srcObject = null;
+        
     }
 
     if (callStatus.status === "complete") {
