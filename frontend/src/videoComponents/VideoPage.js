@@ -2,13 +2,16 @@
 import './videoPage.css'
 import { addAnswer, updateCallStatus } from '../redux-elements/callStatus'
 import {useDispatch, useSelector} from 'react-redux'
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import createPeerConnection from './webRTCUtilities/createPeerConnection'
 import ActionButtons from './ActionButtons'
 import pair from '../redux-elements/pair'
 import { useSearchParams } from 'react-router-dom'
 import socketConnection from './connectionEstablishment/socketConnection'
 import serverListeners from './connectionEstablishment/serverListeners'
+import translate from '../translationComponents/translate'
+
+
 
 
 
@@ -38,7 +41,7 @@ const VideoPage = () => {
     const userDetails = useSelector(state => state.userDetails);
 
 
-    
+    const [translatedText, setTranslatedText] = useState('')
 
     // get user's camera and microphone
     useEffect(() => {
@@ -53,7 +56,6 @@ const VideoPage = () => {
             // attempt to get a stream.
             try {
                 const stream = await navigator.mediaDevices.getUserMedia(constraints);
-
                 // let redux know that we now have media.
                 dispatch(updateCallStatus(pair('hasMedia', true)));
 
@@ -62,6 +64,8 @@ const VideoPage = () => {
 
                 // establish a peer connection.
                 const { peerConnection, remoteStream } = await createPeerConnection(sendICECandidatesToServer);
+
+
 
                 // add event listener to peer to detect if other peer leaves call
                 peerConnection.oniceconnectionstatechange = () => {
@@ -76,6 +80,10 @@ const VideoPage = () => {
                 
 
                 largeFeedEl.current.srcObject = remoteStream;
+
+                // send remoteStream to translation api.
+                translate(remoteStream, setTranslatedText);
+
             } catch (e) {
                 console.log(e);
             }
@@ -117,10 +125,17 @@ const VideoPage = () => {
     // start listenining to server events.
     useEffect(() => {
         if (callStatus.socket) {
-            serverListeners(callStatus.socket,  dispatch);  
+            serverListeners(callStatus.socket, dispatch);       
         }
       
     }, [callStatus.socket])
+
+    // listen for a remoteStream and socket.
+    // useEffect(() => {
+    //     if (callStatus.socket && callStatus.remoteStream) {
+    //         translate(callStatus.remoteStream)
+    //     }  
+    // }, [callStatus.socket, callStatus.remoteStream])
 
     // establish connection with the servers.
     useEffect(() => {
@@ -236,7 +251,7 @@ const VideoPage = () => {
                     {callStatus.status !== "ongoing" ? <div className='info-box call-ended'>{callStatus.status === "localEnded" ? "You": "John Doe"} ended the call.</div> : <></>}
                     <video id="large-feed" autoPlay controls ref={largeFeedEl}></video>
                     <video id="small-feed" autoPlay controls ref={smallFeedEl} muted ></video>
-                    <div className='info-box captions-box'>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has</div>
+                    <div className='info-box captions-box'>{translatedText}</div>
                 </div>
             
             </div>
