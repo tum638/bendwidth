@@ -22,6 +22,9 @@ const VideoPage = () => {
     const smallFeedEl = useRef(null);
     const largeFeedEl = useRef(null);
 
+    // control buttons ref
+    const controlButtons = useRef(null);
+
     // login status of user.
     const isLoggedIn = useSelector(state => state.userDetails.isLoggedIn);
 
@@ -34,7 +37,7 @@ const VideoPage = () => {
     // current user details.
     const userDetails = useSelector(state => state.userDetails);
 
-
+    
     // get user's camera and microphone
     useEffect(() => {
         const fetchMedia = async () => {
@@ -226,7 +229,7 @@ const VideoPage = () => {
     return (
         <div>
             <div className="container-fluid">
-                <ActionButtons largeFeedEl={largeFeedEl} smallFeedEl={smallFeedEl} />
+                <ActionButtons ref={controlButtons} largeFeedEl={largeFeedEl} smallFeedEl={smallFeedEl} />
                 <div className="container-fluid video-chat-wrapper">
                     {callStatus.status !== "ongoing" ? <div className='info-box call-ended'>{callStatus.status === "localEnded" ? "You": "John Doe"} ended the call.</div> : <></>}
                     <video id="large-feed" autoPlay controls ref={largeFeedEl}></video>
