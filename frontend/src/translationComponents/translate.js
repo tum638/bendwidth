@@ -6,8 +6,8 @@ const translate = (stream, setTranslatedText) => {
     let audioStream = new MediaStream(stream.getAudioTracks());
 
     const speechTranslationConfig = SpeechTranslationConfig.fromSubscription(SPEECH_KEY, SPEEECH_REGION);
-    speechTranslationConfig.speechRecognitionLanguage = "hi-IN";
-    speechTranslationConfig.addTargetLanguage("en");
+    speechTranslationConfig.speechRecognitionLanguage = "en-US";
+    speechTranslationConfig.addTargetLanguage("lzh");
 
     const audioConfig = AudioConfig.fromStreamInput(audioStream);
 
@@ -16,9 +16,10 @@ const translate = (stream, setTranslatedText) => {
     translationRecognizer.startContinuousRecognitionAsync();
 
     translationRecognizer.recognizing = (s, e) => {
-        setTranslatedText(e.result.translations.get("en"));
+        console.log(e.result.reason)
+        setTranslatedText(e.result.translations.get("lzh"));
         if (e.result.reason == ResultReason.RecognizedSpeech) {
-            console.log(`TRANSLATED: Text=${e.result.translations.get("en")}`);
+            console.log(`TRANSLATED: Text=${e.result.translations.get("lzh")}`);
         }
         else if (e.result.reason == ResultReason.NoMatch) {
             console.log("NOMATCH: Speech could not be translated.");
