@@ -1,7 +1,7 @@
 // 
 import './videoPage.css'
 import { addAnswer, updateCallStatus } from '../redux-elements/callStatus'
-import { UseSelector, useDispatch, useSelector} from 'react-redux'
+import {useDispatch, useSelector} from 'react-redux'
 import { useEffect, useRef, useState } from 'react'
 import createPeerConnection from './webRTCUtilities/createPeerConnection'
 import ActionButtons from './ActionButtons'
@@ -9,6 +9,9 @@ import pair from '../redux-elements/pair'
 import { useSearchParams } from 'react-router-dom'
 import socketConnection from './connectionEstablishment/socketConnection'
 import serverListeners from './connectionEstablishment/serverListeners'
+import translate from '../translationComponents/translate'
+
+
 
 
 
@@ -21,6 +24,9 @@ const VideoPage = () => {
     // references to the video tags.
     const smallFeedEl = useRef(null);
     const largeFeedEl = useRef(null);
+
+    // control buttons ref
+    const controlButtons = useRef(null);
 
     // login status of user.
     const isLoggedIn = useSelector(state => state.userDetails.isLoggedIn);
@@ -35,6 +41,8 @@ const VideoPage = () => {
     const userDetails = useSelector(state => state.userDetails);
 
 
+    const [translatedText, setTranslatedText] = useState('')
+
     // get user's camera and microphone
     useEffect(() => {
         const fetchMedia = async () => {
@@ -48,7 +56,6 @@ const VideoPage = () => {
             // attempt to get a stream.
             try {
                 const stream = await navigator.mediaDevices.getUserMedia(constraints);
-
                 // let redux know that we now have media.
                 dispatch(updateCallStatus(pair('hasMedia', true)));
 
@@ -57,11 +64,26 @@ const VideoPage = () => {
 
                 // establish a peer connection.
                 const { peerConnection, remoteStream } = await createPeerConnection(sendICECandidatesToServer);
+
+
+
+                // add event listener to peer to detect if other peer leaves call
+                peerConnection.oniceconnectionstatechange = () => {
+                    if (peerConnection.iceConnectionState == 'disconnected') {
+                        if (callStatus.status !== "localEnded") {
+                            dispatch(updateCallStatus(pair('status', 'remoteEnded')));
+                        }   
+                    }
+                }
                 dispatch(updateCallStatus(pair('peerConnection', peerConnection)));
                 dispatch(updateCallStatus(pair('remoteStream', remoteStream)));
                 
 
                 largeFeedEl.current.srcObject = remoteStream;
+
+                // send remoteStream to translation api.
+                translate(remoteStream, setTranslatedText);
+
             } catch (e) {
                 console.log(e);
             }
@@ -103,10 +125,17 @@ const VideoPage = () => {
     // start listenining to server events.
     useEffect(() => {
         if (callStatus.socket) {
-            serverListeners(callStatus.socket,  dispatch);  
+            serverListeners(callStatus.socket, dispatch);       
         }
       
     }, [callStatus.socket])
+
+    // listen for a remoteStream and socket.
+    // useEffect(() => {
+    //     if (callStatus.socket && callStatus.remoteStream) {
+    //         translate(callStatus.remoteStream)
+    //     }  
+    // }, [callStatus.socket, callStatus.remoteStream])
 
     // establish connection with the servers.
     useEffect(() => {
@@ -219,8 +248,10 @@ const VideoPage = () => {
             <div className="container-fluid">
                 <ActionButtons largeFeedEl={largeFeedEl} smallFeedEl={smallFeedEl} />
                 <div className="container-fluid video-chat-wrapper">
-                    <video id="large-feed" autoPlay controls playsInline ref={largeFeedEl}></video>
-                    <video id="small-feed" autoPlay controls playsInline ref={smallFeedEl} muted ></video>
+                    {callStatus.status !== "ongoing" ? <div className='info-box call-ended'>{callStatus.status === "localEnded" ? "You": "John Doe"} ended the call.</div> : <></>}
+                    <video id="large-feed" autoPlay controls ref={largeFeedEl}></video>
+                    <video id="small-feed" autoPlay controls ref={smallFeedEl} muted ></video>
+                    <div className='info-box captions-box'>{translatedText}</div>
                 </div>
             
             </div>
