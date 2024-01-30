@@ -6,14 +6,16 @@ const Login = ({ setPage }) => {
       <Grid container>
         <Grid item xs={6}>
           <div className="login__main_info">
-            <h1 className="login__title">Lorem Ipsum</h1>
+            <p className="login__logo">Bendwidth</p>
+            <h1 className="login__title">AI driven matching</h1>
             <p className="login__subtitle">
-              Lorem ipsum dolor, sit amet consectetur adipisicing elit.
-              Consequatur voluptate dolore necessitatibus ipsum quis voluptates
-              dicta sed, quibusdam fugit nihil ducimus. Sint repellendus at
-              omnis laborum, tempore tenetur impedit quae?
+              Precisely pairs learners with real educators and other interested
+              learners, optimizing educational outcomes through tailored
+              learning experience
             </p>
-            <img src="https://picsum.photos/200/300" alt="" />
+            <div className="login__image">
+              <img src="/ai-matching.png" alt="" />
+            </div>
           </div>
         </Grid>
         <Grid item xs={6}>
