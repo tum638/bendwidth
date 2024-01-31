@@ -1,1 +1,234 @@
+/* Login form */
 
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+
+* {
+  font-family: "Poppins", sans-serif;
+}
+
+.login {
+  height: 100vh;
+}
+
+.login__main_info {
+  padding: 5rem 3rem;
+  background-color: rgb(236, 236, 236);
+  height: 100vh;
+}
+
+.login__title {
+  text-transform: uppercase;
+  font-size: 1.5rem;
+  text-align: center;
+}
+
+.login__subtitle {
+  text-align: center;
+  margin-top: 1rem;
+}
+
+.login__heading {
+  font-size: 1.5rem;
+  text-transform: capitalize;
+  text-align: center;
+  color: rgb(7, 169, 233);
+}
+
+.login__right-side {
+  height: 100vh;
+  position: relative;
+  padding: 3rem;
+}
+
+.login__form {
+  padding: 3rem;
+  border-radius: 0.5rem;
+  width: 70%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  /* margin-top: 6rem; */
+  box-shadow: 0px 0px 5px 1px rgba(0, 0, 0, 0.4);
+  -webkit-box-shadow: 0px 0px 5px 1px rgba(0, 0, 0, 0.4);
+  -moz-box-shadow: 0px 0px 5px 1px rgba(0, 0, 0, 0.4);
+}
+
+.login__form_input {
+  border-bottom: 1px solid rgb(189, 189, 189);
+  margin-top: 2rem;
+  padding-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+}
+
+.login__form_input input,
+.login__form_input select {
+  border: none;
+  padding-left: 1rem;
+  outline: none;
+  flex: 1;
+  color: gray;
+}
+
+.forgot__password {
+  font-size: 0.8em;
+  color: grey;
+  margin-top: 0.5rem;
+  cursor: pointer;
+}
+
+.login__submit {
+  width: 100%;
+  border: none;
+  text-transform: uppercase;
+  padding: 0.5rem 0.8rem;
+  cursor: pointer;
+  background-color: rgb(7, 169, 233);
+  color: #fff;
+  font-weight: bold;
+  border-radius: 0.1rem;
+}
+
+.not_member {
+  margin-top: 1rem;
+}
+
+.login__signup {
+  color: rgb(7, 169, 233);
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+/* Sign up */
+
+.step {
+  display: flex;
+  margin-bottom: 2rem;
+  align-items: center;
+}
+
+.sign__step_info {
+  margin-left: 1rem;
+}
+
+.step_title {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.step_desc {
+  margin: 0;
+  color: grey;
+  font-size: 0.8rem;
+}
+
+.step--active .sign__progress_icon {
+  background-color: rgb(7, 169, 233);
+  border: none;
+  color: #fff;
+}
+
+.sign_up__forms {
+  text-align: center;
+  width: 70%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.sign_form__title {
+  font-size: 1.5rem;
+  color: rgb(7, 169, 233);
+  margin: 1rem 0;
+}
+
+.sign_form__short_desc {
+  margin: 0;
+  font-size: 0.9rem;
+  color: grey;
+}
+
+.sign_up__button {
+  margin-top: 2rem;
+  border-radius: 10rem;
+}
+
+/* Main Page */
+.main-page {
+  display: flex;
+  height: 100vh;
+}
+
+.sidebar__ {
+  height: 100vh;
+  padding-top: 1rem;
+  position: relative;
+}
+
+.sidebar__bottom {
+  position: absolute;
+  bottom: 0px;
+  padding: 1rem;
+}
+
+.upgrade__account {
+  background-color: rgb(7, 169, 233);
+  padding: 0.6rem 1.5rem;
+  color: #fff;
+  cursor: pointer;
+  border-radius: 0.5rem;
+  display: flex;
+  align-items: center;
+}
+
+.upgrade__texts {
+  flex: 1;
+  margin-left: 1rem;
+}
+
+.upgrade__text {
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+.upgrade__text_info {
+  font-size: 0.8rem;
+  color: rgb(223, 223, 223);
+  margin: 0;
+}
+
+.user_profile {
+  display: flex;
+  margin-top: 1.5rem;
+  cursor: pointer;
+}
+
+.user__avatar_wrapper {
+  width: 2.5rem;
+  height: 2.5rem;
+  overflow: hidden;
+  border-radius: 50%;
+}
+
+.user__avatar_wrapper img {
+  width: 100%;
+  height: 100%;
+}
+
+.profile__details {
+  flex: 1;
+  margin-left: 0.5rem;
+}
+
+.user__name {
+  font-size: 1rem;
+  margin: 0;
+}
+
+.user__school {
+  font-size: 0.8rem;
+  font-weight: 300;
+  margin: 0;
+}
