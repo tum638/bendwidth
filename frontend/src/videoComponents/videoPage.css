@@ -43,7 +43,7 @@
     left:50%;
     text-align: center;
     transform: translateX(-50%);
-    font-size:0.7rem ;
+    font-size:0.65rem ;
 }
 .button-wrapper {
     position: relative;
@@ -81,7 +81,7 @@
 .end {
     right: -495px;
     border-radius:0 2em 2em 0;
-    color: red;
+    /* color: red; */
 }
 .end:hover {
     background-color: red;
