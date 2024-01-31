@@ -19,7 +19,7 @@ const cert = fs.readFileSync('./certs/cert.crt');
 //... 
 const expressServer = https.createServer({ key, cert }, app);
 const io = socketio(expressServer, {
-    cors: ['https://localhost:3000', 'https://localhost:3001']
+    cors: ['https://localhost:3000', 'https://localhost:3001', 'https://137.165.119.110:3001','https://137.165.119.110:3000','https://137.165.119.110:9000' ]
 })
 
 //..

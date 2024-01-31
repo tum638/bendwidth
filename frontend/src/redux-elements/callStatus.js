@@ -12,6 +12,8 @@ const initialState = {
     localStream: null,
     remoteStream: null,
     peerConnection: null,
+    audioDevice: 'default',
+    videoDevice: 'default',
     socket: null,
     offer: null, // this should be renamed to offerData as it contains more than just the offer and may cause ambiguity.
     answer: null,

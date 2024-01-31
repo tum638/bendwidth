@@ -31,7 +31,7 @@ const socketConnection = async (isRespondent) => {
     }
  
     // this is the first time a connection is being established. Sent auth data with connection.
-    socket = await io.connect("https://localhost:9000", {
+    socket = await io.connect("https://137.165.119.110:9000", {
         auth: {
            userInfo,
         }
