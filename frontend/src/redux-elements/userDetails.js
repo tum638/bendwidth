@@ -2,12 +2,12 @@ import { createSlice } from '@reduxjs/toolkit';
 
 // initial user details.
 const initialState = {
-    uuid: "12345",
+    uuid: null,
     userToken: null,
     userName: null,
     isInquirer: null,
     isRespondent: null,
-    isLoggedIn: true
+    isLoggedIn: false
 }
 export const userDetailsSlice = createSlice({
     name: "userDetails",
