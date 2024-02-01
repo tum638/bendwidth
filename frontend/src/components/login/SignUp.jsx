@@ -4,6 +4,8 @@ import { Grid } from "@mui/material";
 import CircularProgress from "@mui/material/CircularProgress";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import SignupOverlay from "./SignupOverlay";
+import ErrorIcon from "./ErrorIcon";
 
 const SignUp = ({ setPage }) => {
   const userInfo = {
@@ -335,23 +337,9 @@ const SignUp = ({ setPage }) => {
 
 export default SignUp;
 
-const SignupOverlay = ({ Icon, title }) => {
-  return (
-    <div className="sign_up__overlay">
-      <p className="signup__overlay_text">
-        <Icon /> <span> {title}</span>
-      </p>
-    </div>
-  );
-};
 
-const ErrorIcon = () => {
-  return (
-    <div className="error_icon">
-      <i class="fa-solid fa-triangle-exclamation"></i>
-    </div>
-  );
-};
+
+
 
 function sleep(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
