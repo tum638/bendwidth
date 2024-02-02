@@ -17,7 +17,7 @@ html {
 }
 
 .login__logo {
-  color: rgb(7, 169, 233);
+  color: #07a9e9;
   position: absolute;
   top: 1rem;
   left: 1rem;
@@ -204,6 +204,17 @@ html {
   height: 100vh;
 }
 
+.main_content {
+  flex: 1;
+  height: 100vh;
+}
+
+.sidebar__brand {
+  color: rgb(7, 169, 233);
+  font-size: 1rem;
+  margin-left: 0.5rem;
+}
+
 .sidebar__ {
   height: 100vh;
   padding-top: 1rem;
@@ -274,4 +285,128 @@ html {
   font-size: 0.8rem;
   font-weight: 300;
   margin: 0;
+}
+
+.video_mui__card {
+  width: 350px;
+  text-align: center;
+  height: 400px;
+  padding: 0.5rem;
+}
+
+.video_card__title {
+  font-size: 1rem;
+  font-weight: bold;
+}
+
+.video_card__desc {
+  font-weight: 300;
+  font-size: 0.9rem;
+}
+
+.video_card__img {
+  width: 250px;
+  height: 250px;
+  text-align: center;
+  margin: 0.2rem;
+}
+
+.video_card__img img {
+  width: 100%;
+  height: 100%;
+}
+
+.start_video_chart {
+  border: none;
+  background-color: rgb(7, 169, 233);
+  color: #fff;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  font-weight: 300;
+  padding: 0.3rem 0.6rem;
+  cursor: pointer;
+}
+
+.video-cards {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  height: 100%;
+}
+
+.disabled__video {
+  font-weight: 300;
+  font-size: 0.9rem;
+  margin-top: 0.4rem;
+}
+
+/* Profile page */
+.profile_top {
+  position: relative;
+  width: 100%;
+}
+
+.profile_bg {
+  height: 7rem;
+}
+
+.profile_bg img {
+  height: 100%;
+  width: 100%;
+}
+
+.profile_info {
+  margin: 0 2rem;
+  border: 1px solid rgb(236, 236, 236);
+  padding: 1rem;
+  border-radius: 0.5rem;
+  position: relative;
+  bottom: 2.5rem;
+  background-color: #fff;
+  height: 130px;
+}
+
+.profile__img {
+  height: 150px;
+  width: 150px;
+  position: absolute;
+  overflow: hidden;
+  top: -1.5rem;
+  border: 0.8rem solid #fff;
+  margin-left: 0.5rem;
+  border-radius: 100%;
+}
+
+.profile__img img {
+  width: 100%;
+  height: 100%;
+}
+
+.profile_info__text {
+  padding-left: 170px;
+  display: flex;
+}
+
+.profile__text_left {
+  flex: 1;
+  border-right: 1px solid rgb(236, 236, 236);
+}
+
+.profile__text_right {
+  flex: 1;
+  padding-left: 1rem;
+}
+
+.profile__name {
+  font-size: 1rem;
+  margin: 0;
+  margin-bottom: 0.3rem;
+}
+
+.profile__college,
+.profile__class_year {
+  margin: 0;
+  font-size: 0.9rem;
+  font-weight: 300;
+  color: gray;
 }
