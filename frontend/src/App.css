@@ -5,6 +5,7 @@
 html {
   height: 100vh;
   overflow: hidden;
+  overflow: scroll;
 }
 
 * {
@@ -22,14 +23,12 @@ html {
   top: 1rem;
   left: 1rem;
   font-weight: 500;
+  font-size: 5em;
 }
 
 .login__image {
-  margin-top: 3rem;
-  height: 80%;
   border-radius: 5rem 5rem 5rem 5rem;
   overflow: hidden;
-  position: relative;
 }
 
 .login__image img {
@@ -39,19 +38,27 @@ html {
 
 .login__main_info {
   padding: 5rem 3rem;
-  background-color: rgb(236, 236, 236);
+  /* background-color: rgb(236, 236, 236); */
   height: 100vh;
 }
 
 .login__title {
   text-transform: uppercase;
-  font-size: 1.5rem;
+  font-size: 2rem;
   text-align: center;
+  color: grey;
 }
 
 .login__subtitle {
   text-align: center;
   margin-top: 1rem;
+}
+.login__display {
+  display: flex;
+  margin-top: 10%;
+  position: relative;
+  justify-content: center;
+  align-items: center;
 }
 
 .login__heading {
@@ -65,8 +72,17 @@ html {
   height: 100vh;
   position: relative;
   padding: 3rem;
+  box-shadow: -10px 0 15px -5px rgba(0, 0, 0, 0.5);
 }
 
+
+.login__punchline {
+  padding: 40px;
+  font-size: 2.5em;
+  max-height: 600px;
+  max-width: 1300px;
+
+}
 .login__form {
   padding: 3rem;
   border-radius: 0.5rem;
@@ -119,7 +135,12 @@ html {
 }
 
 .login__submit {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: 100%;
+  height: 3em;
+  max-height: 3em;
   border: none;
   text-transform: uppercase;
   padding: 0.5rem 0.8rem;
@@ -287,6 +308,7 @@ html {
   margin: 0;
 }
 
+
 .video_mui__card {
   width: 350px;
   text-align: center;
@@ -409,4 +431,245 @@ html {
   font-size: 0.9rem;
   font-weight: 300;
   color: gray;
+=======
+.learner {
+  color: #07a9e9;
+}
+
+.tutor-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 2em;
+}
+
+.question-guideline {
+  margin-top: 2em;
+  background-color: #07a9e9;
+  color: white;
+  margin-left: 3em;
+  padding: 1em;
+  width: 40em;
+  border-radius: 1em;
+   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+}
+.question {
+  padding: 1em;
+  margin-left: 3em;
+}
+.question-title {
+  position: relative;
+
+}
+.writing-good-question {
+  margin-left: 1em;
+}
+.fa-circle-info {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+}
+.question-guideline-title {
+  position: relative;
+}
+
+.tutor-title {
+  margin-left: 1em;
+}
+
+.question-title-remark {
+  font-weight: 100;
+}
+.question-title {
+  margin-top: 2em;
+}
+.question-title-inputs {
+  display: flex;
+  flex-direction: column;
+}
+
+#course {
+  padding:0.3em;
+  width: 50em;
+  margin-left: 2em;
+}
+#course:focus {
+  outline-color: #07a9e9;
+}
+
+#description {
+  padding:0.3em;
+  width: 50em;
+  margin: 2em;
+}
+#description:focus {
+  outline-color: #07a9e9;
+}
+.question-details {
+  margin-left: 2em;
+  width: 50em;
+  height: 20em;
+  padding: 1em;
+  outline-color: #07a9e9;
+}
+#gender {
+  margin-left: 2em;
+  width: 20em;
+  padding: 0.4em;
+}
+#gender:focus {
+  outline-color: #07a9e9;
+}
+.submit-question {
+  text-align: center;
+  margin-top: 1em;
+  margin-left: 8em;
+  background-color:#07a9e9;
+  width: 12em;
+  padding: 0.3em;
+  margin-bottom: 3em;
+  color: white;
+}
+.submit-question:hover {
+  background-color:#032a3a;
+}
+
+.selected-interests {
+  display: flex;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  margin-top: 1em;
+  width: 50em;
+  height: 4em;
+  padding: 0.5em;
+  margin-left: 4em;
+  border-radius: 2em;
+  box-shadow: inset 4px 4px 10px rgba(0, 0, 0, 0.25),
+              inset -4px -4px 10px rgba(255, 255, 255, 0.7);
+}
+
+.interests-wrapper-title {
+  margin-left: 3em;
+  margin-top: 3em;
+  position: relative;
+  
+}
+
+
+.available-interests {
+  display: flex;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  position: relative;
+  padding: 1em;
+  width: 30em;
+  height: 20em;
+  margin-left: 4em;
+  border-radius: 2em;
+  box-shadow: inset 4px 4px 10px rgba(0, 0, 0, 0.25),
+              inset -4px -4px 10px rgba(255, 255, 255, 0.7);
+  overflow-y: scroll;
+  scrollbar-width: none; /* Hides scrollbar for Firefox */
+  -ms-overflow-style: none;
+}
+.available-interests::-webkit-scrollbar {
+  display: none;
+}
+.interest-badge {
+  position: relative;
+  display: inline;
+  border: 1px solid;
+  border-radius:4em;
+  padding: 0.4em;
+  background-color: #07a9e9;
+  color: white;
+  margin:0.2em;
+
+}
+
+.interest-badge:hover {
+  border-color: #07a9e9;
+  background-color: white;
+  color:#07a9e9;
+}
+
+
+.interests-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.submit-interests {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top:2em;
+  background-color: #07a9e9;
+  height: 2em;
+  padding: 0.5em;
+  color: white;
+}
+.submit-interests:hover {
+  background-color:#032a3a;
+}
+
+.available-interests-section {
+  margin-top: 3em;
+}
+.user-interests-section {
+  margin-top: 3em;
+}
+.interest-div {
+  margin-right: 2px;
+}
+
+.fa-xmark {
+  position: absolute;
+  right:0;
+  transform: translateY(-50%);
+  top:50%;
+  margin-left:2em;
+}
+.select-interest-subtitle {
+  font-weight: 100;
+}
+
+.friends-wrapper {
+  position: relative;
+  margin-left: 2em;
+  height: 100vh;
+}
+.pref {
+  margin-top: 2em;
+  width: 30em;
+}
+.find-match {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 2em;
+  background-color: #07a9e9;
+  position: absolute;
+  left:50%;
+  width: 10em;
+  height: 3em;
+  transform: translateX(-50%);
+  color: white;
+}
+.find-match:hover {
+  background-color: white;
+  color:#07a9e9;
+  border: 1px solid;
+  border-color: #07a9e9;
+}
+
+.preferences-major-input, .preferences-course-input {
+  border: 1px solid #d3d3d3;
+  width: 30em;
+  padding: 0.3em;
+  border-radius:0.3em;
+
+
 }

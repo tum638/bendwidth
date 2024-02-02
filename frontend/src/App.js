@@ -4,6 +4,10 @@ import VideoPage from "./videoComponents/VideoPage";
 import Home from "./components/login/Home";
 import Main from "./components/main/Main";
 import { useState } from "react";
+import FindTutor from "./components/matching/FindTutor";
+import FindFriends from "./components/matching/FindFriends";
+import ChooseInterests from "./components/matching/ChooseInterests";
+
 
 function App() {
   const [page, setPage] = useState("login");
@@ -18,6 +22,9 @@ function App() {
         />
         <Route path="/join-video" Component={VideoPage} />
         <Route path="/main" Component={Main} />
+         <Route path="tutor" Component={FindTutor} />
+        <Route path="friend" Component={FindFriends} />
+        <Route path="select-interests" Component={ChooseInterests} />
       </Routes>
     </BrowserRouter>
   );

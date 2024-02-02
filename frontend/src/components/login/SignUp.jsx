@@ -1,9 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Stepper from "awesome-react-stepper";
 import { Grid } from "@mui/material";
 import CircularProgress from "@mui/material/CircularProgress";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import SignupOverlay from "./SignupOverlay";
+import ErrorIcon from "./ErrorIcon";
 
 const SignUp = ({ setPage }) => {
   const userInfo = {
@@ -26,12 +28,35 @@ const SignUp = ({ setPage }) => {
   const [userData, setData] = useState(userInfo);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
+
   const [errMsg, setErrMess] = useState("");
+  const [countriesList, setCountriesList] = useState([]);
+  const [collegeList, setCollegeList] = useState([]);
   const navigate = useNavigate(); // Create navigate function
 
   const handleChange = (e) => {
     setData({ ...userData, [e.target.name]: e.target.value });
   };
+
+  useEffect(() => {
+    const fetchCountries = async () => {
+      const response = await axios.get("https://restcountries.com/v3.1/all");
+      response.data.sort((a, b) => a.name.common.localeCompare(b.name.common))
+      console.log(response.data[150])
+      setCountriesList(response.data);
+    }
+    fetchCountries();
+  }, [])
+
+  // useEffect(() => {
+  //   const fetchColleges = async () => {
+  //     const response = await axios.get("https://universities.hipolabs.com");
+  //     response.data.sort((a, b) => a.name.localeCompare(b.name))
+  //     // setCountriesList(response.data);
+  //     console.log(response.data)
+  //   } 
+  //   fetchColleges();
+  // }, [])
 
   // Handle form submission
   const handleSubmit = async () => {
@@ -65,7 +90,7 @@ const SignUp = ({ setPage }) => {
       {error && (
         <SignupOverlay
           Icon={ErrorIcon}
-          title={`There was an error creating new account. Check that all fields are filled.`}
+          title={errMsg}
         />
       )}
       <Grid container spacing={2}>
@@ -215,14 +240,16 @@ const SignUp = ({ setPage }) => {
 
                   <div className="login__form_input">
                     <i className="fa-solid fa-earth-americas"></i>
-                    <input
-                      type="text"
-                      placeholder="Country"
-                      required
+                    <select
                       name="country"
                       value={userData.country}
                       onChange={handleChange}
-                    />
+                    >
+                      <option value="" disabled>
+                        Country*
+                      </option>
+                      {countriesList.map(country => <option key={country.name.official} value={country.name.common}>{country.flag} {country.name.common}</option>)}
+                    </select>
                   </div>
 
                   <div className="login__form_input">
@@ -335,23 +362,9 @@ const SignUp = ({ setPage }) => {
 
 export default SignUp;
 
-const SignupOverlay = ({ Icon, title }) => {
-  return (
-    <div className="sign_up__overlay">
-      <p className="signup__overlay_text">
-        <Icon /> <span> {title}</span>
-      </p>
-    </div>
-  );
-};
 
-const ErrorIcon = () => {
-  return (
-    <div className="error_icon">
-      <i class="fa-solid fa-triangle-exclamation"></i>
-    </div>
-  );
-};
+
+
 
 function sleep(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));

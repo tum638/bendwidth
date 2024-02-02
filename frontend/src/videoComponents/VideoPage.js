@@ -82,7 +82,7 @@ const VideoPage = () => {
                 largeFeedEl.current.srcObject = remoteStream;
 
                 // send remoteStream to translation api.
-                translate(remoteStream, setTranslatedText);
+                // translate(remoteStream, setTranslatedText);
 
             } catch (e) {
                 console.log(e);

@@ -15,7 +15,7 @@ const ActionButtons = ({ smallFeedEl, largeFeedEl }) => {
             if (controlButtons.current) {
                 controlButtons.current.classList.add('hidden');
             }
-        }, 3000);
+        }, 8000);
     };
 
     const handleMouseMove = () => {
@@ -36,7 +36,7 @@ const ActionButtons = ({ smallFeedEl, largeFeedEl }) => {
 }, []);
     return (
         <div ref={controlButtons} className="row video-buttons">
-            <AudioButton />
+            <AudioButton smallFeedEl={smallFeedEl} />
             <VideoButton smallFeedEl={smallFeedEl}/>
             <ShareScreenButton />
             <HangUpButton smallFeedEl={smallFeedEl} largeFeedEl={largeFeedEl}/>

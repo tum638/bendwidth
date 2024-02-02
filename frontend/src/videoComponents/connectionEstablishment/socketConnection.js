@@ -7,7 +7,7 @@ let socket;
 // function establishes a connection with the backend.
 const socketConnection = async (isRespondent) => {
     let userInfo;
-    
+    console.log("socket info was called")
     // decide which user the socket if for.
     if (isRespondent === "false") {
         userInfo = {
@@ -31,7 +31,7 @@ const socketConnection = async (isRespondent) => {
     }
  
     // this is the first time a connection is being established. Sent auth data with connection.
-    socket = await io.connect("https://localhost:9000", {
+    socket = await io.connect("https://localhost:9000/", {
         auth: {
            userInfo,
         }
