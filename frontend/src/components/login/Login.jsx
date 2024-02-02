@@ -43,8 +43,10 @@ const Login = ({ setPage }) => {
         })
         console.log(response)
         if (response.status === 200) {
+          console.log(response.data.user_id)
           dispatch(updateUserDetails(pair("isLoggedIn", true)));
           dispatch(updateUserDetails(pair("userName", response.data.full_name)));
+          dispatch(updateUserDetails(pair("userId", response.data.user_id)));
           setLoading(false);
           setErrMess(response.data.full_name);
           navigate("main/", {state: {fullName: response.data.full_name, collegeName: response.data.college_name}})
