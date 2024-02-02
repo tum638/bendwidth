@@ -6,6 +6,7 @@ const ProSidebar = () => {
         <h4 className="sidebar__brand">Bendwidth</h4>
         <Menu>
           <MenuItem> Start a video </MenuItem>
+          <MenuItem> Interviews </MenuItem>
           <MenuItem> Contacts </MenuItem>
           <MenuItem> Tutors </MenuItem>
           <MenuItem> Chats </MenuItem>
