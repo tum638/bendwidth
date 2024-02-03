@@ -19,8 +19,8 @@ class UserProfile(models.Model):
     skills = models.TextField()
     hobbies = models.TextField()
     preferred_language = models.CharField(max_length=50, choices=LOCALES_BCP_47, default="en-US")
-    is_tutor = models.BooleanField(default=None)
-    is_student = models.BooleanField(default=None)
+    is_tutor = models.BooleanField(default=None, blank=True, null=True)
+    is_student = models.BooleanField(default=None, blank=True, null=True)
 
     def __str__(self):
         return self.user.username

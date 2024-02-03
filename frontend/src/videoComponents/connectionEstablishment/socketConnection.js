@@ -12,6 +12,7 @@ const socketConnection = async (isRespondent) => {
     if (isRespondent === "false") {
         userInfo = {
             uuid: "12345",
+            userId: 1,
             userName: "Tanatswa Manyakara",
             userEmail: "tum1@williams.edu",
             isInquirer: true
@@ -19,6 +20,7 @@ const socketConnection = async (isRespondent) => {
     } else {
         userInfo = {
             uuid: "12345",
+            userId: 2,
             userName: "Milton Vento",
             userEmail: "mv9@williams.edu",
             isRespondent: true

@@ -1,20 +1,23 @@
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
+import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 const VideoCards = () => {
+  const navigate = useNavigate();
+  const userDetails = useSelector(state => state.userDetails);
   return (
     <div className="video-cards">
       <VideoCard
         title="Start a tutoring session"
-        desc=" Look for a tutor available tutors, to help with your study."
+        desc="We will match you with a tutor, to help with your study."
         img={"/student_tutor.png"}
         link={"/main/findtutor"}
         active={true}
       />
       <VideoCard
         title="Student-student call"
-        desc="Study with students who closely ressembly your preferences."
+        desc="Study with students who closely resemble your preferences."
         img={"/student_student.png"}
         link={"/main/findfriend"}
         active={true}
