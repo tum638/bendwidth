@@ -1,11 +1,15 @@
 import { Sidebar, Menu, MenuItem } from "react-pro-sidebar";
+import { useNavigate } from "react-router-dom";
+
 const ProSidebar = () => {
+  const navigate = useNavigate();
+
   return (
     <div className="sidebar">
       <Sidebar className="sidebar__">
         <h4 className="sidebar__brand">Bendwidth</h4>
         <Menu>
-          <MenuItem> Start a video </MenuItem>
+          <MenuItem onClick={() => navigate("/main")}>Study session</MenuItem>
           <MenuItem> Interviews </MenuItem>
           <MenuItem> Contacts </MenuItem>
           <MenuItem> Tutors </MenuItem>
@@ -24,7 +28,10 @@ const ProSidebar = () => {
               <div className="user__avatar_wrapper">
                 <img src="https://picsum.photos/200/300" alt="" />
               </div>
-              <div className="profile__details">
+              <div
+                className="profile__details"
+                onClick={() => navigate("/main/profile")}
+              >
                 <h3 className="user__name">John Doe</h3>
                 <p className="user__school">Williams College | '25</p>
               </div>

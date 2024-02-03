@@ -12,12 +12,14 @@ const VideoCards = () => {
         title="Start a tutoring session"
         desc="We will match you with a tutor, to help with your study."
         img={"/student_tutor.png"}
+        link={"/main/findtutor"}
         active={true}
       />
       <VideoCard
         title="Student-student call"
         desc="Study with students who closely resemble your preferences."
         img={"/student_student.png"}
+        link={"/main/findfriend"}
         active={true}
       />
       <VideoCard
@@ -32,7 +34,8 @@ const VideoCards = () => {
 
 export default VideoCards;
 
-const VideoCard = ({ title, desc, img, active }) => {
+const VideoCard = ({ title, desc, img, active, link }) => {
+  const navigate = useNavigate();
   return (
     <div className="video_card">
       <Card className="video_mui__card">
@@ -43,7 +46,10 @@ const VideoCard = ({ title, desc, img, active }) => {
             <img src={img} alt="student studying" />
           </div>
           {active ? (
-            <button className="start_video_chart">
+            <button
+              className="start_video_chart"
+              onClick={() => navigate(link)}
+            >
               <i className="fa-solid fa-video"></i> Start call
             </button>
           ) : (
