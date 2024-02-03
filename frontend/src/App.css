@@ -5,7 +5,6 @@
 html {
   height: 100vh;
   overflow: hidden;
-  overflow: scroll;
 }
 
 * {
@@ -75,13 +74,11 @@ html {
   box-shadow: -10px 0 15px -5px rgba(0, 0, 0, 0.5);
 }
 
-
 .login__punchline {
   padding: 40px;
   font-size: 2.5em;
   max-height: 600px;
   max-width: 1300px;
-
 }
 .login__form {
   padding: 3rem;
@@ -228,6 +225,7 @@ html {
 .main_content {
   flex: 1;
   height: 100vh;
+  overflow: scroll;
 }
 
 .sidebar__brand {
@@ -307,7 +305,6 @@ html {
   font-weight: 300;
   margin: 0;
 }
-
 
 .video_mui__card {
   width: 350px;
@@ -431,36 +428,36 @@ html {
   font-size: 0.9rem;
   font-weight: 300;
   color: gray;
-=======
+}
 .learner {
   color: #07a9e9;
 }
 
 .tutor-wrapper {
-  display: flex;
+  /* display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
+  align-items: center; */
   margin-top: 2em;
 }
 
 .question-guideline {
-  margin-top: 2em;
   background-color: #07a9e9;
   color: white;
   margin-left: 3em;
   padding: 1em;
-  width: 40em;
+  width: 70%;
   border-radius: 1em;
-   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+  margin: 2rem auto;
 }
+
 .question {
   padding: 1em;
   margin-left: 3em;
 }
 .question-title {
   position: relative;
-
 }
 .writing-good-question {
   margin-left: 1em;
@@ -474,65 +471,63 @@ html {
   position: relative;
 }
 
-.tutor-title {
-  margin-left: 1em;
+.tutor-title h1 {
+  font-size: 1.7rem;
+  text-align: center;
+}
+
+.question-title {
+  text-align: center;
+  margin-top: 1rem;
 }
 
 .question-title-remark {
-  font-weight: 100;
-}
-.question-title {
-  margin-top: 2em;
-}
-.question-title-inputs {
-  display: flex;
-  flex-direction: column;
+  font-size: 0.9rem;
+  font-weight: 300;
 }
 
-#course {
-  padding:0.3em;
-  width: 50em;
-  margin-left: 2em;
-}
-#course:focus {
-  outline-color: #07a9e9;
+.question-title-inputs input,
+.tutor-preferences input {
+  display: block;
+  width: 80%;
+  margin-bottom: 1rem;
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  outline: none;
+  margin: 1rem auto;
+  text-align: center;
 }
 
-#description {
-  padding:0.3em;
-  width: 50em;
-  margin: 2em;
+.question-attempts,
+.tutor-preferences {
+  text-align: center;
 }
-#description:focus {
-  outline-color: #07a9e9;
+
+.question-attempts textarea {
+  display: block;
+  width: 80%;
+  border: 1px solid #ccc;
+  height: 8rem;
+  outline: none;
+  margin: 1rem auto;
+  text-align: center;
 }
-.question-details {
-  margin-left: 2em;
-  width: 50em;
-  height: 20em;
-  padding: 1em;
-  outline-color: #07a9e9;
-}
-#gender {
-  margin-left: 2em;
-  width: 20em;
-  padding: 0.4em;
-}
-#gender:focus {
-  outline-color: #07a9e9;
-}
+
 .submit-question {
   text-align: center;
   margin-top: 1em;
   margin-left: 8em;
-  background-color:#07a9e9;
+  background-color: #07a9e9;
   width: 12em;
   padding: 0.3em;
   margin-bottom: 3em;
   color: white;
+  margin: 3rem auto;
+  cursor: pointer;
 }
+
 .submit-question:hover {
-  background-color:#032a3a;
+  background-color: #032a3a;
 }
 
 .selected-interests {
@@ -546,16 +541,14 @@ html {
   margin-left: 4em;
   border-radius: 2em;
   box-shadow: inset 4px 4px 10px rgba(0, 0, 0, 0.25),
-              inset -4px -4px 10px rgba(255, 255, 255, 0.7);
+    inset -4px -4px 10px rgba(255, 255, 255, 0.7);
 }
 
 .interests-wrapper-title {
   margin-left: 3em;
   margin-top: 3em;
   position: relative;
-  
 }
-
 
 .available-interests {
   display: flex;
@@ -568,7 +561,7 @@ html {
   margin-left: 4em;
   border-radius: 2em;
   box-shadow: inset 4px 4px 10px rgba(0, 0, 0, 0.25),
-              inset -4px -4px 10px rgba(255, 255, 255, 0.7);
+    inset -4px -4px 10px rgba(255, 255, 255, 0.7);
   overflow-y: scroll;
   scrollbar-width: none; /* Hides scrollbar for Firefox */
   -ms-overflow-style: none;
@@ -580,20 +573,18 @@ html {
   position: relative;
   display: inline;
   border: 1px solid;
-  border-radius:4em;
+  border-radius: 4em;
   padding: 0.4em;
   background-color: #07a9e9;
   color: white;
-  margin:0.2em;
-
+  margin: 0.2em;
 }
 
 .interest-badge:hover {
   border-color: #07a9e9;
   background-color: white;
-  color:#07a9e9;
+  color: #07a9e9;
 }
-
 
 .interests-wrapper {
   display: flex;
@@ -605,14 +596,14 @@ html {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top:2em;
+  margin-top: 2em;
   background-color: #07a9e9;
   height: 2em;
   padding: 0.5em;
   color: white;
 }
 .submit-interests:hover {
-  background-color:#032a3a;
+  background-color: #032a3a;
 }
 
 .available-interests-section {
@@ -627,49 +618,118 @@ html {
 
 .fa-xmark {
   position: absolute;
-  right:0;
+  right: 0;
   transform: translateY(-50%);
-  top:50%;
-  margin-left:2em;
+  top: 50%;
+  margin-left: 2em;
 }
 .select-interest-subtitle {
   font-weight: 100;
 }
 
 .friends-wrapper {
-  position: relative;
-  margin-left: 2em;
+  margin: 3rem;
   height: 100vh;
+  text-align: center;
 }
+
+.friend-title h1 {
+  font-size: 1.5rem;
+}
+
 .pref {
   margin-top: 2em;
   width: 30em;
+  margin: 2rem auto;
 }
+
 .find-match {
   display: flex;
   align-items: center;
   justify-content: center;
   margin-top: 2em;
   background-color: #07a9e9;
-  position: absolute;
-  left:50%;
+  color: white;
   width: 10em;
   height: 3em;
-  transform: translateX(-50%);
-  color: white;
+  margin: 2rem auto;
+  cursor: pointer;
 }
+
 .find-match:hover {
   background-color: white;
-  color:#07a9e9;
+  color: #07a9e9;
   border: 1px solid;
   border-color: #07a9e9;
 }
 
-.preferences-major-input, .preferences-course-input {
+.preferences-major-input,
+.preferences-course-input {
   border: 1px solid #d3d3d3;
   width: 30em;
   padding: 0.3em;
-  border-radius:0.3em;
+  border-radius: 0.3em;
+}
 
+.preferences-interests {
+  text-align: left;
+}
 
+.preferences-interests input {
+  margin-right: 0.5rem;
+}
+
+/* Topbar */
+.topbar {
+  display: flex;
+  align-items: center;
+  padding: 0.4rem;
+  border-bottom: 1px solid rgb(236, 236, 236);
+  position: sticky;
+  top: 0;
+  background-color: #fff;
+  z-index: 1000;
+}
+
+.topbar__search {
+  flex: 1;
+  border: 1px solid rgb(236, 236, 236);
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  display: flex;
+  align-items: center;
+}
+
+.topbar__search input {
+  padding-left: 0.5rem;
+  border: none;
+  flex: 1;
+  outline: none;
+}
+
+.topbar__icons {
+  display: flex;
+  flex: 0.5;
+  justify-content: flex-end;
+  padding-right: 0.5rem;
+}
+
+.topbar__icon_wrapper {
+  display: flex;
+  width: 40px;
+  height: 40px;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgb(236, 236, 236);
+  border-radius: 50%;
+  margin: 0 0.5rem;
+  cursor: pointer;
+}
+
+.topbar__icon_wrapper i {
+  color: #07a9e9;
+}
+
+.topbar .user__avatar_wrapper {
+  margin-left: 0.5rem;
 }
