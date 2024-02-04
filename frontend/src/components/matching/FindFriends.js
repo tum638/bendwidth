@@ -8,47 +8,46 @@ import { updateUserDetails } from "../../redux-elements/userDetails";
 import pair from "../../redux-elements/pair";
 
 const FindFriends = () => {
-  const dispatch = useDispatch();
-  const [classYear, setClassYear] = useState(null);
-  const [gender, setGender] = useState(null);
-  const [major, setMajor] = useState(null);
-  const [course, setCourse] = useState(null);
+  const userDetails = useSelector((state) => state.userDetails);
+  const [classYear, setClassYear] = useState("");
+  const [gender, setGender] = useState("");
+  const [major, setMajor] = useState("");
+  const [course, setCourse] = useState("");
   const [matchSimilarInterests, setMatchSimilarInterests] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
   const [errMsg, setErrMsg] = useState("");
 
-  useEffect(() => {
-    dispatch(updateUserDetails(pair("isRespondent", false)))  
-    let userData = sessionStorage.getItem('userData');
-    userData["isRespondent"] = false
-    sessionStorage.setItem('userData', userData);
-  }, [])
-
-  const handleClick = (e) => {
-    console.log(e.target.getAttribute("class"));
-    console.log(e.target.value);
-    if (e.target.getAttribute("class") === "form-select year") {
-      setClassYear(e.target.value);
-    } else if (e.target.getAttribute("class") === "form-select gender") {
-      setGender(e.target.value);
-    } else if (
-      e.target.getAttribute("class") === "form-preferences-major-input"
-    ) {
-      setMajor(e.target.value);
-    } else if (e.target.getAttribute("class") === "preferences-course-input") {
-      setCourse(e.target.value);
-    } else if (e.target.getAttribute("class") === "form-check-input") {
-      setMatchSimilarInterests(!matchSimilarInterests);
+  const handleChange = (e) => {
+    const { name, value, type, checked } = e.target;
+    switch (name) {
+      case "classYear":
+        setClassYear(value);
+        break;
+      case "gender":
+        setGender(value);
+        break;
+      case "major":
+        setMajor(value);
+        break;
+      case "course":
+        setCourse(value);
+        break;
+      case "matchSimilarInterests":
+        setMatchSimilarInterests(checked);
+        break;
+      default:
+        break;
     }
   };
+
   const submitInterests = async () => {
     setLoading(true);
     try {
       const response = await axios.post(
         "http://localhost:8000/study-partners/",
         {
-          userId: 1, // Come back to this wrong user id.
+          userId: 3, // Assuming userDetails contains the user ID
           classYear,
           gender,
           major,
@@ -59,14 +58,17 @@ const FindFriends = () => {
       console.log(response);
       setLoading(false);
     } catch (error) {
-      console.log(error);
+      console.error(error);
       setLoading(false);
       setError(true);
-      // setErrMsg(error.response.data.error);
+      setErrMsg(
+        error.response ? error.response.data.error : "An error occurred"
+      );
       await sleep(2500);
       setError(false);
     }
   };
+
   return (
     <>
       {loading && (
@@ -80,15 +82,14 @@ const FindFriends = () => {
         <div className="friend-title">
           <h1>Enter your preferences to be matched with a study partner.</h1>
         </div>
-        <div
-          onClick={handleClick}
-          onChange={handleClick}
-          className="preferences"
-        >
+        <div className="preferences">
           <div className="preferences-classyear pref">
             <select
+              name="classYear"
               className="form-select year"
               aria-label="Default select example"
+              value={classYear}
+              onChange={handleChange}
             >
               <option value="">Class year of match</option>
               <option value="any">Any</option>
@@ -100,41 +101,52 @@ const FindFriends = () => {
           </div>
           <div className="preferences-gender pref">
             <select
+              name="gender"
               className="form-select gender"
               aria-label="Default select example"
+              value={gender}
+              onChange={handleChange}
             >
               <option value="">Gender of match</option>
               <option value="any">Any</option>
-              <option value="freshman">Male</option>
-              <option value="sophomore">Female</option>
+              <option value="male">Male</option>
+              <option value="female">Female</option>
             </select>
           </div>
           <div className="preferences-major pref">
             <input
-              name="major-pref"
+              name="major"
               className="preferences-major-input"
               type="text"
               placeholder="Major of match."
+              value={major}
+              onChange={handleChange}
             />
           </div>
           <div className="preferences-course pref">
             <input
-              name="course-pref"
+              name="course"
               className="preferences-course-input"
               type="text"
               placeholder="The course you are taking."
+              value={course}
+              onChange={handleChange}
             />
           </div>
           <div className="preferences-interests pref">
             <input
-              selected={matchSimilarInterests}
+              name="matchSimilarInterests"
               className="form-check-input"
               type="checkbox"
               role="switch"
               id="flexSwitchCheckDefault"
+              checked={matchSimilarInterests}
+              onChange={handleChange}
             />
-            <label className="form-check-label" for="flexSwitchCheckDefault">
-              {" "}
+            <label
+              className="form-check-label"
+              htmlFor="flexSwitchCheckDefault"
+            >
               Match you with someone of similar interests.
             </label>
           </div>

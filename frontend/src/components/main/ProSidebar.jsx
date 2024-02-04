@@ -19,7 +19,7 @@ const ProSidebar = () => {
           <MenuItem onClick={() => navigate("/main")}>Study session</MenuItem>
           <MenuItem> Interviews </MenuItem>
           <MenuItem> Contacts </MenuItem>
-          <MenuItem> Tutors </MenuItem>
+          <MenuItem> Calendar </MenuItem>
           <MenuItem> Chats </MenuItem>
           <MenuItem> AI </MenuItem>
 
