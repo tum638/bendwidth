@@ -4,6 +4,7 @@ import Topbar from "./Topbar";
 import { Routes, Route } from "react-router-dom";
 import FindTutor from "../matching/FindTutor";
 import FindFriends from "../matching/FindFriends";
+import SendNotifications from "../notifications/notifications";
 
 const MainContent = () => {
   return (
@@ -14,6 +15,7 @@ const MainContent = () => {
         <Route path="/profile" element={<Profile />} />
         <Route path="/findtutor" element={<FindTutor />} />
         <Route path="/findfriend" element={<FindFriends />} />
+        <Route path="/ai" element={<SendNotifications />}/>
       </Routes>
     </div>
   );

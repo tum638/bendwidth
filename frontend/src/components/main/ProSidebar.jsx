@@ -14,7 +14,7 @@ const ProSidebar = () => {
           <MenuItem> Contacts </MenuItem>
           <MenuItem> Tutors </MenuItem>
           <MenuItem> Chats </MenuItem>
-          <MenuItem> AI </MenuItem>
+          <MenuItem onClick={() => navigate("/main/ai")}> AI </MenuItem>
 
           <div className="sidebar__bottom">
             <div className="upgrade__account">
