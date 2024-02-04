@@ -1,0 +1,82 @@
+.UserTable {
+  font-family: "Arial", sans-serif;
+  width: 100%;
+  margin-top: 20px;
+}
+
+.UserTable table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.UserTable th {
+  text-align: left;
+  padding: 10px;
+  background-color: #f9f9f9;
+}
+
+.UserTable td {
+  padding: 10px;
+  border-bottom: 1px solid #eee;
+  vertical-align: middle;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+}
+
+.user-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 20px;
+  margin-right: 10px;
+}
+
+.user-details {
+  display: flex;
+  flex-direction: column;
+}
+
+.user-name {
+  font-weight: bold;
+}
+
+.user-email {
+  color: #666;
+  font-size: 0.8rem;
+}
+
+.role {
+  display: inline-block;
+  padding: 5px 10px;
+  background-color: #000;
+  color: #fff;
+  border-radius: 5px;
+  font-size: 0.9em;
+  cursor: pointer;
+  position: relative;
+}
+
+.dropdown-icon {
+  margin-left: 5px;
+}
+
+.role.administrator {
+  background-color: #333;
+}
+
+.role.standard-user {
+  background-color: #555;
+}
+
+/* Adjustments for better alignment */
+.UserTable td {
+  vertical-align: top;
+}
+
+/* Add custom styles for dropdown icon */
+.role .dropdown-icon {
+  display: inline-block;
+  font-size: 0.7em;
+}

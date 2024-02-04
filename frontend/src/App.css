@@ -734,3 +734,20 @@ html {
 .topbar .user__avatar_wrapper {
   margin-left: 0.5rem;
 }
+
+/* Calendar */
+.calendar {
+  padding: 2rem 2rem;
+}
+
+.fc-toolbar-title {
+  font-size: 1.3rem !important;
+}
+
+.fc-col-header-cell-cushion {
+  color: #07a9e9;
+}
+
+.fc-daygrid-day-number {
+  color: #07a9e9;
+}
