@@ -1,10 +1,14 @@
 import axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import SignupOverlay from "../login/SignupOverlay";
 import { CircularProgress } from "@mui/material";
 import ErrorIcon from "../login/ErrorIcon";
+import { useDispatch } from "react-redux";
+import { updateUserDetails } from "../../redux-elements/userDetails";
+import pair from "../../redux-elements/pair";
 
 const FindTutor = () => {
+  const dispatch = useDispatch();
   const [questionCourse, setQuestionCourse] = useState("null");
   const [questionTitle, setQuestionTitle] = useState("");
   const [questionDetails, setQuestionDetails] = useState("");
@@ -13,6 +17,13 @@ const FindTutor = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
   const [errMsg, setErrMsg] = useState(null);
+
+  useEffect(() => {
+    dispatch(updateUserDetails(pair("isRespondent", false)));
+    let userData = sessionStorage.getItem('userData');
+    userData["isRespondent"] = false
+    sessionStorage.setItem('userData', userData);
+  }, [])
 
   const handleFindTutor = async () => {
     setLoading(true);

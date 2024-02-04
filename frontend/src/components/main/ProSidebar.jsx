@@ -1,9 +1,16 @@
+import { useEffect } from "react";
 import { Sidebar, Menu, MenuItem } from "react-pro-sidebar";
+import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 const ProSidebar = () => {
   const navigate = useNavigate();
-
+  const userDetails = useSelector(state => state.userDetails);
+  useEffect(() => {
+    if (!sessionStorage.getItem('userData')) {
+      sessionStorage.setItem('userData', JSON.stringify(userDetails));
+    }
+  }, [sessionStorage.getItem('userData')])
   return (
     <div className="sidebar">
       <Sidebar className="sidebar__">
@@ -12,7 +19,7 @@ const ProSidebar = () => {
           <MenuItem onClick={() => navigate("/main")}>Study session</MenuItem>
           <MenuItem> Interviews </MenuItem>
           <MenuItem> Contacts </MenuItem>
-          <MenuItem> Tutors </MenuItem>
+          <MenuItem> Calendar </MenuItem>
           <MenuItem> Chats </MenuItem>
           <MenuItem onClick={() => navigate("/main/ai")}> AI </MenuItem>
 
@@ -32,8 +39,8 @@ const ProSidebar = () => {
                 className="profile__details"
                 onClick={() => navigate("/main/profile")}
               >
-                <h3 className="user__name">John Doe</h3>
-                <p className="user__school">Williams College | '25</p>
+                <h3 className="user__name">{userDetails.userName !== null ? userDetails.userName :JSON.parse(sessionStorage.getItem('userData'))["userName"]}</h3>
+                <p className="user__school">{userDetails.collegeName !== null? userDetails.collegeName : JSON.parse(sessionStorage.getItem('userData'))["collegeName"]}| '25</p>
               </div>
             </div>
           </div>

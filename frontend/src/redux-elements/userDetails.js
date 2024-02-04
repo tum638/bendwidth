@@ -7,8 +7,12 @@ const initialState = {
     userName: null,
     isInquirer: null,
     isRespondent: null,
-    isLoggedIn: false
+    collegeName: null,
+    userEmail: null,
+    gradDate: null,
+    isLoggedIn: true
 }
+
 export const userDetailsSlice = createSlice({
     name: "userDetails",
     initialState,
@@ -16,9 +20,13 @@ export const userDetailsSlice = createSlice({
         updateUserDetails: (state, action) => {
             const { prop, value } = action.payload;
             state[prop] = value;
+        },
+        updateWholeUserObject: (state, action) => {
+            const newUserDetails = action.payload;
+            state = newUserDetails;
         }
     }
 })
 
-export const { updateUserDetails } = userDetailsSlice.actions;
+export const { updateUserDetails, updateWholeUserObject } = userDetailsSlice.actions;
 export default userDetailsSlice.reducer;

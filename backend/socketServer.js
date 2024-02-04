@@ -17,7 +17,7 @@ io.on('connection', socket => {
         console.log("could not find a valid auth object")
         return;
     }
-    const {uuid, userName, userEmail, isRespondent, isInquirer } = socket.handshake.auth.userInfo;
+    const {uuid, userId, userName, userEmail, isRespondent, isInquirer } = socket.handshake.auth.userInfo;
      
     // add the user to their category.
     if (isInquirer) {
@@ -109,3 +109,4 @@ io.on('connection', socket => {
 
 
 })
+
