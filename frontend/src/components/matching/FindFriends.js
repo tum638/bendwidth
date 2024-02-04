@@ -1,12 +1,14 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import SignupOverlay from "../login/SignupOverlay";
 import ErrorIcon from "../login/ErrorIcon";
 import { CircularProgress } from "@mui/material";
+import { updateUserDetails } from "../../redux-elements/userDetails";
+import pair from "../../redux-elements/pair";
 
 const FindFriends = () => {
-  const userDetails = useSelector((state) => state.userDetails);
+  const dispatch = useDispatch();
   const [classYear, setClassYear] = useState(null);
   const [gender, setGender] = useState(null);
   const [major, setMajor] = useState(null);
@@ -15,6 +17,13 @@ const FindFriends = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
   const [errMsg, setErrMsg] = useState("");
+
+  useEffect(() => {
+    dispatch(updateUserDetails(pair("isRespondent", false)))  
+    let userData = sessionStorage.getItem('userData');
+    userData["isRespondent"] = false
+    sessionStorage.setItem('userData', userData);
+  }, [])
 
   const handleClick = (e) => {
     console.log(e.target.getAttribute("class"));

@@ -10,6 +10,7 @@ import { useSearchParams } from 'react-router-dom'
 import socketConnection from './connectionEstablishment/socketConnection'
 import serverListeners from './connectionEstablishment/serverListeners'
 import translate from '../translationComponents/translate'
+import { updateWholeUserObject } from '../redux-elements/userDetails'
 
 
 
@@ -25,24 +26,24 @@ const VideoPage = () => {
     const smallFeedEl = useRef(null);
     const largeFeedEl = useRef(null);
 
-    // control buttons ref
-    const controlButtons = useRef(null);
 
     // login status of user.
-    const isLoggedIn = useSelector(state => state.userDetails.isLoggedIn);
+    const isLoggedIn = JSON.parse(sessionStorage.getItem('userData'))["isLoggedIn"]
 
-    // get search parameters
-    const [searchParams, setSearchParams] = useSearchParams();
+
 
     // current status of call.
     const callStatus = useSelector(state => state.callStatus)
 
     // current user details.
-    const userDetails = useSelector(state => state.userDetails);
-
+    // const userDetails = useSelector(state => state.userDetails);
+    const userDetails = JSON.parse(sessionStorage.getItem('userData'))
 
     const [translatedText, setTranslatedText] = useState('')
 
+    useEffect(() => {
+        dispatch(updateWholeUserObject(userDetails)); 
+    }, [])
     // get user's camera and microphone
     useEffect(() => {
         const fetchMedia = async () => {
@@ -51,7 +52,6 @@ const VideoPage = () => {
                 video: true,
                 audio: true
             }
-
 
             // attempt to get a stream.
             try {
@@ -88,10 +88,12 @@ const VideoPage = () => {
                 console.log(e);
             }
         }
-
+        console.log(isLoggedIn, callStatus.hasMedia, callStatus.socket)
         // attempt to get user media only if user is logged in.
         if (isLoggedIn && !callStatus.hasMedia && callStatus.socket) {
+            
             fetchMedia();
+
         }
 
     }, [callStatus.hasMedia, callStatus.socket])
@@ -115,7 +117,7 @@ const VideoPage = () => {
                 console.log(error);
             }
         }
-        if (callStatus.audio === 'enabled' && callStatus.video === 'enabled' && !callStatus.hasCreatedOffer && searchParams.get("isRespondent") === "false") {
+        if (callStatus.audio === 'enabled' && callStatus.video === 'enabled' && !callStatus.hasCreatedOffer && userDetails.isRespondent === false) {
             createAsyncOffer();
         }
         
@@ -137,17 +139,7 @@ const VideoPage = () => {
     //     }  
     // }, [callStatus.socket, callStatus.remoteStream])
 
-    // establish connection with the servers.
-    useEffect(() => {
-        const establishConnection = async () => {
-            const { socket, userInfo } = await socketConnection(searchParams.get('isRespondent'));
-            console.log("established connection and set socket to server")
-            dispatch(updateCallStatus(pair('socket', socket)));
-        }  
-        if (!callStatus.socket) {
-            establishConnection();
-        }
-    }, [])
+    
 
     // set redux state with offer from inquirer.
     // set remoteDescription.
@@ -157,7 +149,7 @@ const VideoPage = () => {
             const pc = callStatus.peerConnection;
             await pc.setRemoteDescription(callStatus.offer["offer"]);
         }
-        if (searchParams.get("isRespondent") === "true" && callStatus.offer) {
+        if (userDetails.isRespondent === true && callStatus.offer) {
             setOffer()
         }
         
@@ -180,7 +172,7 @@ const VideoPage = () => {
             // send answer to server
 
         }
-        if (callStatus.offer && callStatus.audio === "enabled" && callStatus.video === "enabled" && !callStatus.hasCreatedAnswer && searchParams.get("isRespondent") === "true") {
+        if (callStatus.offer && callStatus.audio === "enabled" && callStatus.video === "enabled" && !callStatus.hasCreatedAnswer && userDetails.isRespondent === true) {
             createAsyncAnswer();
         }
     }, [callStatus.audio, callStatus.video, callStatus.hasCreatedAnswer, callStatus.offer])
@@ -193,7 +185,7 @@ const VideoPage = () => {
             const pc = callStatus.peerConnection;
             await pc.setRemoteDescription(callStatus.answer);
         }
-        if (searchParams.get("isRespondent") === "false" && callStatus.hasCreatedAnswer) {
+        if (userDetails.isRespondent === false && callStatus.hasCreatedAnswer) {
             addReceivedAnswer();
         }
     }, [callStatus.hasCreatedAnswer])
@@ -207,9 +199,9 @@ const VideoPage = () => {
         const uuid = userDetails.uuid;
 
         // send ICE candidate to the right person depending on whether they are the inquirer or respondent.
-        if (searchParams.get("isRespondent") === "true") {
+        if (userDetails.isRespondent === true) {
             socket.emit("iceFromRespondentToInquirer", { iceCandidate, uuid });
-        } else if (searchParams.get("isRespondent") === "false") {
+        } else if (userDetails.isRespondent === false) {
             socket.emit("iceFromInquirerToRespondent", { iceCandidate, uuid });
         }
     }
@@ -223,12 +215,12 @@ const VideoPage = () => {
             const socket = callStatus.socket;
             const uuid = userDetails.uuid;
             const pc = callStatus.peerConnection;
-        if (searchParams.get("isRespondent") === "true") {
+        if (userDetails.isRespondent === true) {
             const inquirerIceCandidates = await socket.emitWithAck("requestForInquirerIce", uuid);
             for (let i = 0; i < inquirerIceCandidates.length; i++) {
                 pc.addIceCandidate(inquirerIceCandidates[i]);
             }
-        } else if (searchParams.get("isRespondent") === "false") {
+        } else if (userDetails.isRespondent === false) {
             const respondentIceCandidates = await socket.emitWithAck("requestForRespondentIce", uuid);
             for (let i = 0; i < respondentIceCandidates.length; i++) {
                 pc.addIceCandidate(respondentIceCandidates[i])
@@ -241,7 +233,17 @@ const VideoPage = () => {
         
     }, [callStatus.peerConnection, callStatus.socket, callStatus.hasCreatedAnswer])
     
-    
+    // establish connection with the servers.
+    useEffect(() => {
+        const establishConnection = async () => {
+            const { socket, userInfo } = await socketConnection(JSON.parse(sessionStorage.getItem('userData')));
+            console.log("established connection and set socket to server")
+            dispatch(updateCallStatus(pair('socket', socket)));
+        }  
+        if (!callStatus.socket) {
+            establishConnection();
+        }
+    }, [])
 
     return (
         <div>

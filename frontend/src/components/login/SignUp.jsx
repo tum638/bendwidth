@@ -6,6 +6,10 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import SignupOverlay from "./SignupOverlay";
 import ErrorIcon from "./ErrorIcon";
+import { useDispatch, useSelector } from "react-redux";
+import userDetails, { updateUserDetails } from "../../redux-elements/userDetails";
+import pair from "../../redux-elements/pair";
+import submitCredentials from "./submitCredentials";
 
 const SignUp = ({ setPage }) => {
   const userInfo = {
@@ -24,13 +28,14 @@ const SignUp = ({ setPage }) => {
     skills: "Skills",
     hobbies: "Hobbies",
   };
-
+  const dispatch = useDispatch();
   const [userData, setData] = useState(userInfo);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
 
   const [errMsg, setErrMess] = useState("");
   const [countriesList, setCountriesList] = useState([]);
+  const userDetails = useSelector(state => state.userDetails);
   const [collegeList, setCollegeList] = useState([]);
   const navigate = useNavigate(); // Create navigate function
 
@@ -67,10 +72,36 @@ const SignUp = ({ setPage }) => {
         ...userData,
         username: userData.email,
       });
+      console.log(response);
+      setErrMess(userData.full_name)
+      setLoading(true);
+    
+      // submit user credentials to backend for login.
+      if (response.status === 201) { 
+      const getSubmittedCredentials = async () => {
+      const res = await submitCredentials(dispatch, userData.email, userData.password);
+
+        if ("fullName" in res) {
+        navigate("main/")
+        } else {
+        console.log(res)
+        setError(true);
+        setErrMess(res.response?.data?.error);
+        sleep(2500);
+        setError(false);
+        }
       setLoading(false);
-      // redirect to the main page
-      navigate("/main");
+      }
+
+      // submit user credentials to backend for login.
+      getSubmittedCredentials();
+      } else {
+        console.log("throwed error")
+        throw new Error("Something went wrong with the signup.")
+    }
     } catch (error) {
+      console.log("an error occured")
+      console.log(error)
       setLoading(false);
       setError(true);
       setErrMess(error.message);

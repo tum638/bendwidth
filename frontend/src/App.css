@@ -734,3 +734,43 @@ html {
 .topbar .user__avatar_wrapper {
   margin-left: 0.5rem;
 }
+
+.lobby-wrapper {
+  margin-top: 2em;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.lobby-title {
+  position: relative;
+  font-size: 3em;
+}
+.fa-headset {
+  color: #07a9e9;
+  position: absolute;
+  left:-60px;
+  margin-right: 2em;
+  top: 50%;
+  transform: translateY(-50%);
+}
+.lobby-connnected {
+  margin-top: 2em;
+}
+.lobby-join {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 5em;
+  background-color: #07a9e9;
+  color: white;
+  width: 12em;
+  font-size: 2em;
+  height: 3em;
+  border-radius: 2em;
+}
+
+.lobby-join:hover {
+  background-color: #032a3a;
+  cursor: pointer;
+}

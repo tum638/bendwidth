@@ -5,27 +5,19 @@ import { io } from 'socket.io-client';
 
 let socket;
 // function establishes a connection with the backend.
-const socketConnection = async (isRespondent) => {
-    let userInfo;
+const socketConnection = async (userDetails) => {
+
     console.log("socket info was called")
-    // decide which user the socket if for.
-    if (isRespondent === "false") {
-        userInfo = {
+
+
+    const userInfo = {
             uuid: "12345",
-            userId: 1,
-            userName: "Tanatswa Manyakara",
-            userEmail: "tum1@williams.edu",
-            isInquirer: true
+            userId: userDetails.userId,
+            userName: userDetails.userName,
+            userEmail: userDetails.email,
+            isInquirer: userDetails.isRespondent
         }
-    } else {
-        userInfo = {
-            uuid: "12345",
-            userId: 2,
-            userName: "Milton Vento",
-            userEmail: "mv9@williams.edu",
-            isRespondent: true
-        }
-    }
+    console.log(userInfo)
 
     // return the socket if it is alreay connected.
     if (socket && socket.connected) {
