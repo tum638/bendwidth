@@ -11,8 +11,12 @@ const ProSidebar = () => {
         <Menu>
           <MenuItem onClick={() => navigate("/main")}>Study session</MenuItem>
           <MenuItem> Interviews </MenuItem>
-          <MenuItem> Contacts </MenuItem>
-          <MenuItem> Calendar </MenuItem>
+          <MenuItem onClick={() => navigate("/main/contacts")}>
+            Contacts
+          </MenuItem>
+          <MenuItem onClick={() => navigate("/main/calendar")}>
+            Calendar
+          </MenuItem>
           <MenuItem> Chats </MenuItem>
           <MenuItem> AI </MenuItem>
 
