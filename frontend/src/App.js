@@ -8,7 +8,6 @@ import FindTutor from "./components/matching/FindTutor";
 import FindFriends from "./components/matching/FindFriends";
 import ChooseInterests from "./components/matching/ChooseInterests";
 
-
 function App() {
   const [page, setPage] = useState("login");
 
@@ -20,11 +19,11 @@ function App() {
           path="/"
           element={<Home current_page={page} setPage={setPage} />}
         />
-        <Route path="/join-video" Component={VideoPage} />
-        <Route path="/main" Component={Main} />
-         <Route path="tutor" Component={FindTutor} />
-        <Route path="friend" Component={FindFriends} />
-        <Route path="select-interests" Component={ChooseInterests} />
+        <Route path="/join-video" element={<VideoPage />} />
+        <Route path="/main/*" element={<Main />} />
+        <Route path="/tutor" element={<FindTutor />} />
+        <Route path="/friend" element={<FindFriends />} />
+        <Route path="/select-interests" element={<ChooseInterests />} />
       </Routes>
     </BrowserRouter>
   );

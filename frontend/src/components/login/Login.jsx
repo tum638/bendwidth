@@ -5,9 +5,10 @@ import SignupOverlay from "./SignupOverlay";
 import ErrorIcon from "./ErrorIcon";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { updateUserDetails } from "../../redux-elements/userDetails";
 import pair from "../../redux-elements/pair";
+import submitCredentials from "./submitCredentials";
 
 const Login = ({ setPage }) => {
   const dispatch = useDispatch();
@@ -23,7 +24,7 @@ const Login = ({ setPage }) => {
 
   const usernameEl = useRef(null);
   const passwordEl = useRef(null);
-
+  const userDetails = useSelector(state => state.userDetails);
 
   const handleDataChange = (e) => {
     if (e.target.type === "email") {
@@ -34,33 +35,28 @@ const Login = ({ setPage }) => {
   }
   
   const handleSubmit = () => {
+    
     setLoading(true);
-    const submitCredentials = async () => {
-      try {
-        const response = await axios.post("http://localhost:8000/login/",{
-        email,
-        password,
-        })
-        console.log(response)
-        if (response.status === 200) {
-          console.log(response.data.user_id)
-          dispatch(updateUserDetails(pair("isLoggedIn", true)));
-          dispatch(updateUserDetails(pair("userName", response.data.full_name)));
-          dispatch(updateUserDetails(pair("userId", response.data.user_id)));
-          setLoading(false);
-          setErrMess(response.data.full_name);
-          navigate("main/", {state: {fullName: response.data.full_name, collegeName: response.data.college_name}})
-        }
-      } catch (error) {
-        console.log(error)
-        setLoading(false);
+    const getSubmittedCredentials = async () => {
+      const res = await submitCredentials(dispatch, email, password);
+
+      if ("fullName" in res) {
+        setErrMess(res.fullName)
+        navigate("main/")
+    } else {
+        console.log(res)
         setError(true);
-        setErrMess(error.response.data.error);
-        await sleep(2500);
+        setErrMess(res.response?.data?.error);
+        sleep(2500);
         setError(false);
       }
+      setLoading(false);
     }
-    submitCredentials();
+
+    // submit user credentials to backend for login.
+    getSubmittedCredentials();
+    
+    
   }
 
   return (
@@ -70,7 +66,7 @@ const Login = ({ setPage }) => {
       {loading && (
         <SignupOverlay
           Icon={CircularProgress}
-          title={`Welcome, ${errMsg} `}
+          title={`Welcome!`}
         />
       )}
       {error &&  (

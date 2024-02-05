@@ -1,0 +1,77 @@
+.UserTable {
+  width: 100%;
+  padding: 10px 20px;
+}
+
+.UserTable table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.UserTable th {
+  text-align: left;
+  padding: 10px;
+  background-color: #f9f9f9;
+  font-weight: 500;
+}
+
+.UserTable td {
+  padding: 10px;
+  border-bottom: 1px solid #eee;
+  vertical-align: middle;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+}
+
+.user-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 20px;
+  margin-right: 10px;
+}
+
+.user-details {
+  display: flex;
+  flex-direction: column;
+}
+
+.user-name {
+  font-weight: 500;
+  font-size: 0.9rem;
+}
+
+.contact_dates {
+  font-size: 0.9rem;
+}
+
+.user-email {
+  color: #666;
+  font-size: 0.8rem;
+}
+
+.role {
+  display: inline-block;
+  font-size: 0.9rem;
+  cursor: pointer;
+  position: relative;
+}
+
+.role.tutor {
+  color: #333;
+}
+
+.role.student {
+  color: #07a9e9;
+}
+
+/* Adjustments for better alignment */
+.UserTable td {
+  vertical-align: top;
+}
+
+.contact_delete i {
+  cursor: pointer;
+}

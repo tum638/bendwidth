@@ -5,7 +5,6 @@
 html {
   height: 100vh;
   overflow: hidden;
-  overflow: scroll;
 }
 
 * {
@@ -226,6 +225,7 @@ html {
 .main_content {
   flex: 1;
   height: 100vh;
+  overflow: scroll;
 }
 
 .sidebar__brand {
@@ -429,28 +429,30 @@ html {
   font-weight: 300;
   color: gray;
 }
+
 .learner {
   color: #07a9e9;
 }
 
 .tutor-wrapper {
-  display: flex;
+  /* display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
+  align-items: center; */
   margin-top: 2em;
 }
 
 .question-guideline {
-  margin-top: 2em;
   background-color: #07a9e9;
   color: white;
   margin-left: 3em;
   padding: 1em;
-  width: 40em;
+  width: 70%;
   border-radius: 1em;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+  margin: 2rem auto;
 }
+
 .question {
   padding: 1em;
   margin-left: 3em;
@@ -470,19 +472,19 @@ html {
   position: relative;
 }
 
-.tutor-title {
-  margin-left: 1em;
+.tutor-title h1 {
+  font-size: 1.7rem;
+  text-align: center;
+}
+
+.question-title {
+  text-align: center;
+  margin-top: 1rem;
 }
 
 .question-title-remark {
-  font-weight: 100;
-}
-.question-title {
-  margin-top: 2em;
-}
-.question-title-inputs {
-  display: flex;
-  flex-direction: column;
+  font-size: 0.9rem;
+  font-weight: 300;
 }
 
 #course {
@@ -499,24 +501,34 @@ html {
   width: 50em;
   margin: 2em;
 }
-#description:focus {
-  outline-color: #07a9e9;
+
+.question-title-inputs input,
+.tutor-preferences input {
+  display: block;
+  width: 80%;
+  margin-bottom: 1rem;
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  outline: none;
+  margin: 1rem auto;
+  text-align: center;
 }
-.question-details {
-  margin-left: 2em;
-  width: 50em;
-  height: 20em;
-  padding: 1em;
-  outline-color: #07a9e9;
+
+.question-attempts,
+.tutor-preferences {
+  text-align: center;
 }
-#gender {
-  margin-left: 2em;
-  width: 20em;
-  padding: 0.4em;
+
+.question-attempts textarea {
+  display: block;
+  width: 80%;
+  border: 1px solid #ccc;
+  height: 8rem;
+  outline: none;
+  margin: 1rem auto;
+  text-align: center;
 }
-#gender:focus {
-  outline-color: #07a9e9;
-}
+
 .submit-question {
   text-align: center;
   margin-top: 1em;
@@ -526,7 +538,10 @@ html {
   padding: 0.3em;
   margin-bottom: 3em;
   color: white;
+  margin: 3rem auto;
+  cursor: pointer;
 }
+
 .submit-question:hover {
   background-color: #032a3a;
 }
@@ -629,14 +644,21 @@ html {
 }
 
 .friends-wrapper {
-  position: relative;
-  margin-left: 2em;
+  margin: 3rem;
   height: 100vh;
+  text-align: center;
 }
+
+.friend-title h1 {
+  font-size: 1.5rem;
+}
+
 .pref {
   margin-top: 2em;
   width: 30em;
+  margin: 2rem auto;
 }
+
 .find-match {
   display: flex;
   align-items: center;
@@ -645,11 +667,13 @@ html {
   background-color: #07a9e9;
   position: absolute;
   left: 50%;
+  color: white;
   width: 10em;
   height: 3em;
-  transform: translateX(-50%);
-  color: white;
+  margin: 2rem auto;
+  cursor: pointer;
 }
+
 .find-match:hover {
   background-color: white;
   color: #07a9e9;
@@ -663,4 +687,124 @@ html {
   width: 30em;
   padding: 0.3em;
   border-radius: 0.3em;
+}
+
+.preferences-interests {
+  text-align: left;
+}
+
+.preferences-interests input {
+  margin-right: 0.5rem;
+}
+
+/* Topbar */
+.topbar {
+  display: flex;
+  align-items: center;
+  padding: 0.4rem;
+  border-bottom: 1px solid rgb(236, 236, 236);
+  position: sticky;
+  top: 0;
+  background-color: #fff;
+  z-index: 1000;
+}
+
+.topbar__search {
+  flex: 1;
+  border: 1px solid rgb(236, 236, 236);
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  display: flex;
+  align-items: center;
+}
+
+.topbar__search input {
+  padding-left: 0.5rem;
+  border: none;
+  flex: 1;
+  outline: none;
+}
+
+.topbar__icons {
+  display: flex;
+  flex: 0.5;
+  justify-content: flex-end;
+  padding-right: 0.5rem;
+}
+
+.topbar__icon_wrapper {
+  display: flex;
+  width: 40px;
+  height: 40px;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgb(236, 236, 236);
+  border-radius: 50%;
+  margin: 0 0.5rem;
+  cursor: pointer;
+}
+
+.topbar__icon_wrapper i {
+  color: #07a9e9;
+}
+
+.topbar .user__avatar_wrapper {
+  margin-left: 0.5rem;
+}
+
+.lobby-wrapper {
+  margin-top: 2em;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.lobby-title {
+  position: relative;
+  font-size: 3em;
+}
+.fa-headset {
+  color: #07a9e9;
+  position: absolute;
+  left: -60px;
+  margin-right: 2em;
+  top: 50%;
+  transform: translateY(-50%);
+}
+.lobby-connnected {
+  margin-top: 2em;
+}
+.lobby-join {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 5em;
+  background-color: #07a9e9;
+  color: white;
+  width: 12em;
+  font-size: 2em;
+  height: 3em;
+  border-radius: 2em;
+}
+
+.lobby-join:hover {
+  background-color: #032a3a;
+  cursor: pointer;
+}
+
+/* Calendar */
+.calendar {
+  padding: 2rem 2rem;
+}
+
+.fc-toolbar-title {
+  font-size: 1.3rem !important;
+}
+
+.fc-col-header-cell-cushion {
+  color: #07a9e9;
+}
+
+.fc-daygrid-day-number {
+  color: #07a9e9;
 }
