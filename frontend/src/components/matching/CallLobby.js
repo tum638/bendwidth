@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useDispatch} from "react-redux";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import axios from "axios";
-import {jwtDecode } from 'jwt-decode'
+import  jwtDecode  from 'jwt-decode'
 import { updateWholeUserObject } from "../../redux-elements/userDetails";
 
 const CallLobby = () => {
