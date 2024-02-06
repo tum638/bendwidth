@@ -2,7 +2,9 @@ import { useEffect } from "react";
 import { Sidebar, Menu, MenuItem } from "react-pro-sidebar";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-
+const parseGradDate = (date) => {
+    return date.slice(2, 4)
+}
 const ProSidebar = () => {
   const navigate = useNavigate();
   const userDetails = useSelector(state => state.userDetails);
@@ -10,6 +12,7 @@ const ProSidebar = () => {
     if (!sessionStorage.getItem('userData')) {
       sessionStorage.setItem('userData', JSON.stringify(userDetails));
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sessionStorage.getItem('userData')])
   return (
     <div className="sidebar">
@@ -40,7 +43,9 @@ const ProSidebar = () => {
                 onClick={() => navigate("/main/profile")}
               >
                 <h3 className="user__name">{userDetails.userName !== null ? userDetails.userName :JSON.parse(sessionStorage.getItem('userData'))["userName"]}</h3>
-                <p className="user__school">{userDetails.collegeName !== null? userDetails.collegeName : JSON.parse(sessionStorage.getItem('userData'))["collegeName"]}| '25</p>
+                <p className="user__school">{userDetails.collegeName !== null ? userDetails.collegeName :
+                  JSON.parse(sessionStorage.getItem('userData'))["collegeName"]} | '{userDetails.gradDate !== null ? parseGradDate(userDetails.gradDate) :
+                  parseGradDate(JSON.parse(sessionStorage.getItem('userData'))["gradDate"])}</p>
               </div>
             </div>
           </div>

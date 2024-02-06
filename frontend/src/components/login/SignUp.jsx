@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Stepper from "awesome-react-stepper";
 import { Grid } from "@mui/material";
 import CircularProgress from "@mui/material/CircularProgress";
@@ -24,7 +24,9 @@ const SignUp = ({ setPage }) => {
     courses: "Courses Taken",
     age: "",
     gender: "",
+    grad_date: "",
     interests: "Interests",
+    preferred_language: "",
     skills: "Skills",
     hobbies: "Hobbies",
   };
@@ -35,13 +37,23 @@ const SignUp = ({ setPage }) => {
 
   const [errMsg, setErrMess] = useState("");
   const [countriesList, setCountriesList] = useState([]);
+  const [languagesList, setLanguagesList] = useState([]);
   const userDetails = useSelector(state => state.userDetails);
   const [collegeList, setCollegeList] = useState([]);
   const navigate = useNavigate(); // Create navigate function
+  const dateInput = useRef(null);
 
   const handleChange = (e) => {
-    setData({ ...userData, [e.target.name]: e.target.value });
+      setData({...userData, [e.target.name]: e.target.value})  
   };
+
+  const handleDateChange = (e) => {
+    setData({...userData, [e.target.name]: e.target.value})
+  }
+
+  const openDatePicker = () => {
+    dateInput.current.showPicker();
+  }
 
   useEffect(() => {
     const fetchCountries = async () => {
@@ -52,6 +64,18 @@ const SignUp = ({ setPage }) => {
     }
     fetchCountries();
   }, [])
+
+  useEffect(() => {
+    const fetchLanguages = async () => {
+      try {
+        const response = await axios.get("http://localhost:8000/get-languages/");
+        setLanguagesList(response.data.codes);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    fetchLanguages();
+  },[])
 
   // useEffect(() => {
   //   const fetchColleges = async () => {
@@ -67,7 +91,7 @@ const SignUp = ({ setPage }) => {
   const handleSubmit = async () => {
     setLoading(true);
     try {
-      // Make the API call
+      console.log(userData);
       const response = await axios.post("http://localhost:8000/register/", {
         ...userData,
         username: userData.email,
@@ -282,6 +306,25 @@ const SignUp = ({ setPage }) => {
                       {countriesList.map(country => <option key={country.name.official} value={country.name.common}>{country.flag} {country.name.common}</option>)}
                     </select>
                   </div>
+                  <div className="login__form_input">
+                    <i className="fa-solid fa-graduation-cap"></i>
+                    <input
+                      type="text"
+                      placeholder="Graduation date (mm/dd/yyyy)"
+                      required
+                      name="grad_date"
+                      onChange={openDatePicker}
+                      onClick={openDatePicker}
+                      value={userData.grad_date}
+                    />
+                    <input
+                      name="grad_date"
+                      ref={dateInput}
+                      type="date"
+                      className="date-signup"
+                      onChange={handleDateChange}
+                    />
+                  </div>
 
                   <div className="login__form_input">
                     <i className="fa-solid fa-book-open"></i>
@@ -330,7 +373,7 @@ const SignUp = ({ setPage }) => {
 
                 {/* Page 4 */}
                 <div className="page__4">
-                  <h1 className="sign_form__title">Interests & Hobbies</h1>
+                  <h1 className="sign_form__title">Language, Interests & Hobbies</h1>
                   <p className="sign_form__short_desc">
                     We try to match you with students who closely resemble your
                     profile.
@@ -360,6 +403,8 @@ const SignUp = ({ setPage }) => {
                     </textarea>
                   </div>
 
+                  
+
                   <div className="login__form_input_top">
                     <i className="fa-solid fa-people-robbery"></i>
                     <textarea
@@ -370,6 +415,19 @@ const SignUp = ({ setPage }) => {
                     >
                       Hobbies
                     </textarea>
+                  </div>
+                  <div className="login__form_input">
+                    <i className="fa-solid fa-language"></i>
+                    <select
+                      name="preferred_language"
+                      value={userData.preferred_language}
+                      onChange={handleChange}
+                    >
+                      <option value="" disabled>
+                        Preferred Language*
+                      </option>
+                      {languagesList.map(language => <option key={language[0]} value={language[0]}> {language[1]}</option>)}
+                    </select>
                   </div>
                 </div>
               </Stepper>
