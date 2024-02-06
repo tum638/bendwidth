@@ -11,6 +11,7 @@ from django.shortcuts import get_object_or_404
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 import numpy as np
+from .constants import LANGUAGE_CODES, SECRET_KEY
 
 class CreateUserView(generics.CreateAPIView):
     queryset = UserProfile.objects.all()
@@ -30,7 +31,8 @@ def login_user(request):
             "success": True, 
             "full_name": user_profile.full_name,
             "college_name": user_profile.college_name,
-            "user_id": user_profile.id
+            "user_id": user_profile.id,
+            "grad_date": user_profile.grad_date
             }, status=status.HTTP_200_OK)
     else:
         return JsonResponse({"error": "Invalid login."}, status=status.HTTP_401_UNAUTHORIZED)
@@ -51,12 +53,19 @@ def get_user_interests(request):
 @api_view(["POST"])
 def find_study_partners(request):
     user_id = request.data['userId']
-    user_profile = get_object_or_404(UserProfile, user_id=user_id)
+    print(user_id)
+    try:
+        user_profile = get_object_or_404(UserProfile, id=user_id)
+    except Exception as e:
+        print(e)
+        return JsonResponse({"error": str(e)}, status = status.HTTP_404_NOT_FOUND)
 
     class_year = request.data['classYear']
     gender = request.data['gender']
     major = request.data['major']
     course = request.data['course']
+    uuid = request.data['uuid']
+    print('UUID', uuid)
     similar_interests = request.data['matchSimilarInterests']
 
     if similar_interests:
@@ -88,7 +97,7 @@ def find_study_partners(request):
             study_level=class_year,
             gender=gender,
             major=major,
-            courses__contains=course 
+            courses__contains=course
         ).exclude(user_id=user_id)
 
     data = [profile.user.username for profile in best_matches]
@@ -98,5 +107,17 @@ def find_study_partners(request):
 @api_view(["POST"])
 def find_tutor(request):
     print(request.data)
+
+@api_view(["GET"])
+def get_all_languages(request):
+    if request.method == "GET":
+        return JsonResponse({"codes": LANGUAGE_CODES}, status=status.HTTP_200_OK)
+
+@api_view(["GET"])
+def get_key(request):
+    if request.method == "GET":
+        return JsonResponse({"key": SECRET_KEY }, status=status.HTTP_200_OK)
+
+
 
     
