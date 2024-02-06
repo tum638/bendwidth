@@ -59,11 +59,15 @@ def find_study_partners(request):
     course = request.data['course']
     similar_interests = request.data['matchSimilarInterests']
 
+    # Get a string of user's profile  information to be used in filtering
+    user_info_str = gender + ", " + major + ", " + class_year + ", " + course
+
     if similar_interests:
         # Assuming 'interests' is a comma-separated string of interests
-        user_interests = [user_profile.interests]
+        user_interests = [user_profile.interests + user_info_str]
         other_profiles = UserProfile.objects.exclude(user_id=user_id)
-        other_interests = [profile.interests for profile in other_profiles]
+        other_interests = [profile.interests + ", " +  profile.gender + ', ' +  profile.major + " " \
+                             + profile.study_level + ", " + profile.courses for profile in other_profiles]
 
         # Combine all interests for vectorization
         all_interests = user_interests + other_interests
@@ -84,12 +88,33 @@ def find_study_partners(request):
     else:
         # Filter based on class_year, gender, major, and course (simplified for demonstration)
         # This assumes these fields are directly comparable and exist on the UserProfile model
-        best_matches = UserProfile.objects.filter(
-            study_level=class_year,
-            gender=gender,
-            major=major,
-            courses__contains=course 
-        ).exclude(user_id=user_id)
+        # best_matches = UserProfile.objects.filter(
+        #     study_level=class_year,
+        #     gender=gender
+        #     # major=major,
+        #     # courses__contains=course 
+        # ).exclude(user_id=user_id)
+        other_profiles = UserProfile.objects.exclude(user_id=user_id)
+
+        other_interests = [profile.gender + ', ' +  profile.major + " " \
+                             + profile.study_level + ", " + profile.courses for profile in other_profiles]
+        user_interests = [user_info_str]
+
+        # Combine all interests for vectorization
+        all_interests = user_interests + other_interests
+
+        # Vectorize interests
+        vectorizer = TfidfVectorizer()
+        vectors = vectorizer.fit_transform(all_interests)
+
+        # Calculate cosine similarity between user and all others
+        cosine_similarities = cosine_similarity(vectors[0:1], vectors[1:])
+
+        # Get indices of profiles sorted by similarity (descending)
+        similar_indices = cosine_similarities.argsort()[0][::-1]  
+
+        # Convert indices to UserProfile instances, skipping the first index (user themselves)
+        best_matches = [other_profiles[int(i)] for i in similar_indices]
 
     data = [profile.user.username for profile in best_matches]
 

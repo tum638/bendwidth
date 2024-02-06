@@ -224,7 +224,7 @@ html {
 
 .main_content {
   flex: 1;
-  height: 100vh;
+  /* height: 100vh; */
   overflow: scroll;
 }
 
@@ -735,7 +735,6 @@ html {
   margin-left: 0.5rem;
 }
 
-
 .lobby-wrapper {
   margin-top: 2em;
   display: flex;
@@ -750,7 +749,7 @@ html {
 .fa-headset {
   color: #07a9e9;
   position: absolute;
-  left:-60px;
+  left: -60px;
   margin-right: 2em;
   top: 50%;
   transform: translateY(-50%);
@@ -793,3 +792,14 @@ html {
   color: #07a9e9;
 }
 
+.interview {
+  display: flex;
+  justify-content: space-evenly;
+  padding-top: 50%;
+  transform: translateY(-50%);
+}
+
+.video_margin {
+  margin-right: 3rem !important;
+  display: inline-block;
+}
