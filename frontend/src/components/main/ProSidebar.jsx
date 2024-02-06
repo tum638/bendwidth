@@ -14,7 +14,10 @@ const ProSidebar = () => {
   return (
     <div className="sidebar">
       <Sidebar className="sidebar__">
-        <h4 className="sidebar__brand">Bendwidth</h4>
+        <h4 className="sidebar__brand">
+          {" "}
+          <img src="/logo.png" alt="logo" /> Bendwidth
+        </h4>
         <Menu>
           <MenuItem onClick={() => navigate("/main")}>Study session</MenuItem>
           <MenuItem onClick={() => navigate("/main/interview")}>
