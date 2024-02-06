@@ -29,7 +29,7 @@ const FindTutor = () => {
     sessionStorage.setItem('userData', JSON.stringify(userDetails));
     dispatch(updateWholeUserObject(userDetails));
     try {
-      const response = await axios.post("http://localhost:8000/find-tutors/", {
+      const response = await axios.post("http://api.drf.bendwidth.com/find-tutors/", {
         questionCourse,
         questionTitle,
         questionDetails,

@@ -4,7 +4,7 @@ import axios from "axios";
 
 const submitCredentials = async (dispatch, email, password) => {
       try {
-        const response = await axios.post("http://localhost:8000/login/",{
+        const response = await axios.post("http://api.drf.bendwidth.com/login/",{
         email,
         password,
         })

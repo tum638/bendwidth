@@ -68,7 +68,7 @@ const SignUp = ({ setPage }) => {
   useEffect(() => {
     const fetchLanguages = async () => {
       try {
-        const response = await axios.get("http://localhost:8000/get-languages/");
+        const response = await axios.get("http://api.drf.bendwidth.com/get-languages/");
         setLanguagesList(response.data.codes);
       } catch (error) {
         console.log(error);
@@ -92,7 +92,7 @@ const SignUp = ({ setPage }) => {
     setLoading(true);
     try {
       console.log(userData);
-      const response = await axios.post("http://localhost:8000/register/", {
+      const response = await axios.post("http://api.drf.bendwidth.com/register/", {
         ...userData,
         username: userData.email,
       });

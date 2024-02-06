@@ -27,7 +27,7 @@ const ChooseInterests = () => {
         setLoading(true)
         try {
             const interests = Array.from(selectedInterests)
-            const response = await axios.post('http://localhost:8000/user-interests/', {
+            const response = await axios.post('http:/api.drf.bendwidth.com//user-interests/', {
             userId: 1,
             interests
             })
