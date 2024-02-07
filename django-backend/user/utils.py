@@ -20,7 +20,8 @@ def generate_jwt_token(receiver_id, uuid):
         "isRespondent": True,
         "collegeName": receiver_profile.college_name,
         "userEmail": receiver_profile.user.email,
-        "gradDate": receiver_profile.grad_date,
+        "gradDate": receiver_profile.grad_date.isoformat(),
+        "preferredLanguage": receiver_profile.preferred_language,
         "isLoggedIn": True,
     }
 

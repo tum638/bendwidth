@@ -415,6 +415,9 @@ html {
   margin-top: 2em;
 }
 
+.select-country {
+  width: 20em;
+}
 .question-guideline {
   background-color: #07a9e9;
   color: white;

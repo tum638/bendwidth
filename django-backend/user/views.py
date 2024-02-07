@@ -131,7 +131,7 @@ def find_study_partners(request):
     initiate_match(receivers, uuid, user_id)
     test_profile = best_matches.first()
     print(best_matches)
-    res = generate_jwt_token(test_profile.id)
+    res = generate_jwt_token(test_profile.id, uuid)
     print(res)
     return JsonResponse({"success": True, "matches": data}, safe=False, status=status.HTTP_200_OK)
 
