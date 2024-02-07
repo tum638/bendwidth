@@ -17,16 +17,32 @@ io.on('connection', socket => {
         console.log("could not find a valid auth object")
         return;
     }
-    const {uuid, userId, userName, userEmail, isRespondent, isInquirer } = socket.handshake.auth.userInfo;
+    const {uuid, userName, userEmail, isRespondent, isInquirer, preferredLanguage } = socket.handshake.auth.userInfo;
      
     // add the user to their category.
     if (isInquirer) {
         allConnectedInquirers[uuid] = {
-            userName, userEmail, isInquirer, socketId: socket.id
+            userName, userEmail, isInquirer, socketId: socket.id, preferredLanguage
         }
     } else if (isRespondent) {
         allConnectedRespondents[uuid] = {
-            userName, userEmail, isRespondent, socketId: socket.id
+            userName, userEmail, isRespondent, socketId: socket.id, preferredLanguage
+        }
+        // if respondent arrives after offfer has already been sent.
+        // send them the offer now.
+        if ('uuid' in allKnownOffers) {
+            // filter the respondent from the list of all respondents.
+            const respondentToSendTo = allConnectedRespondents[uuid];
+
+            console.log(allConnectedRespondents[uuid])
+            // check if the respondent exists.
+            if (respondentToSendTo) {
+                const socketId = respondentToSendTo.socketId;
+                socket.to(socketId).emit('newOfferAwaiting', allKnownOffers[uuid])
+            }
+            else {
+                console.log("The respondent could not be found.")
+            }
         }
     }
 

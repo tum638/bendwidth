@@ -4,9 +4,12 @@ import SignupOverlay from "../login/SignupOverlay";
 import { CircularProgress } from "@mui/material";
 import ErrorIcon from "../login/ErrorIcon";
 import { useDispatch } from "react-redux";
-import { updateUserDetails } from "../../redux-elements/userDetails";
+import {
+  updateUserDetails,
+  updateWholeUserObject,
+} from "../../redux-elements/userDetails";
 import pair from "../../redux-elements/pair";
-
+import { v4 as uuidv4 } from "uuid";
 const FindTutor = () => {
   const dispatch = useDispatch();
   const [questionCourse, setQuestionCourse] = useState("null");
@@ -17,17 +20,16 @@ const FindTutor = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
   const [errMsg, setErrMsg] = useState(null);
-
-  useEffect(() => {
-    dispatch(updateUserDetails(pair("isRespondent", false)));
-    let userData = sessionStorage.getItem("userData");
-    console.log(userData["isRespondent"]);
-    userData["isRespondent"] = false;
-    sessionStorage.setItem("userData", userData);
-  }, []);
+  const userDetails = JSON.parse(sessionStorage.getItem("userData"));
 
   const handleFindTutor = async () => {
     setLoading(true);
+    const uuid = uuidv4();
+    userDetails.uuid = uuid;
+    userDetails.isRespondent = false;
+    userDetails.isInquirer = true;
+    sessionStorage.setItem("userData", JSON.stringify(userDetails));
+    dispatch(updateWholeUserObject(userDetails));
     try {
       const response = await axios.post("http://localhost:8000/find-tutors/", {
         questionCourse,
@@ -35,6 +37,7 @@ const FindTutor = () => {
         questionDetails,
         attempts,
         tutorGender,
+        uuid,
       });
 
       console.log(response);

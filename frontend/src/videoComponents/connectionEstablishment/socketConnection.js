@@ -8,14 +8,13 @@ let socket;
 const socketConnection = async (userDetails) => {
 
     console.log("socket info was called")
-
-
     const userInfo = {
-            uuid: "12345",
+            uuid: userDetails.uuid,
             userId: userDetails.userId,
             userName: userDetails.userName,
             userEmail: userDetails.email,
-            isInquirer: userDetails.isRespondent
+            isInquirer: userDetails.isInquirer,
+            isRespondent:userDetails.isRespondent
         }
     console.log(userInfo)
 
