@@ -9,6 +9,7 @@ import UserList from "./UserList";
 import { users } from "./UserList";
 import Calendar from "./Calendar";
 import Interview from "./Interview";
+import Chats from "./Chats";
 
 const MainContent = () => {
   return (
@@ -23,6 +24,7 @@ const MainContent = () => {
         <Route path="/contacts" element={<UserList users={users} />} />
         <Route path="/calendar" element={<Calendar />} />
         <Route path="/interview" element={<Interview />} />
+        <Route path="/chats" element={<Chats />} />
       </Routes>
     </div>
   );
