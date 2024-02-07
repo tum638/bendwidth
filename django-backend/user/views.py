@@ -130,9 +130,9 @@ def find_study_partners(request):
     
     data = [profile.user.username for profile in best_matches]
 
-    test_profile = best_matches.first()
+    test_profile = best_matches[0]
     print(best_matches)
-    res = generate_jwt_token(test_profile.id)
+    res = generate_jwt_token(test_profile.id, uuid)
     print(res)
     return JsonResponse({"success": True, "matches": data}, safe=False, status=status.HTTP_200_OK)
 
