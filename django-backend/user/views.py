@@ -1,16 +1,17 @@
 from rest_framework import generics
-from .models import UserProfile
-from .serializers import UserProfileSerializer
+from .models import UserProfile, MatchRequest
+from .serializers import UserProfileSerializer, MatchRequestSerializer
 from .models import UserProfile
 from rest_framework.decorators import api_view
 from django.contrib.auth import authenticate, login
 from rest_framework import status
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 import numpy as np
+from .utils import *
 
 class CreateUserView(generics.CreateAPIView):
     queryset = UserProfile.objects.all()
@@ -89,14 +90,29 @@ def find_study_partners(request):
             gender=gender,
             major=major,
             courses__contains=course 
-        ).exclude(user_id=user_id)
+        ).exclude(id=user_id)
 
-    data = [profile.user.username for profile in best_matches]
-
+        data = [profile.user.username for profile in best_matches]
+        connect_matches(data)
+    
     return JsonResponse({"success": True, "matches": data}, safe=False, status=status.HTTP_200_OK)
+
+@api_view(["POST","GET"])
+def match_response(request, ans):
+    match_data = {
+        "status":"accepted" if ans == 1 else "denied",
+        "caller_user_id": "test_id1",
+        "callee_user_id":"test_id2"
+    }
+    
+    match_serializer = MatchRequestSerializer(data=match_data)
+    if match_serializer.is_valid():
+        match_serializer.save()
+        return HttpResponse("Thank you for your response!")
+    else:
+        print(match_serializer.errors)
+        return HttpResponse("An error occurred! Please respond to this email to confirm your response")
 
 @api_view(["POST"])
 def find_tutor(request):
     print(request.data)
-
-    

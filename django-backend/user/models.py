@@ -24,3 +24,8 @@ class UserProfile(models.Model):
 
     def __str__(self):
         return self.user.username
+    
+class MatchRequest(models.Model):
+    status = models.CharField(max_length=50)
+    caller_user_id = models.CharField(max_length=100)
+    callee_user_id = models.CharField(max_length=100)

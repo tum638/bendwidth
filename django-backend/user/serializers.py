@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User
 from rest_framework import serializers
-from .models import UserProfile
+from .models import *
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -31,3 +31,8 @@ class UserProfileSerializer(serializers.ModelSerializer):
         user = User.objects.create_user(username=email, email=email, password=password)
         user_profile = UserProfile.objects.create(user=user, **validated_data)
         return user_profile
+
+class MatchRequestSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = MatchRequest
+        fields = "__all__"
