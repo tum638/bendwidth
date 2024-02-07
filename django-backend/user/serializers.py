@@ -35,7 +35,3 @@ class UserProfileSerializer(serializers.ModelSerializer):
         user_profile = UserProfile.objects.create(user=user, **validated_data)
         return user_profile
 
-class MatchRequestSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = MatchRequest
-        fields = "__all__"

@@ -1,6 +1,6 @@
 from rest_framework import generics
-from .models import UserProfile, MatchRequest
-from .serializers import UserProfileSerializer, MatchRequestSerializer
+from .models import UserProfile
+from .serializers import UserProfileSerializer
 from .models import UserProfile
 from rest_framework.decorators import api_view
 from django.contrib.auth import authenticate, login
@@ -11,7 +11,7 @@ from django.shortcuts import get_object_or_404
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 import numpy as np
-from .utils import generate_jwt_token, send_invitation_link
+from .utils import generate_jwt_token, send_invitation_link, initiate_match
 from .constants import LANGUAGE_CODES, SECRET_KEY
 
 class CreateUserView(generics.CreateAPIView):
@@ -32,7 +32,7 @@ def login_user(request):
             "success": True, 
             "full_name": user_profile.full_name,
             "college_name": user_profile.college_name,
-            "user_id": user_profile.id,
+            "user_id": user_profile.user.id,
             "grad_date": user_profile.grad_date,
             "preferred_language": user_profile.preferred_language
             }, status=status.HTTP_200_OK)
@@ -57,7 +57,7 @@ def find_study_partners(request):
     user_id = request.data['userId']
     print(user_id)
     try:
-        user_profile = get_object_or_404(UserProfile, id=user_id)
+        user_profile = get_object_or_404(UserProfile, user_id=user_id)
     except Exception as e:
         print(e)
         return JsonResponse({"error": str(e)}, status = status.HTTP_404_NOT_FOUND)
@@ -127,30 +127,13 @@ def find_study_partners(request):
         # Convert indices to UserProfile instances, skipping the first index (user themselves)
         best_matches = [other_profiles[int(i)] for i in similar_indices]
 
-    
-    data = [profile.user.username for profile in best_matches]
-
+    receivers = [profile.user.id for profile in best_matches]
+    initiate_match(receivers, uuid, user_id)
     test_profile = best_matches.first()
     print(best_matches)
     res = generate_jwt_token(test_profile.id)
     print(res)
     return JsonResponse({"success": True, "matches": data}, safe=False, status=status.HTTP_200_OK)
-
-@api_view(["POST","GET"])
-def match_response(request, ans):
-    match_data = {
-        "status":"accepted" if ans == 1 else "denied",
-        "caller_user_id": "test_id1",
-        "callee_user_id":"test_id2"
-    }
-    
-    match_serializer = MatchRequestSerializer(data=match_data)
-    if match_serializer.is_valid():
-        match_serializer.save()
-        return HttpResponse("Thank you for your response!")
-    else:
-        print(match_serializer.errors)
-        return HttpResponse("An error occurred! Please respond to this email to confirm your response")
 
 @api_view(["POST"])
 def find_tutor(request):
@@ -166,6 +149,12 @@ def get_key(request):
     if request.method == "GET":
         return JsonResponse({"key": SECRET_KEY }, status=status.HTTP_200_OK)
 
+@api_view(["GET"])
+def accept_match(request,id):
+    HttpResponse("Accepted!")
 
+@api_view(["GET"])
+def reject_match(reques,id):
+    HttpResponse("Rejected")
 
     

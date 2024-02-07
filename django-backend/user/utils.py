@@ -3,7 +3,7 @@ import smtplib
 import ssl
 import time
 import jwt
-from .models import UserProfile
+from .models import UserProfile, Invitation
 from .constants import SECRET_KEY, PASSWORD, USER
 
 def generate_jwt_token(receiver_id, uuid):
@@ -55,24 +55,23 @@ def send_invitation_link(receiver_profile, token):
             return {"error": str(e)}
     return {"success": True}
 
+def handle_expired_invitation():
+    pass
 
+def initiate_match(receivers, uuid, sender_id):
+    receiver_ids = ",".join(receivers)
+    invitation = Invitation()
+    invitation.uuid = uuid
+    invitation.sender = UserProfile.objects().get(id=sender_id)
+    invitation.receivers = receiver_ids
+    invitation.save()
 
+    request_match(sender_id)
 
-async def connect_matches(data, email_interval=300, check_response=60):
+def request_match(sender_id):
 
-    for match in data:
-        send_email()
-        start = time.time()
-        end = start + email_interval
-        #send an email every email_interval period
-        while time.time() < end:
-            #check the database every check_response period
-            print("check database")
-            time.sleep(60)
-
-def send_email():
-
-    body = "User _ wants to study with you at 7:00pm. Do you want to accept this invite? <br/><br/> <a href=http://localhost:8000/matching/1><button>Yes</button></a>     <a href=http://localhost:8000/matching/0><button>No</button></a>"
+    body = "Someone wants to study with you at 7:00pm. Do you want to accept this invite? <br/><br/> <a href=http://localhost:8000/accept-match/sender_id><button>Yes</button></a> <a href=http://localhost:8000/deny-match/sender_id><button>No</button></a>"
+    
     email = EmailMessage()
     email['From'] = USER
     email['To'] = "ventomilton@gmail.com"

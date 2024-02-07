@@ -4,5 +4,5 @@ from .models import *
 
 # Register your models here.
 admin.site.register(UserProfile)
-admin.site.register(MatchRequest)
+admin.site.register(Invitation)
 
