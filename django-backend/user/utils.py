@@ -39,13 +39,14 @@ def send_invitation_link(receiver_profile, token):
     body = f"""Hi {receiver_profile.full_name},
 
     Your meeting is scheduled for (some date),
-    please use this link to join: http://localhost:3000/main/lobby/?token={token}
+    please use this link to join: https://localhost:3000/?token={token}
 
     Bendwidth Admin"""
 
     em = EmailMessage()
-    em['From'] = receiver_profile.user.email
+    em['From'] = USER
     em['To'] = receiver_profile.user.email
+    print(em['To'])
     em['Subject'] = subject
     em.set_content(body)
     context = ssl.create_default_context()

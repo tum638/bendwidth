@@ -7,6 +7,7 @@ import { CircularProgress } from "@mui/material";
 import { updateUserDetails, updateWholeUserObject } from "../../redux-elements/userDetails";
 import pair from "../../redux-elements/pair";
 import {v4 as uuidv4 } from 'uuid'
+import { useNavigate } from "react-router-dom";
 
 const FindFriends = () => {
   const dispatch = useDispatch();
@@ -19,6 +20,7 @@ const FindFriends = () => {
   const [error, setError] = useState(false);
   const [errMsg, setErrMsg] = useState("");
   const userDetails = JSON.parse(sessionStorage.getItem('userData'));
+  const navigateTo = useNavigate();
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -66,6 +68,7 @@ const FindFriends = () => {
       );
       console.log(response);
       setLoading(false);
+      navigateTo("/main/lobby/")
     } catch (error) {
       console.error(error);
       setLoading(false);

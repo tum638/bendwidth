@@ -1,14 +1,15 @@
 import Grid from "@mui/material/Grid";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { CircularProgress } from "@mui/material";
 import SignupOverlay from "./SignupOverlay";
 import ErrorIcon from "./ErrorIcon";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { updateUserDetails } from "../../redux-elements/userDetails";
+import { updateUserDetails, updateWholeUserObject } from "../../redux-elements/userDetails";
 import pair from "../../redux-elements/pair";
 import submitCredentials from "./submitCredentials";
+import {jwtDecode } from 'jwt-decode'
 
 const Login = ({ setPage }) => {
   const dispatch = useDispatch();
@@ -20,6 +21,39 @@ const Login = ({ setPage }) => {
   const [error, setError] = useState(false);
   const [errMsg, setErrMess] = useState("");
   const navigate = useNavigate(); // Create navigate function
+
+  const [searchParams, setSearchParams] = useSearchParams();
+    const token = searchParams.get("token")
+    
+    // load user data if user is a respondent.
+    useEffect(() => {
+        const getKey = async () => {
+            try {
+                const userData = jwtDecode(token);
+                console.log(userData)
+                dispatch(updateWholeUserObject(userData));
+                sessionStorage.setItem('userData', JSON.stringify(userData));
+                dispatch(updateUserDetails(pair("isLoggedIn", true)));
+                dispatch(updateUserDetails(pair("userName", userData.fullName)));
+                dispatch(updateUserDetails(pair("userId", userData.userId)));
+                dispatch(updateUserDetails(pair("userEmail", userData.userEmail)));
+                dispatch(updateUserDetails(pair("collegeName", userData.collegeName)));
+                dispatch(updateUserDetails(pair("isInquirer", false)));
+                dispatch(updateUserDetails(pair("isRespondent", true)));
+                dispatch(updateUserDetails(pair("uuid", userData.uuid)))
+                dispatch(updateUserDetails(pair("gradDate", userData.gradDate)))
+                dispatch(updateUserDetails(pair("preferredLanguage", userData.preferredLanguage)));
+                navigate("/main/lobby")
+            } catch (err) {
+                navigate("/")
+            }
+            
+        }
+        if (token) {
+            console.log("got here")
+            getKey();
+        }    
+    }, [token])
 
   const handleDataChange = (e) => {
     setData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
