@@ -53,7 +53,7 @@ const FindFriends = () => {
     dispatch(updateWholeUserObject(userDetails));
     try {
       const response = await axios.post(
-        "http://api.drf.bendwidth.com/study-partners/",
+        "https://api.drf.bendwidth.com/study-partners/",
         {
           userId: userDetails.userId, // Assuming userDetails contains the user ID
           classYear,
