@@ -281,4 +281,7 @@ LOCALES_BCP_47= [
     ('zu-ZA', 'Zulu (South Africa)'),
 ]
 
+SECRET_KEY = "1b9d6bcd-bbfd-4b2d-9b5d-ab8dfbbd4bed"
+PASSWORD = "vqbj nzvr yzir wlvi"
+USER = "tum1@williams.edu"
 

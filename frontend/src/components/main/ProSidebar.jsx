@@ -1,6 +1,8 @@
 import { Sidebar, Menu, MenuItem } from "react-pro-sidebar";
 import { useNavigate } from "react-router-dom";
-
+const parseGradDate = (date) => {
+    return date.slice(2, 4)
+}
 const ProSidebar = () => {
   const navigate = useNavigate();
 
@@ -43,6 +45,7 @@ const ProSidebar = () => {
             <p className="logout">
               <i className="fa-solid fa-arrow-right-from-bracket"></i> Logout
             </p>
+
           </div>
         </Menu>
       </Sidebar>

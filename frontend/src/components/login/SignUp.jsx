@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Stepper from "awesome-react-stepper";
 import { Grid } from "@mui/material";
 import CircularProgress from "@mui/material/CircularProgress";
@@ -23,12 +23,14 @@ const SignUp = ({ setPage }) => {
     major: "",
     study_level: "",
     country: "",
-    courses: "Courses Taken",
+    courses: "",
     age: "",
     gender: "",
-    interests: "Interests",
-    skills: "Skills",
-    hobbies: "Hobbies",
+    grad_date: "",
+    interests: "",
+    preferred_language: "",
+    skills: "",
+    hobbies: "",
   };
   const dispatch = useDispatch();
   const [userData, setData] = useState(userInfo);
@@ -37,13 +39,23 @@ const SignUp = ({ setPage }) => {
 
   const [errMsg, setErrMess] = useState("");
   const [countriesList, setCountriesList] = useState([]);
-  const userDetails = useSelector((state) => state.userDetails);
+  const [languagesList, setLanguagesList] = useState([]);
+  const userDetails = useSelector(state => state.userDetails);
   const [collegeList, setCollegeList] = useState([]);
   const navigate = useNavigate(); // Create navigate function
+  const dateInput = useRef(null);
 
   const handleChange = (e) => {
-    setData({ ...userData, [e.target.name]: e.target.value });
+      setData({...userData, [e.target.name]: e.target.value})  
   };
+
+  const handleDateChange = (e) => {
+    setData({...userData, [e.target.name]: e.target.value})
+  }
+
+  const openDatePicker = () => {
+    dateInput.current.showPicker();
+  }
 
   useEffect(() => {
     const fetchCountries = async () => {
@@ -54,6 +66,18 @@ const SignUp = ({ setPage }) => {
     };
     fetchCountries();
   }, []);
+
+  useEffect(() => {
+    const fetchLanguages = async () => {
+      try {
+        const response = await axios.get("http://localhost:8000/get-languages/");
+        setLanguagesList(response.data.codes);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    fetchLanguages();
+  },[])
 
   // useEffect(() => {
   //   const fetchColleges = async () => {
@@ -69,7 +93,7 @@ const SignUp = ({ setPage }) => {
   const handleSubmit = async () => {
     setLoading(true);
     try {
-      // Make the API call
+      console.log(userData);
       const response = await axios.post("http://localhost:8000/register/", {
         ...userData,
         username: userData.email,
@@ -208,7 +232,7 @@ const SignUp = ({ setPage }) => {
           <div className="page__2">
             <h1 className="sign_form__title">University Details</h1>
             <p className="sign_form__short_desc">
-              Add information about your university, name major and level.
+              Tell us about your university, major and what you're studying.
             </p>
 
             <div className="login__form_input">
@@ -255,6 +279,7 @@ const SignUp = ({ setPage }) => {
             <div className="login__form_input">
               <i className="fa-solid fa-earth-americas"></i>
               <select
+                className="select-country"
                 name="country"
                 value={userData.country}
                 onChange={handleChange}
@@ -272,6 +297,25 @@ const SignUp = ({ setPage }) => {
                 ))}
               </select>
             </div>
+            <div className="login__form_input" onChange={openDatePicker}
+                      onClick={openDatePicker}>
+                    <i className="fa-solid fa-graduation-cap"></i>
+                    <input
+                      type="text"
+                      placeholder="Graduation date"
+                      required
+                      name="grad_date"
+                      
+                      value={userData.grad_date}
+                    />
+                    <input
+                      name="grad_date"
+                      ref={dateInput}
+                      type="date"
+                      className="date-signup"
+                      onChange={handleDateChange}
+                    />
+                  </div>
 
             <div className="login__form_input">
               <i className="fa-solid fa-book-open"></i>
@@ -279,16 +323,16 @@ const SignUp = ({ setPage }) => {
                 name="courses"
                 rows="1"
                 value={userData.courses}
+                placeholder="Your courses this semester"
                 onChange={handleChange}
               >
-                Courses Taken
               </textarea>
             </div>
           </div>
 
           {/* Page 3 */}
           <div className="page__3">
-            <h1 className="sign_form__title">Demographics</h1>
+            <h1 className="sign_form__title">Language & Demographics</h1>
             <p className="sign_form__short_desc">
               Fill in the following fields to complete your profile.
             </p>
@@ -316,6 +360,19 @@ const SignUp = ({ setPage }) => {
                 onChange={handleChange}
               />
             </div>
+            <div className="login__form_input">
+                    <i className="fa-solid fa-language"></i>
+                    <select
+                      name="preferred_language"
+                      value={userData.preferred_language}
+                      onChange={handleChange}
+                    >
+                      <option value="" disabled>
+                        Preferred Language*
+                      </option>
+                      {languagesList.map(language => <option key={language[0]} value={language[0]}> {language[1]}</option>)}
+                    </select>
+                  </div>
           </div>
 
           {/* Page 4 */}
@@ -330,6 +387,7 @@ const SignUp = ({ setPage }) => {
               <i className="fa-solid fa-heart"></i>
               <textarea
                 name="interests"
+                placeholder="interests"
                 rows="2"
                 value={userData.interests}
                 onChange={handleChange}
@@ -343,6 +401,7 @@ const SignUp = ({ setPage }) => {
               <textarea
                 name="skills"
                 rows="2"
+                placeholder="skills"
                 value={userData.skills}
                 onChange={handleChange}
               >
@@ -355,12 +414,14 @@ const SignUp = ({ setPage }) => {
               <textarea
                 name="hobbies"
                 rows="2"
+                placeholder="hobbies"
                 value={userData.hobbies}
                 onChange={handleChange}
               >
                 Hobbies
               </textarea>
             </div>
+            
           </div>
         </Stepper>
 

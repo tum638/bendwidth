@@ -14,8 +14,10 @@ const submitCredentials = async (dispatch, email, password) => {
           dispatch(updateUserDetails(pair("isLoggedIn", true)));
           dispatch(updateUserDetails(pair("userName", response.data.full_name)));
           dispatch(updateUserDetails(pair("userId", response.data.user_id)));
-          dispatch(updateUserDetails(pair("userEmail", email)))
-        dispatch(updateUserDetails(pair("collegeName", response.data.college_name)))
+            dispatch(updateUserDetails(pair("userEmail", email)));
+            dispatch(updateUserDetails(pair("collegeName", response.data.college_name)));
+            dispatch(updateUserDetails(pair("gradDate", response.data.grad_date)))
+            dispatch(updateUserDetails(pair("preferredLanguage", response.data.preferred_language)));
           return {"fullName": response.data.full_name}
         }
         return false
