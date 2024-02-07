@@ -20,10 +20,11 @@ const FindTutor = () => {
 
   useEffect(() => {
     dispatch(updateUserDetails(pair("isRespondent", false)));
-    let userData = sessionStorage.getItem('userData');
-    userData["isRespondent"] = false
-    sessionStorage.setItem('userData', userData);
-  }, [])
+    let userData = sessionStorage.getItem("userData");
+    console.log(userData["isRespondent"]);
+    userData["isRespondent"] = false;
+    sessionStorage.setItem("userData", userData);
+  }, []);
 
   const handleFindTutor = async () => {
     setLoading(true);
