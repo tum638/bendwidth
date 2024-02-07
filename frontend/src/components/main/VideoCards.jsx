@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 
 const VideoCards = () => {
   const navigate = useNavigate();
-  const userDetails = useSelector(state => state.userDetails);
+  const userDetails = useSelector((state) => state.userDetails);
   return (
     <div className="video-cards">
       <VideoCard
@@ -34,7 +34,7 @@ const VideoCards = () => {
 
 export default VideoCards;
 
-const VideoCard = ({ title, desc, img, active, link }) => {
+export const VideoCard = ({ title, desc, img, active, link }) => {
   const navigate = useNavigate();
   return (
     <div className="video_card">

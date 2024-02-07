@@ -16,7 +16,10 @@ class UserProfileSerializer(serializers.ModelSerializer):
         model = UserProfile
         fields = ['full_name', 'email', 'password', 'password2', 'college_name', 'major', 
                   'study_level', 'country', 'courses', 'age', 'gender', 'interests', 
-                  'skills', 'hobbies']
+                  'skills', 'hobbies', 
+                  'preferred_language',
+                 'grad_date'
+                  ]
 
     def create(self, validated_data):
         # Separate user data

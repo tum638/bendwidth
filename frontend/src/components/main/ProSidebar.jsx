@@ -2,24 +2,36 @@ import { useEffect } from "react";
 import { Sidebar, Menu, MenuItem } from "react-pro-sidebar";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-
+const parseGradDate = (date) => {
+    return date.slice(2, 4)
+}
 const ProSidebar = () => {
   const navigate = useNavigate();
-  const userDetails = useSelector(state => state.userDetails);
+  const userDetails = useSelector((state) => state.userDetails);
   useEffect(() => {
-    if (!sessionStorage.getItem('userData')) {
-      sessionStorage.setItem('userData', JSON.stringify(userDetails));
+    if (!sessionStorage.getItem("userData")) {
+      sessionStorage.setItem("userData", JSON.stringify(userDetails));
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sessionStorage.getItem('userData')])
   return (
     <div className="sidebar">
       <Sidebar className="sidebar__">
-        <h4 className="sidebar__brand">Bendwidth</h4>
+        <h4 className="sidebar__brand">
+          {" "}
+          <img src="/logo.png" alt="logo" /> Bendwidth
+        </h4>
         <Menu>
           <MenuItem onClick={() => navigate("/main")}>Study session</MenuItem>
-          <MenuItem> Interviews </MenuItem>
-          <MenuItem> Contacts </MenuItem>
-          <MenuItem> Calendar </MenuItem>
+          <MenuItem onClick={() => navigate("/main/interview")}>
+            Interviews
+          </MenuItem>
+          <MenuItem onClick={() => navigate("/main/contacts")}>
+            Contacts
+          </MenuItem>
+          <MenuItem onClick={() => navigate("/main/calendar")}>
+            Calendar
+          </MenuItem>
           <MenuItem> Chats </MenuItem>
           <MenuItem onClick={() => navigate("/main/ai")}> AI </MenuItem>
 
@@ -40,7 +52,9 @@ const ProSidebar = () => {
                 onClick={() => navigate("/main/profile")}
               >
                 <h3 className="user__name">{userDetails.userName !== null ? userDetails.userName :JSON.parse(sessionStorage.getItem('userData'))["userName"]}</h3>
-                <p className="user__school">{userDetails.collegeName !== null? userDetails.collegeName : JSON.parse(sessionStorage.getItem('userData'))["collegeName"]}| '25</p>
+                <p className="user__school">{userDetails.collegeName !== null ? userDetails.collegeName :
+                  JSON.parse(sessionStorage.getItem('userData'))["collegeName"]} | '{userDetails.gradDate !== null ? parseGradDate(userDetails.gradDate) :
+                  parseGradDate(JSON.parse(sessionStorage.getItem('userData'))["gradDate"])}</p>
               </div>
             </div>
           </div>

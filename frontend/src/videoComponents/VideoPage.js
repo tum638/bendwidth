@@ -12,11 +12,6 @@ import serverListeners from './connectionEstablishment/serverListeners'
 import translate from '../translationComponents/translate'
 import { updateWholeUserObject } from '../redux-elements/userDetails'
 
-
-
-
-
-
 // entry point to video chat component.
 const VideoPage = () => {
     // initial setup of state.
@@ -44,6 +39,7 @@ const VideoPage = () => {
     useEffect(() => {
         dispatch(updateWholeUserObject(userDetails)); 
     }, [])
+    
     // get user's camera and microphone
     useEffect(() => {
         const fetchMedia = async () => {

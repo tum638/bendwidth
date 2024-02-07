@@ -10,7 +10,8 @@ const initialState = {
     collegeName: null,
     userEmail: null,
     gradDate: null,
-    isLoggedIn: true
+    isLoggedIn: false,
+    preferredLanguage: null,
 }
 
 export const userDetailsSlice = createSlice({

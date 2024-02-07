@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-from .constants import LOCALES_BCP_47
+from .constants import LOCALES_BCP_47, LANGUAGE_CODES
 
 # Model to store additional user information
 class UserProfile(models.Model):
@@ -18,9 +18,10 @@ class UserProfile(models.Model):
     interests = models.TextField()
     skills = models.TextField()
     hobbies = models.TextField()
-    preferred_language = models.CharField(max_length=50, choices=LOCALES_BCP_47, default="en-US")
+    preferred_language = models.CharField(max_length=50, choices=LANGUAGE_CODES, default="en")
     is_tutor = models.BooleanField(default=None, blank=True, null=True)
     is_student = models.BooleanField(default=None, blank=True, null=True)
+    grad_date = models.DateField()
 
     def __str__(self):
         return self.user.username

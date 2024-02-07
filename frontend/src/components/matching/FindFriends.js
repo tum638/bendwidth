@@ -4,11 +4,12 @@ import { useDispatch, useSelector } from "react-redux";
 import SignupOverlay from "../login/SignupOverlay";
 import ErrorIcon from "../login/ErrorIcon";
 import { CircularProgress } from "@mui/material";
-import { updateUserDetails } from "../../redux-elements/userDetails";
+import { updateUserDetails, updateWholeUserObject } from "../../redux-elements/userDetails";
 import pair from "../../redux-elements/pair";
+import {v4 as uuidv4 } from 'uuid'
 
 const FindFriends = () => {
-  const userDetails = useSelector((state) => state.userDetails);
+  const dispatch = useDispatch();
   const [classYear, setClassYear] = useState("");
   const [gender, setGender] = useState("");
   const [major, setMajor] = useState("");
@@ -17,6 +18,7 @@ const FindFriends = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
   const [errMsg, setErrMsg] = useState("");
+  const userDetails = JSON.parse(sessionStorage.getItem('userData'));
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -43,16 +45,23 @@ const FindFriends = () => {
 
   const submitInterests = async () => {
     setLoading(true);
+    const uuid = uuidv4();
+    userDetails.uuid = uuid;
+    userDetails.isRespondent = false;
+    userDetails.isInquirer = true;
+    sessionStorage.setItem('userData', JSON.stringify(userDetails));
+    dispatch(updateWholeUserObject(userDetails));
     try {
       const response = await axios.post(
         "http://localhost:8000/study-partners/",
         {
-          userId: 3, // Assuming userDetails contains the user ID
+          userId: userDetails.userId, // Assuming userDetails contains the user ID
           classYear,
           gender,
           major,
           course,
           matchSimilarInterests,
+          uuid
         }
       );
       console.log(response);
