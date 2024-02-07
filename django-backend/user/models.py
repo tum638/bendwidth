@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from .constants import LOCALES_BCP_47, LANGUAGE_CODES
+from django.utils import timezone
 
 # Model to store additional user information
 class UserProfile(models.Model):
@@ -36,4 +37,8 @@ class Invitation(models.Model):
     uuid = models.CharField(max_length = 200)
     sender = models.ForeignKey(UserProfile, max_length=100, related_name="invitations", on_delete=models.DO_NOTHING)
     receivers = models.CharField(max_length=50) # string with list of potential receivers id's.
-    timestamp = models.DateTimeField(auto_now=True)
+    timestamp = models.DateTimeField()
+
+    def save(self, *args, **kwargs):
+        self.timestamp = timezone.now()  # Manually set the current time
+        super().save(*args, **kwargs)

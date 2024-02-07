@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'user',
     'rest_framework',
+    'apscheduler'
 ]
 
 MIDDLEWARE = [

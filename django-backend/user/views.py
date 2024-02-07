@@ -1,7 +1,7 @@
 from rest_framework import generics
 from .models import UserProfile
 from .serializers import UserProfileSerializer
-from .models import UserProfile
+from .models import UserProfile, Invitation
 from rest_framework.decorators import api_view
 from django.contrib.auth import authenticate, login
 from rest_framework import status
@@ -11,8 +11,10 @@ from django.shortcuts import get_object_or_404
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 import numpy as np
-from .utils import generate_jwt_token, send_invitation_link, initiate_match
-from .constants import LANGUAGE_CODES, SECRET_KEY
+from .utils import generate_jwt_token, initiate_match, handle_invalid_invitation
+from .constants import LANGUAGE_CODES, SECRET_KEY, EXPIRATION_PERIOD
+from datetime import datetime, timedelta
+from django.utils import timezone
 
 class CreateUserView(generics.CreateAPIView):
     queryset = UserProfile.objects.all()
@@ -45,22 +47,28 @@ def get_user_interests(request):
     try:
         profile = UserProfile.objects.all().first()
         print(profile.id)
-        user_profile = UserProfile.objects.get(id = request.data["userId"])
+        user_profile = UserProfile.objects.get(user_id = request.data["userId"])
         user_profile.interests = ",".join(request.data["interests"])
         user_profile.save()
         return JsonResponse({"success": True}, status=status.HTTP_200_OK)
     except Exception as e:
         return JsonResponse({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
+
 @api_view(["POST"])
 def find_study_partners(request):
     user_id = request.data['userId']
-    print(user_id)
+
+    # check if the profile exists
     try:
         user_profile = get_object_or_404(UserProfile, user_id=user_id)
     except Exception as e:
         print(e)
         return JsonResponse({"error": str(e)}, status = status.HTTP_404_NOT_FOUND)
+        
+    # check if the user already has a pending match
+    if Invitation.objects.filter(sender__user__id = user_id).count() >= 1:     
+        return JsonResponse({"error": "Matching already in progress."}, status=status.HTTP_400_BAD_REQUEST) 
 
     class_year = request.data['classYear']
     gender = request.data['gender']
@@ -127,13 +135,12 @@ def find_study_partners(request):
         # Convert indices to UserProfile instances, skipping the first index (user themselves)
         best_matches = [other_profiles[int(i)] for i in similar_indices]
 
-    receivers = [profile.user.id for profile in best_matches]
+    receivers = [str(profile.user.id) for profile in best_matches]
+    print(receivers, "MATCHES")
     initiate_match(receivers, uuid, user_id)
-    test_profile = best_matches.first()
-    print(best_matches)
-    res = generate_jwt_token(test_profile.id, uuid)
-    print(res)
-    return JsonResponse({"success": True, "matches": data}, safe=False, status=status.HTTP_200_OK)
+
+ 
+    return JsonResponse({"success": True, "matches": receivers}, safe=False, status=status.HTTP_200_OK)
 
 @api_view(["POST"])
 def find_tutor(request):
@@ -150,11 +157,26 @@ def get_key(request):
         return JsonResponse({"key": SECRET_KEY }, status=status.HTTP_200_OK)
 
 @api_view(["GET"])
-def accept_match(request,id):
-    HttpResponse("Accepted!")
+def accept_match(request,sender_id,receiver_id):
+    print(sender_id, "SENDER ID")
+    invitations = Invitation.objects.filter(sender__user__id=sender_id)
+
+    if not invitations.count():
+        return HttpResponse("This link has expired.")
+    if timezone.now() - invitations.first().timestamp > timedelta(minutes=EXPIRATION_PERIOD):
+        invitations.first().delete()
+        return HttpResponse("This link has expired.")
+
+    invitation = invitations.first()
+    uuid = invitation.uuid
+    generate_jwt_token(receiver_id,uuid)
+    invitation.delete()
+    return HttpResponse('Accepted')
 
 @api_view(["GET"])
-def reject_match(reques,id):
-    HttpResponse("Rejected")
-
-    
+def reject_match(request,sender_id, receiver_id):
+    invitations = Invitation.objects.filter(sender__user__id=sender_id)
+    if not invitations.count():
+        return HttpResponse("This link has expired.")
+    handle_invalid_invitation(invitations.first())
+    return HttpResponse("Rejected")

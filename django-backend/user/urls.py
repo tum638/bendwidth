@@ -7,8 +7,8 @@ urlpatterns = [
     path('user-interests/', get_user_interests),
     path('study-partners/', find_study_partners),
     path('find-tutors/', find_tutor),
-    path('accept-match/<int:id>', accept_match),
-    path('deny-match/<int:id>', reject_match),
+    path('accept-match/<int:sender_id>/<int:receiver_id>', accept_match),
+    path('deny-match/<int:sender_id>/<int:receiver_id>', reject_match),
     path('get-languages/', get_all_languages),
     path('get-key/', get_key)
 ]

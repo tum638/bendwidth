@@ -1,17 +1,18 @@
 from email.message import EmailMessage
 import smtplib
 import ssl
-import time
+from datetime import timedelta, datetime
 import jwt
 from .models import UserProfile, Invitation
-from .constants import SECRET_KEY, PASSWORD, USER
+from .constants import SECRET_KEY, PASSWORD, USER, EXPIRATION_PERIOD
 
 def generate_jwt_token(receiver_id, uuid):
     """Generates a jwt token to be sent 
     in the link for the receiver.
     """
-
-    receiver_profile = UserProfile.objects.get(id=receiver_id)
+    print(receiver_id, "RECEIVER ID")
+    receiver_profile = UserProfile.objects.get(user_id=receiver_id)
+    print(receiver_profile.user.email, "RECEIVER PROFILE")
     payload = {
         "uuid": uuid,
         "userId": receiver_profile.id,
@@ -35,18 +36,22 @@ def send_invitation_link(receiver_profile, token):
     receiver.
     """
     subject = "[Bendwidth] Meeting invitation link."
-    body = f"""Hi {receiver_profile.full_name},
+    body = f"""<h4>Hi {receiver_profile.full_name},</h4> 
 
-    Your meeting is scheduled for (some date),
-    please use this link to join: http://localhost:3000/main/lobby/?token={token}
+    <p>Your meeting is scheduled for (some date),
+    please use this link to join: 
+    
+    <br/> <strong><a href="http://localhost:3000/main/lobby/?token={token}">Join Chat</a></strong></p>
 
+    Cheers,
+    
     Bendwidth Admin"""
 
     em = EmailMessage()
     em['From'] = receiver_profile.user.email
     em['To'] = receiver_profile.user.email
     em['Subject'] = subject
-    em.set_content(body)
+    em.set_content(body, subtype='html')
     context = ssl.create_default_context()
     with smtplib.SMTP_SSL('smtp.gmail.com', 465, context=context) as smtp:
         try:
@@ -56,35 +61,65 @@ def send_invitation_link(receiver_profile, token):
             return {"error": str(e)}
     return {"success": True}
 
-def handle_expired_invitation():
-    pass
+def handle_invalid_invitation(invitation):
+    receivers_list = invitation.receivers.split(",") #get receiver list
+    if len(receivers_list) <= 1:
+        invitation.delete()
+    else:
+        #remove receiver with expired invitation
+        receivers_list.pop(0)
+        invitation.receivers = ",".join(receivers_list)
+        invitation.save()
+
+        #send email to the next user
+        sender_id = invitation.sender.user.id
+        receiver_id = receivers_list[0]
+        request_match(sender_id,receiver_id)
 
 def initiate_match(receivers, uuid, sender_id):
-    receiver_ids = ",".join(receivers)
+    receiver_id = int(receivers[0]) #get first id
+    receiver_ids = ",".join(receivers) #stringify ids
+    #create new invitation instance
     invitation = Invitation()
     invitation.uuid = uuid
-    invitation.sender = UserProfile.objects().get(id=sender_id)
+    invitation.sender = UserProfile.objects.get(user_id=sender_id)
     invitation.receivers = receiver_ids
     invitation.save()
+    request_match(sender_id, receiver_id)
 
-    request_match(sender_id)
+def batch_processor():
+    invitations = Invitation.objects.all()
 
-def request_match(sender_id):
+    for invitation in invitations:
+        if datetime.now() - invitation.timestamp <= timedelta(minutes=EXPIRATION_PERIOD):
+            continue
+        handle_invalid_invitation(invitation)
 
-    body = "Someone wants to study with you at 7:00pm. Do you want to accept this invite? <br/><br/> <a href=http://localhost:8000/accept-match/sender_id><button>Yes</button></a> <a href=http://localhost:8000/deny-match/sender_id><button>No</button></a>"
+def request_match(sender_id, receiver_id):
+    receiver = UserProfile.objects.get(user_id=receiver_id)
+    body = f"""<h4>Hi {receiver.full_name},</h4>
+    <p>You have received an invitation for a study session in 10 min.
+    Do you want to accept this invite? </p>
+
+    <button style="width:100px; height:30px"><a href=http://localhost:8000/accept-match/{sender_id}/{receiver_id}>Accept</a></button> <button style="width:100px;height:30px"><a href=http://localhost:8000/deny-match/{sender_id}/{receiver_id}>Reject</a></button>
+
+    <br/><br/>
+    <i>NB: This invitation will expire in {EXPIRATION_PERIOD} minutes.</i>
+    <br/><br/>
+    <p>Cheers,</p>
+    <p>Bendwidth Admin</p>"""
     
     email = EmailMessage()
     email['From'] = USER
-    email['To'] = "ventomilton@gmail.com"
-    email['Subject'] = "test subject"
+    email['To'] = receiver.user.email
+    email['Subject'] = "Bendwidth (Time-sensitive!)"
     email.set_content(body, subtype='html')
     context = ssl.create_default_context()
 
     with smtplib.SMTP_SSL('smtp.gmail.com', 465, context=context) as smtp:
         try:
             smtp.login(USER, PASSWORD)
-            smtp.sendmail(USER, "mv9@williams.edu", email.as_string())
+            smtp.sendmail(USER, receiver.user.email, email.as_string())
         except Exception as e:
             return {"error": str(e)}
     return {"success": True}
-
