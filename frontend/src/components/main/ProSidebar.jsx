@@ -7,24 +7,33 @@ const parseGradDate = (date) => {
 }
 const ProSidebar = () => {
   const navigate = useNavigate();
-  const userDetails = useSelector(state => state.userDetails);
+  const userDetails = useSelector((state) => state.userDetails);
   useEffect(() => {
-    if (!sessionStorage.getItem('userData')) {
-      sessionStorage.setItem('userData', JSON.stringify(userDetails));
+    if (!sessionStorage.getItem("userData")) {
+      sessionStorage.setItem("userData", JSON.stringify(userDetails));
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sessionStorage.getItem('userData')])
   return (
     <div className="sidebar">
       <Sidebar className="sidebar__">
-        <h4 className="sidebar__brand">Bendwidth</h4>
+        <h4 className="sidebar__brand">
+          {" "}
+          <img src="/logo.png" alt="logo" /> Bendwidth
+        </h4>
         <Menu>
           <MenuItem onClick={() => navigate("/main")}>Study session</MenuItem>
-          <MenuItem> Interviews </MenuItem>
-          <MenuItem> Contacts </MenuItem>
-          <MenuItem> Calendar </MenuItem>
+          <MenuItem onClick={() => navigate("/main/interview")}>
+            Interviews
+          </MenuItem>
+          <MenuItem onClick={() => navigate("/main/contacts")}>
+            Contacts
+          </MenuItem>
+          <MenuItem onClick={() => navigate("/main/calendar")}>
+            Calendar
+          </MenuItem>
           <MenuItem> Chats </MenuItem>
-          <MenuItem> AI </MenuItem>
+          <MenuItem onClick={() => navigate("/main/ai")}> AI </MenuItem>
 
           <div className="sidebar__bottom">
             <div className="upgrade__account">

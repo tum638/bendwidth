@@ -7,10 +7,11 @@ const UserList = ({ users }) => {
       <table>
         <thead>
           <tr>
-            <th>NAME</th>
-            <th>DATE ADDED</th>
-            <th>LAST ACTIVE</th>
-            <th>ROLE</th>
+            <th>Name</th>
+            <th>Date Added</th>
+            <th>Last Active</th>
+            <th>Role</th>
+            <th></th>
           </tr>
         </thead>
         <tbody>
@@ -29,8 +30,8 @@ const UserList = ({ users }) => {
                   </div>
                 </div>
               </td>
-              <td>{user.dateAdded}</td>
-              <td>{user.lastActive}</td>
+              <td className="contact_dates">{user.dateAdded}</td>
+              <td className="contact_dates">{user.lastActive}</td>
               <td>
                 <div
                   className={`role ${user.role
@@ -38,8 +39,10 @@ const UserList = ({ users }) => {
                     .toLowerCase()}`}
                 >
                   {user.role}
-                  <span className="dropdown-icon">▼</span>
                 </div>
+              </td>
+              <td className="contact_delete" title="Delete Contact">
+                <i className="fa-solid fa-trash"></i>
               </td>
             </tr>
           ))}
@@ -58,7 +61,7 @@ export const users = [
     email: "glenn.fisher@gmail.com",
     dateAdded: "May 02, 2022",
     lastActive: "Aug 28, 2022",
-    role: "Administrator",
+    role: "Student",
     avatar: "https://picsum.photos/200/300", // This should be the path to the avatar image file
   },
   {
@@ -67,7 +70,7 @@ export const users = [
     email: "zeina.vandermode@gmail.com",
     dateAdded: "Jun 15, 2022",
     lastActive: "Aug 28, 2022",
-    role: "Administrator",
+    role: "Tutor",
     avatar: "https://picsum.photos/200/300",
   },
   {
@@ -76,7 +79,7 @@ export const users = [
     email: "paulo.rodriguez@gmail.com",
     dateAdded: "Jun 15, 2022",
     lastActive: "Aug 28, 2022",
-    role: "Standard user",
+    role: "Student",
     avatar: "https://picsum.photos/200/300",
   },
   {
@@ -85,7 +88,7 @@ export const users = [
     email: "gloria.edwards@gmail.com",
     dateAdded: "Jun 23, 2022",
     lastActive: "Aug 27, 2022",
-    role: "Standard user",
+    role: "Tutor",
     avatar: "https://picsum.photos/200/300",
   },
 ];
