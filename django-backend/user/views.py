@@ -11,6 +11,7 @@ from django.shortcuts import get_object_or_404
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 import numpy as np
+from .utils import generate_jwt_token, send_invitation_link
 from .constants import LANGUAGE_CODES, SECRET_KEY
 
 class CreateUserView(generics.CreateAPIView):
@@ -32,7 +33,8 @@ def login_user(request):
             "full_name": user_profile.full_name,
             "college_name": user_profile.college_name,
             "user_id": user_profile.id,
-            "grad_date": user_profile.grad_date
+            "grad_date": user_profile.grad_date,
+            "preferred_language": user_profile.preferred_language
             }, status=status.HTTP_200_OK)
     else:
         return JsonResponse({"error": "Invalid login."}, status=status.HTTP_401_UNAUTHORIZED)
@@ -100,8 +102,13 @@ def find_study_partners(request):
             courses__contains=course
         ).exclude(user_id=user_id)
 
+    
     data = [profile.user.username for profile in best_matches]
 
+    test_profile = best_matches.first()
+    print(best_matches)
+    res = generate_jwt_token(test_profile.id)
+    print(res)
     return JsonResponse({"success": True, "matches": data}, safe=False, status=status.HTTP_200_OK)
 
 @api_view(["POST"])
