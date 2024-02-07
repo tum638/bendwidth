@@ -1,11 +1,20 @@
 import { useEffect } from "react";
-import socketConnection from "../../videoComponents/connectionEstablishment/socketConnection";
-import { useDispatch, useSelector } from "react-redux";
-import { updateCallStatus } from "../../redux-elements/callStatus";
-import pair from "../../redux-elements/pair";
+import { useDispatch} from "react-redux";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import axios from "axios";
+import {jwtDecode } from 'jwt-decode'
+import { updateWholeUserObject } from "../../redux-elements/userDetails";
 
 const CallLobby = () => {
+    const dispatch = useDispatch();
+    const navigateTo = useNavigate();
     
+
+    // redirect user to call
+    const joinCall = () => {
+        navigateTo("/join-video")
+    }
+
     return (
         <div className="lobby-wrapper">
             <div className="lobby-title">
@@ -15,7 +24,7 @@ const CallLobby = () => {
             <div className="lobby-connnected">
                 <h4>Nicole is in this call</h4>
             </div>
-            <div className="lobby-join">Join Call</div>
+            <div className="lobby-join" onClick={joinCall}>Join Call</div>
 
         </div>
     )

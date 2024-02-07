@@ -1,52 +1,51 @@
-import { useEffect } from "react";
 import { Sidebar, Menu, MenuItem } from "react-pro-sidebar";
-import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-
+const parseGradDate = (date) => {
+    return date.slice(2, 4)
+}
 const ProSidebar = () => {
   const navigate = useNavigate();
-  const userDetails = useSelector(state => state.userDetails);
-  useEffect(() => {
-    if (!sessionStorage.getItem('userData')) {
-      sessionStorage.setItem('userData', JSON.stringify(userDetails));
-    }
-  }, [sessionStorage.getItem('userData')])
+
   return (
     <div className="sidebar">
       <Sidebar className="sidebar__">
-        <h4 className="sidebar__brand">Bendwidth</h4>
+        <h4 className="sidebar__brand">
+          {" "}
+          <img src="/logo.png" alt="logo" /> Bendwidth
+        </h4>
         <Menu>
-          <MenuItem onClick={() => navigate("/main")}>Study session</MenuItem>
-          <MenuItem> Interviews </MenuItem>
+          <MenuItem onClick={() => navigate("/main")} className="active_link">
+            <i className="fa-solid fa-chalkboard-user"></i> Study session
+          </MenuItem>
+          <MenuItem onClick={() => navigate("/main/interview")}>
+            <i className="fa-solid fa-clipboard-question"></i> Interviews
+          </MenuItem>
           <MenuItem onClick={() => navigate("/main/contacts")}>
-            Contacts
+            <i className="fa-regular fa-address-card"></i> Contacts
           </MenuItem>
           <MenuItem onClick={() => navigate("/main/calendar")}>
-            Calendar
+            <i className="fa-regular fa-calendar-days"></i> Calendar
           </MenuItem>
-          <MenuItem> Chats </MenuItem>
-          <MenuItem onClick={() => navigate("/main/ai")}> AI </MenuItem>
+          <MenuItem onClick={() => navigate("/main/chats")}>
+            <i className="fa-solid fa-message"></i> Chats{" "}
+          </MenuItem>
+          <MenuItem onClick={() => navigate("/main/ai")}>
+            {" "}
+            <i className="fa-solid fa-brain"></i> AI Avartars
+          </MenuItem>
 
           <div className="sidebar__bottom">
-            <div className="upgrade__account">
+            {/* <div className="upgrade__account">
               <i className="fa-regular fa-star"></i>
               <div className="upgrade__texts">
                 <p className="upgrade__text">Upgrade plan</p>
                 <p className="upgrade__text_info">Get the most of the</p>
               </div>
-            </div>
-            <div className="user_profile">
-              <div className="user__avatar_wrapper">
-                <img src="https://picsum.photos/200/300" alt="" />
-              </div>
-              <div
-                className="profile__details"
-                onClick={() => navigate("/main/profile")}
-              >
-                <h3 className="user__name">{userDetails.userName !== null ? userDetails.userName :JSON.parse(sessionStorage.getItem('userData'))["userName"]}</h3>
-                <p className="user__school">{userDetails.collegeName !== null? userDetails.collegeName : JSON.parse(sessionStorage.getItem('userData'))["collegeName"]}| '25</p>
-              </div>
-            </div>
+            </div> */}
+            <p className="logout">
+              <i className="fa-solid fa-arrow-right-from-bracket"></i> Logout
+            </p>
+
           </div>
         </Menu>
       </Sidebar>

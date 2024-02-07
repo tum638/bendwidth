@@ -4,7 +4,7 @@
 
 html {
   height: 100vh;
-  overflow: hidden;
+  /* overflow: hidden; */
 }
 
 * {
@@ -12,101 +12,62 @@ html {
 }
 
 .login {
+  background-image: url("../public/ai-matching.png");
   height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   position: relative;
 }
 
 .login__logo {
-  color: #07a9e9;
   position: absolute;
   top: 1rem;
   left: 1rem;
-  font-weight: 500;
-  font-size: 5em;
 }
 
-.login__image {
-  border-radius: 5rem 5rem 5rem 5rem;
-  overflow: hidden;
+.login__logo img {
+  width: 2.5rem;
+  height: 2.5rem;
 }
 
-.login__image img {
-  width: 100%;
-  height: 100%;
+.login__logo_name {
+  color: #07a9e9;
 }
 
-.login__main_info {
-  padding: 5rem 3rem;
-  /* background-color: rgb(236, 236, 236); */
-  height: 100vh;
+.login__content {
+  width: 30rem;
+  background-color: rgba(0, 0, 0, 0.8);
+  padding: 2rem;
+  text-align: center;
+  border-radius: 0.4rem;
+}
+
+.login__desc {
+  color: #fff;
+  font-size: 0.9rem;
+  font-weight: 300;
 }
 
 .login__title {
-  text-transform: uppercase;
-  font-size: 2rem;
-  text-align: center;
-  color: grey;
-}
-
-.login__subtitle {
-  text-align: center;
-  margin-top: 1rem;
-}
-.login__display {
-  display: flex;
-  margin-top: 10%;
-  position: relative;
-  justify-content: center;
-  align-items: center;
-}
-
-.login__heading {
-  font-size: 1.5rem;
-  text-transform: capitalize;
-  text-align: center;
-  color: rgb(7, 169, 233);
-}
-
-.login__right-side {
-  height: 100vh;
-  position: relative;
-  padding: 3rem;
-  box-shadow: -10px 0 15px -5px rgba(0, 0, 0, 0.5);
-}
-
-.login__punchline {
-  padding: 40px;
-  font-size: 2.5em;
-  max-height: 600px;
-  max-width: 1300px;
-}
-.login__form {
-  padding: 3rem;
-  border-radius: 0.5rem;
-  width: 70%;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  /* margin-top: 6rem; */
-  box-shadow: 0px 0px 5px 1px rgba(0, 0, 0, 0.4);
-  -webkit-box-shadow: 0px 0px 5px 1px rgba(0, 0, 0, 0.4);
-  -moz-box-shadow: 0px 0px 5px 1px rgba(0, 0, 0, 0.4);
+  color: #fff;
 }
 
 .login__form_input {
-  border-bottom: 1px solid rgb(189, 189, 189);
   margin-top: 2rem;
   padding-bottom: 0.5rem;
   display: flex;
   align-items: center;
+  background-color: #fff;
+  padding: 0.5rem;
 }
 
 .login__form_input_top {
-  border-bottom: 1px solid rgb(189, 189, 189);
+  background-color: #fff;
   margin-top: 2rem;
   padding-bottom: 0.5rem;
   display: flex;
+  padding: 0.5rem;
 }
 
 .login__form_input_top i {
@@ -126,9 +87,13 @@ html {
 
 .forgot__password {
   font-size: 0.8em;
-  color: grey;
+  color: rgb(212, 212, 212);
   margin-top: 0.5rem;
   cursor: pointer;
+}
+
+.date-signup {
+  visibility: hidden;
 }
 
 .login__submit {
@@ -150,6 +115,7 @@ html {
 
 .not_member {
   margin-top: 1rem;
+  color: #fff;
 }
 
 .login__signup {
@@ -201,14 +167,15 @@ html {
 
 .sign_form__title {
   font-size: 1.5rem;
-  color: rgb(7, 169, 233);
+  color: #fff;
   margin: 1rem 0;
 }
 
 .sign_form__short_desc {
   margin: 0;
   font-size: 0.9rem;
-  color: grey;
+  color: #fff;
+  font-weight: 300;
 }
 
 .sign_up__button {
@@ -224,14 +191,22 @@ html {
 
 .main_content {
   flex: 1;
-  height: 100vh;
+  /* height: 100vh; */
   overflow: scroll;
 }
 
 .sidebar__brand {
   color: rgb(7, 169, 233);
   font-size: 1rem;
-  margin-left: 0.5rem;
+  padding-left: 1rem;
+  padding-bottom: 1.15rem;
+  border-bottom: 1px solid rgb(233, 233, 233);
+  margin-bottom: 2rem;
+}
+
+.sidebar__brand img {
+  width: 1.4rem;
+  height: 1.4rem;
 }
 
 .sidebar__ {
@@ -243,7 +218,6 @@ html {
 .sidebar__bottom {
   position: absolute;
   bottom: 0px;
-  padding: 1rem;
 }
 
 .upgrade__account {
@@ -254,6 +228,7 @@ html {
   border-radius: 0.5rem;
   display: flex;
   align-items: center;
+  margin: 1rem;
 }
 
 .upgrade__texts {
@@ -268,13 +243,23 @@ html {
 
 .upgrade__text_info {
   font-size: 0.8rem;
-  color: rgb(223, 223, 223);
+  color: rgb(218, 218, 218);
   margin: 0;
 }
 
+.logout {
+  cursor: pointer;
+  margin-top: 0.5rem;
+  padding-left: 1rem;
+  /* text-align: center; */
+}
+
+/* .active_link {
+  background-color: rgb(239, 238, 238);
+} */
+
 .user_profile {
   display: flex;
-  margin-top: 1.5rem;
   cursor: pointer;
 }
 
@@ -296,13 +281,14 @@ html {
 }
 
 .user__name {
-  font-size: 1rem;
+  font-size: 0.9rem;
   margin: 0;
 }
 
 .user__school {
   font-size: 0.8rem;
   font-weight: 300;
+  padding-top: 0.2rem;
   margin: 0;
 }
 
@@ -344,6 +330,23 @@ html {
   font-weight: 300;
   padding: 0.3rem 0.6rem;
   cursor: pointer;
+}
+.schedule__study {
+  padding: 3rem 2rem;
+}
+
+.schedule__study__heading {
+  font-size: 1.4rem;
+  font-weight: 600;
+  text-align: center;
+  /* text-transform: uppercase; */
+}
+
+.schedule_video_text {
+  font-weight: 300;
+  font-size: 0.9rem;
+  text-align: center;
+  margin-bottom: 2rem;
 }
 
 .video-cards {
@@ -442,6 +445,9 @@ html {
   margin-top: 2em;
 }
 
+.select-country {
+  width: 20em;
+}
 .question-guideline {
   background-color: #07a9e9;
   color: white;
@@ -807,4 +813,51 @@ html {
 
 .fc-daygrid-day-number {
   color: #07a9e9;
+}
+
+.interview {
+  padding: 3rem 2rem;
+}
+
+.interview__flex {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.video_margin {
+  margin-right: 3rem !important;
+  display: inline-block;
+}
+
+.chats {
+  position: relative;
+  height: 80vh;
+}
+
+.chats_empty {
+  position: absolute;
+  width: 50rem;
+  top: 40%;
+  transform: translate(-50%, -60%);
+  left: 50%;
+  text-align: center;
+}
+.chats__heading {
+  font-size: 1.3rem;
+  font-weight: 600;
+  line-height: 3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.chats__desc {
+  font-weight: 300;
+  font-size: 0.9rem;
+}
+
+.empty__icon {
+  color: red;
+  font-size: 3rem;
+  margin-right: 1rem;
 }
