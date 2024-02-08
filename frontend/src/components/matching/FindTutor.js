@@ -4,9 +4,12 @@ import SignupOverlay from "../login/SignupOverlay";
 import { CircularProgress } from "@mui/material";
 import ErrorIcon from "../login/ErrorIcon";
 import { useDispatch } from "react-redux";
-import { updateUserDetails, updateWholeUserObject } from "../../redux-elements/userDetails";
+import {
+  updateUserDetails,
+  updateWholeUserObject,
+} from "../../redux-elements/userDetails";
 import pair from "../../redux-elements/pair";
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from "uuid";
 const FindTutor = () => {
   const dispatch = useDispatch();
   const [questionCourse, setQuestionCourse] = useState("null");
@@ -17,8 +20,7 @@ const FindTutor = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
   const [errMsg, setErrMsg] = useState(null);
-  const userDetails = JSON.parse(sessionStorage.getItem('userData'));
-
+  const userDetails = JSON.parse(sessionStorage.getItem("userData"));
 
   const handleFindTutor = async () => {
     setLoading(true);
@@ -26,7 +28,7 @@ const FindTutor = () => {
     userDetails.uuid = uuid;
     userDetails.isRespondent = false;
     userDetails.isInquirer = true;
-    sessionStorage.setItem('userData', JSON.stringify(userDetails));
+    sessionStorage.setItem("userData", JSON.stringify(userDetails));
     dispatch(updateWholeUserObject(userDetails));
     try {
       const response = await axios.post("https://api.drf.bendwidth.com/find-tutors/", {
@@ -35,7 +37,7 @@ const FindTutor = () => {
         questionDetails,
         attempts,
         tutorGender,
-        uuid
+        uuid,
       });
 
       console.log(response);

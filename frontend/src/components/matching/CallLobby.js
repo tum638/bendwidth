@@ -2,31 +2,13 @@ import { useEffect } from "react";
 import { useDispatch} from "react-redux";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import axios from "axios";
-import  jwtDecode  from 'jwt-decode'
+import {jwtDecode} from 'jwt-decode'
 import { updateWholeUserObject } from "../../redux-elements/userDetails";
 
 const CallLobby = () => {
     const dispatch = useDispatch();
     const navigateTo = useNavigate();
-    const [searchParams, setSearchParams] = useSearchParams();
-    const token = searchParams.get("token")
     
-    // load user data if user is a respondent.
-    useEffect(() => {
-        const getKey = async () => {
-            try {
-                const userData = jwtDecode(token);
-                dispatch(updateWholeUserObject(userData));
-                sessionStorage.setItem('userData', userData);
-            } catch (err) {
-                navigateTo("/")
-            }
-            
-        }
-        if (token) {
-            getKey();
-        }    
-    }, [token])
 
     // redirect user to call
     const joinCall = () => {

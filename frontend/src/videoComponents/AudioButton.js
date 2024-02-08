@@ -4,6 +4,7 @@ import { updateCallStatus } from "../redux-elements/callStatus";
 import { useEffect, useState } from "react";
 import CaretDropdown from "./CaretDropdown";
 import getDevices from "./getDevices";
+import { CircularProgress } from "@mui/material";
 
 const AudioButton = ({smallFeedEl}) => {
     const dispatch = useDispatch();
@@ -96,7 +97,7 @@ const AudioButton = ({smallFeedEl}) => {
             }
    
             ></i>
-                <i className={`fa fa-microphone${callStatus.audio === 'off'|| callStatus.audio === 'disabled' ? '-slash': ""}`}></i>
+            {callStatus.socket !== null && callStatus.localStream != null  ?  <i className={ `fa fa-microphone${callStatus.audio === 'off'|| callStatus.audio === 'disabled' ? '-slash': ""}`}></i>: <CircularProgress/>}  
             <div className="btn-text">{micText}</div>
             {caretOpen ? <CaretDropdown
             defaultValue={callStatus.audioDevice}
