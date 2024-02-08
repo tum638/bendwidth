@@ -150,6 +150,11 @@ def get_key(request):
     if request.method == "GET":
         return JsonResponse({"key": SECRET_KEY }, status=status.HTTP_200_OK)
 
+# @api_view
+# def logout_view(request):
+#     logout(request)
+#     # Redirect to a success page.
+
 
 
     
