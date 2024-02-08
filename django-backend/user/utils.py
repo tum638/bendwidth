@@ -42,7 +42,7 @@ def send_invitation_link(receiver_profile, token):
     <p>Your meeting is scheduled for (some date),
     please use this link to join: 
     
-    <br/> <strong><a href="https://localhost:3000/?token={token}">Join Chat</a></strong></p>
+    <br/> <strong><a href="https://www.bendwidth.com/?token={token}">Join Chat</a></strong></p>
 
     Cheers,
     
@@ -103,7 +103,7 @@ def request_match(sender_id, receiver_id):
     <p>You have received an invitation for a study session in 10 min.
     Do you want to accept this invite? </p>
 
-    <button style="width:100px; height:30px"><a href=http://localhost:8000/accept-match/{sender_id}/{receiver_id}>Accept</a></button> <button style="width:100px;height:30px"><a href=http://localhost:8000/deny-match/{sender_id}/{receiver_id}>Reject</a></button>
+    <button style="width:100px; height:30px"><a href=https://api.drf.bendwidth.com/accept-match/{sender_id}/{receiver_id}>Accept</a></button> <button style="width:100px;height:30px"><a href=https://api.drf.bendwidth.com/deny-match/{sender_id}/{receiver_id}>Reject</a></button>
 
     <br/><br/>
     <i>NB: This invitation will expire in {EXPIRATION_PERIOD} minutes.</i>
