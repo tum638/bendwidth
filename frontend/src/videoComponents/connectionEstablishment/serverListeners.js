@@ -1,8 +1,8 @@
 import { addAnswer, updateCallStatus } from "../../redux-elements/callStatus";
 import pair from "../../redux-elements/pair";
 
-const serverListeners = (socket, dispatch) => {
-
+const serverListeners = (socket, isRespondent, dispatch) => {
+    const userDetails = JSON.parse(sessionStorage.getItem('userData'));
     // listener for respondent to get offer.
     socket.on('newOfferAwaiting', offerData => {
         // we now have the offer, store the offer.
@@ -16,6 +16,12 @@ const serverListeners = (socket, dispatch) => {
         dispatch(updateCallStatus(pair('hasCreatedAnswer', true)));
     }) 
 
+    socket.on("someRespondentConnected", uuid=> {
+        console.log("received respondent connection event")
+        if (isRespondent === false && uuid == userDetails.uuid) {
+            dispatch(updateCallStatus(pair("respondentConnected", true)))
+        }
+    })
     
 
 

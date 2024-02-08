@@ -21,29 +21,21 @@ io.on('connection', socket => {
      
     // add the user to their category.
     if (isInquirer) {
+        console.log("UUID inquirer", uuid)
         allConnectedInquirers[uuid] = {
             userName, userEmail, isInquirer, socketId: socket.id, preferredLanguage
         }
     } else if (isRespondent) {
+        console.log("UUID respondent", uuid)
         allConnectedRespondents[uuid] = {
             userName, userEmail, isRespondent, socketId: socket.id, preferredLanguage
         }
-        // if respondent arrives after offfer has already been sent.
-        // send them the offer now.
-        if ('uuid' in allKnownOffers) {
-            // filter the respondent from the list of all respondents.
-            const respondentToSendTo = allConnectedRespondents[uuid];
-
-            console.log(allConnectedRespondents[uuid])
-            // check if the respondent exists.
-            if (respondentToSendTo) {
-                const socketId = respondentToSendTo.socketId;
-                socket.to(socketId).emit('newOfferAwaiting', allKnownOffers[uuid])
-            }
-            else {
-                console.log("The respondent could not be found.")
-            }
+        console.log("sent respondent connection event")
+        if (uuid in allConnectedInquirers) {
+            const socketId = allConnectedInquirers[uuid].socketId
+            socket.to(socketId).emit("someRespondentConnected", uuid);
         }
+
     }
 
     // listen for any new offers.
@@ -113,6 +105,8 @@ io.on('connection', socket => {
         ackFunc(iceCandidates);
     })
 
+    
+
     // request  for respondent ICE
     socket.on("requestForRespondentIce", (uuid, ackFunc) => {
         const targetOffer = allKnownOffers[uuid];
@@ -121,7 +115,15 @@ io.on('connection', socket => {
         ackFunc(iceCandidates);
     })
 
-
+    // check if respondent is here.
+    socket.on("isRespondentConnected", (uuid, ackFunc)=> {
+        const targetRespondent = allConnectedRespondents[uuid];
+        if (targetRespondent) {
+            ackFunc(true);
+        } else {
+            ackFunc(false);
+        }
+    })
 
 
 })

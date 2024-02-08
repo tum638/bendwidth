@@ -39,6 +39,19 @@ const VideoPage = () => {
     useEffect(() => {
         dispatch(updateWholeUserObject(userDetails)); 
     }, [])
+
+    useEffect(()=> {
+        const checkRespondentConnected = async () => {
+            const uuid = userDetails.uuid;
+            const connectedStatus = await callStatus.socket.emitWithAck("isRespondentConnected", uuid)
+            if (connectedStatus === true) {
+                dispatch(updateCallStatus(pair("respondentConnected", true)));
+            }
+        }
+        if (callStatus.socket && userDetails.isRespondent === false) {
+            checkRespondentConnected();
+        }
+    }, [callStatus.socket])
     
     // get user's camera and microphone
     useEffect(() => {
@@ -86,10 +99,8 @@ const VideoPage = () => {
         }
         console.log(isLoggedIn, callStatus.hasMedia, callStatus.socket)
         // attempt to get user media only if user is logged in.
-        if (isLoggedIn && !callStatus.hasMedia && callStatus.socket) {
-            
+        if (isLoggedIn && !callStatus.hasMedia && callStatus.socket) {  
             fetchMedia();
-
         }
 
     }, [callStatus.hasMedia, callStatus.socket])
@@ -113,17 +124,18 @@ const VideoPage = () => {
                 console.log(error);
             }
         }
-        if (callStatus.audio === 'enabled' && callStatus.video === 'enabled' && !callStatus.hasCreatedOffer && userDetails.isRespondent === false) {
+        if (callStatus.audio === 'enabled' && callStatus.video === 'enabled' && !callStatus.hasCreatedOffer && userDetails.isRespondent === false && callStatus.respondentConnected===true) {
+            console.log("just sent offer.")
             createAsyncOffer();
         }
         
 
-    }, [callStatus.video, callStatus.audio, callStatus.hasCreatedOffer])
+    }, [callStatus.video, callStatus.audio, callStatus.hasCreatedOffer, callStatus.respondentConnected])
     
     // start listenining to server events.
     useEffect(() => {
         if (callStatus.socket) {
-            serverListeners(callStatus.socket, dispatch);       
+            serverListeners(callStatus.socket,userDetails.isRespondent, dispatch);       
         }
       
     }, [callStatus.socket])
@@ -145,11 +157,11 @@ const VideoPage = () => {
             const pc = callStatus.peerConnection;
             await pc.setRemoteDescription(callStatus.offer["offer"]);
         }
-        if (userDetails.isRespondent === true && callStatus.offer) {
+        if (userDetails.isRespondent === true && callStatus.offer && callStatus.peerConnection) {
             setOffer()
         }
         
-    }, [callStatus.offer])
+    }, [callStatus.offer, callStatus.peerConnection])
 
     // create an answer.
     useEffect(() => {
