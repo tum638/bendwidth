@@ -42,7 +42,7 @@ def send_invitation_link(receiver_profile, token):
     <p>Your meeting is scheduled for (some date),
     please use this link to join: 
     
-    <br/> <strong><a href="http://localhost:3000/main/lobby/?token={token}">Join Chat</a></strong></p>
+    <br/> <strong><a href="http://localhost:3000/?token={token}">Join Chat</a></strong></p>
 
     Cheers,
     
