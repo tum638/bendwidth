@@ -40,6 +40,7 @@ const VideoPage = () => {
         dispatch(updateWholeUserObject(userDetails)); 
     }, [])
 
+    // check if the respondent has connected.
     useEffect(()=> {
         const checkRespondentConnected = async () => {
             const uuid = userDetails.uuid;

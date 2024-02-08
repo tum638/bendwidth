@@ -4,6 +4,7 @@ import pair from "../redux-elements/pair";
 import { useEffect, useState } from "react";
 import CaretDropdown from "./CaretDropdown";
 import getDevices from "./getDevices";
+import { CircularProgress } from "@mui/material";
 
 const VideoButton = ({smallFeedEl}) => {
     const dispatch = useDispatch();
@@ -88,7 +89,7 @@ const VideoButton = ({smallFeedEl}) => {
             setCaretOpen(!caretOpen)
         }
         }></i>
-       <i className={`fa fa-video${callStatus.video === 'enabled' ? '': '-slash'}`}></i>
+        {callStatus.socket !== null && callStatus.localStream != null ? <i className={`fa fa-video${callStatus.video === 'enabled' ? '': '-slash'}` }></i> : <CircularProgress/>}
         <div className="btn-text">{callStatus.video === 'enabled' ? "Stop" : "Start"} Video</div>
         {caretOpen ? <CaretDropdown defaultValue={callStatus.videoDevice}
             changeHandler={changeVideoDevice}
