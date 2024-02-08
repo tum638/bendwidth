@@ -40,7 +40,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'user',
     'rest_framework',
-    'apscheduler'
+    'django_apscheduler'
 ]
 
 MIDDLEWARE = [

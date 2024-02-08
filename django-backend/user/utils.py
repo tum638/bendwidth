@@ -3,6 +3,7 @@ import smtplib
 import ssl
 from datetime import timedelta, datetime
 import jwt
+from django.utils import timezone
 from .models import UserProfile, Invitation
 from .constants import SECRET_KEY, PASSWORD, USER, EXPIRATION_PERIOD
 
@@ -90,8 +91,8 @@ def initiate_match(receivers, uuid, sender_id):
 def batch_processor():
     invitations = Invitation.objects.all()
 
-    for invitation in invitations:
-        if datetime.now() - invitation.timestamp <= timedelta(minutes=EXPIRATION_PERIOD):
+    for invitation in set(invitations):
+        if timezone.now() - invitation.timestamp <= timedelta(minutes=EXPIRATION_PERIOD):
             continue
         handle_invalid_invitation(invitation)
 
