@@ -10,6 +10,7 @@ import { users } from "./UserList";
 import Calendar from "./Calendar";
 import Interview from "./Interview";
 import Chats from "./Chats";
+import LanguageSelectorAndSpeechRecognition from "../avatar/LanguageSelectorAndSpeechRecognition";
 
 const MainContent = () => {
   return (
@@ -25,6 +26,7 @@ const MainContent = () => {
         <Route path="/calendar" element={<Calendar />} />
         <Route path="/interview" element={<Interview />} />
         <Route path="/chats" element={<Chats />} />
+        <Route path="/ai" element={<LanguageSelectorAndSpeechRecognition />} />
       </Routes>
     </div>
   );
