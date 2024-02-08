@@ -47,7 +47,7 @@ class Command(BaseCommand):
 
     scheduler.add_job(
       my_job,
-      trigger=CronTrigger(second="*/5"),  # Every 5 seconds
+      trigger=CronTrigger(second="*/10"),  # Every 10 seconds
       id="my_job",  # The `id` assigned to each job MUST be unique
       max_instances=1,
       replace_existing=True,
