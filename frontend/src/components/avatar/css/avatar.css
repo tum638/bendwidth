@@ -1,0 +1,43 @@
+.ai_avatar {
+  padding: 2rem;
+}
+
+.ai_avatar video {
+  display: block;
+  width: 80%;
+  margin: 0 auto;
+  height: 20rem;
+  object-fit: cover;
+  border-radius: 5rem;
+}
+
+.ai_avatar select {
+  border: 1px solid rgb(181, 181, 181);
+  padding: 0.3rem;
+  border-radius: 0.4rem;
+  margin-right: 1rem;
+  outline: none;
+}
+
+.record_buttons {
+  text-align: center;
+  margin-top: 1rem;
+}
+
+.start_recording {
+  border: none;
+  padding: 0.35rem;
+  color: #fff;
+  background-color: #07a9e9;
+  border-radius: 0.4rem;
+}
+
+.transcribed_text__wrapper {
+  width: 80%;
+  margin: 0.5rem auto;
+}
+
+.transcribed_text {
+  font-size: 0.9rem;
+  font-weight: 300;
+}
