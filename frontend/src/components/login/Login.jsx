@@ -59,18 +59,19 @@ const Login = ({ setPage }) => {
   };
 
   const handleSubmit = () => {
-    setLoading(true);
+    
     const getSubmittedCredentials = async () => {
+      setLoading(true);
       const res = await submitCredentials(dispatch, data.email, data.password);
-
       if ("fullName" in res) {
         setErrMess(res.fullName);
         navigate("main/");
       } else {
+        setLoading(false)
         console.log(res);
         setError(true);
         setErrMess(res.response?.data?.error);
-        sleep(2500);
+        await sleep(2500);
         setError(false);
       }
       setLoading(false);
@@ -82,7 +83,7 @@ const Login = ({ setPage }) => {
 
   return (
     <div className="login">
-      {loading && <SignupOverlay Icon={CircularProgress} title={`Welcome!`} />}
+      {loading && <SignupOverlay Icon={CircularProgress} title={`Loading...`} />}
       {error && <SignupOverlay Icon={ErrorIcon} title={errMsg} />}
 
       <div className="login__content">
