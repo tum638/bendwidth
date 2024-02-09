@@ -15,6 +15,7 @@ from .utils import generate_jwt_token, initiate_match, handle_invalid_invitation
 from .constants import LANGUAGE_CODES, SECRET_KEY, EXPIRATION_PERIOD
 from datetime import datetime, timedelta
 from django.utils import timezone
+from django.contrib.auth import logout
 
 class CreateUserView(generics.CreateAPIView):
     queryset = UserProfile.objects.all()
@@ -180,3 +181,8 @@ def reject_match(request,sender_id, receiver_id):
         return HttpResponse("This link has expired.")
     handle_invalid_invitation(invitations.first())
     return HttpResponse("Rejected")
+
+@api_view(["GET"])
+def logout_view(request):
+    logout(request)
+    return JsonResponse({"success": True, "message": "Logout was successfull"})

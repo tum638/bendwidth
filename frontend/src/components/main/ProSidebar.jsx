@@ -1,11 +1,16 @@
+import axios from "axios";
 import { Sidebar, Menu, MenuItem } from "react-pro-sidebar";
 import { useNavigate } from "react-router-dom";
-const parseGradDate = (date) => {
-    return date.slice(2, 4)
-}
+
 const ProSidebar = () => {
   const navigate = useNavigate();
 
+  const handleLogout = async () => {
+    const response = await axios.get("http://localhost:8000/logout/");
+    console.log(response)
+    sessionStorage.clear();
+    navigate('/');
+  }
   return (
     <div className="sidebar">
       <Sidebar className="sidebar__">
@@ -42,7 +47,7 @@ const ProSidebar = () => {
                 <p className="upgrade__text_info">Get the most of the</p>
               </div>
             </div> */}
-            <p className="logout">
+            <p className="logout" onClick={handleLogout}>
               <i className="fa-solid fa-arrow-right-from-bracket"></i> Logout
             </p>
 

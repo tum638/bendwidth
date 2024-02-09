@@ -103,8 +103,8 @@ const FindFriends = () => {
               value={classYear}
               onChange={handleChange}
             >
-              <option value="">Class year of match</option>
-              <option value="any">Any</option>
+              <option value="" disabled>Class year of match</option>
+              <option value="any">Im fine with any class year.</option>
               <option value="freshman">Freshman</option>
               <option value="sophomore">Sophomore</option>
               <option value="junior">Junior</option>
@@ -120,7 +120,8 @@ const FindFriends = () => {
               onChange={handleChange}
             >
               <option value="">Gender of match</option>
-              <option value="any">Any</option>
+              <option value="any">Im fine with any gender.</option>
+              <option value="male">Other</option>
               <option value="male">Male</option>
               <option value="female">Female</option>
             </select>

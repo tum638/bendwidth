@@ -493,6 +493,21 @@ html {
   font-weight: 300;
 }
 
+#course {
+  padding: 0.3em;
+  width: 50em;
+  margin-left: 2em;
+}
+#course:focus {
+  outline-color: #07a9e9;
+}
+
+#description {
+  padding: 0.3em;
+  width: 50em;
+  margin: 2em;
+}
+
 .question-title-inputs input,
 .tutor-preferences input {
   display: block;
@@ -656,6 +671,8 @@ html {
   justify-content: center;
   margin-top: 2em;
   background-color: #07a9e9;
+  position: absolute;
+  left: 50%;
   color: white;
   width: 10em;
   height: 3em;
@@ -763,17 +780,19 @@ html {
 .lobby-connnected {
   margin-top: 2em;
 }
+
 .lobby-join {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 5em;
+  margin-top: 1rem;
   background-color: #07a9e9;
   color: white;
-  width: 12em;
-  font-size: 2em;
-  height: 3em;
+  width: 12rem;
+  font-size: 1rem;
+  height: 3rem;
   border-radius: 2em;
+  border: none;
 }
 
 .lobby-join:hover {
@@ -843,4 +862,10 @@ html {
   color: red;
   font-size: 3rem;
   margin-right: 1rem;
+}
+
+/* Lobby */
+.locales_autocomplete {
+  width: 25rem;
+  margin: 1.5rem 0;
 }

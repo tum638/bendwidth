@@ -17,23 +17,25 @@ io.on('connection', socket => {
         console.log("could not find a valid auth object")
         return;
     }
-    const {uuid, userName, userEmail, isRespondent, isInquirer, preferredLanguage } = socket.handshake.auth.userInfo;
+    const {uuid, userName, userEmail, isRespondent, isInquirer, translatingFrom } = socket.handshake.auth.userInfo;
      
     // add the user to their category.
     if (isInquirer) {
         console.log("UUID inquirer", uuid)
+        console.log(translatingFrom)
         allConnectedInquirers[uuid] = {
-            userName, userEmail, isInquirer, socketId: socket.id, preferredLanguage
+            userName, userEmail, isInquirer, socketId: socket.id, translatingFrom
         }
     } else if (isRespondent) {
         console.log("UUID respondent", uuid)
         allConnectedRespondents[uuid] = {
-            userName, userEmail, isRespondent, socketId: socket.id, preferredLanguage
+            userName, userEmail, isRespondent, socketId: socket.id, translatingFrom
         }
         console.log("sent respondent connection event")
         if (uuid in allConnectedInquirers) {
             const socketId = allConnectedInquirers[uuid].socketId
-            socket.to(socketId).emit("someRespondentConnected", uuid);
+            console.log("sending language to inquirer", translatingFrom)
+            socket.to(socketId).emit("someRespondentConnected", {uuid, translatingFrom});
         }
 
     }
@@ -56,7 +58,9 @@ io.on('connection', socket => {
         // check if the respondent exists.
         if (respondentToSendTo) {
             const socketId = respondentToSendTo.socketId;
-            socket.to(socketId).emit('newOfferAwaiting', allKnownOffers[uuid])
+            const translatingFrom = allConnectedInquirers[uuid]["translatingFrom"]
+            console.log("sending inquirer language to respondent.", translatingFrom)
+            socket.to(socketId).emit('newOfferAwaiting', {offerData:allKnownOffers[uuid], translatingFrom: translatingFrom})
         }
         else {
             console.log("The respondent could not be found.")
@@ -68,11 +72,12 @@ io.on('connection', socket => {
     socket.on('newAnswer', ({ answer, uuid }) => {
         // find the inquirer to send the answer to.
         const inquirerToSendTo = allConnectedInquirers[uuid];
-
+        const translatingFrom = allConnectedRespondents[uuid]["translatingFrom"]
         // check if the inquirer exists.
         if (inquirerToSendTo) {
             const socketId = inquirerToSendTo.socketId;
-            socket.to(socketId).emit('answerToInquirer', answer);
+            console.log("sending language to resp")
+            socket.to(socketId).emit('answerToInquirer', {answer, translatingFrom});
         }
         else {
             console.log("The inquirer could not be found.");
@@ -118,10 +123,11 @@ io.on('connection', socket => {
     // check if respondent is here.
     socket.on("isRespondentConnected", (uuid, ackFunc)=> {
         const targetRespondent = allConnectedRespondents[uuid];
+        const translatingFrom = targetRespondent?.translatingFrom;
         if (targetRespondent) {
-            ackFunc(true);
+            ackFunc({res:true, translatingFrom: translatingFrom});
         } else {
-            ackFunc(false);
+            ackFunc({res:false, translatingFrom: null});
         }
     })
 

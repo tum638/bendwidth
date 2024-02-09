@@ -10,5 +10,6 @@ urlpatterns = [
     path('accept-match/<int:sender_id>/<int:receiver_id>', accept_match),
     path('deny-match/<int:sender_id>/<int:receiver_id>', reject_match),
     path('get-languages/', get_all_languages),
-    path('get-key/', get_key)
+    path('get-key/', get_key),
+    path('logout/', logout_view)
 ]

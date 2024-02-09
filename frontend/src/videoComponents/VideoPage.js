@@ -6,11 +6,11 @@ import { useEffect, useRef, useState } from 'react'
 import createPeerConnection from './webRTCUtilities/createPeerConnection'
 import ActionButtons from './ActionButtons'
 import pair from '../redux-elements/pair'
-import { useSearchParams } from 'react-router-dom'
+
 import socketConnection from './connectionEstablishment/socketConnection'
 import serverListeners from './connectionEstablishment/serverListeners'
 import translate from '../translationComponents/translate'
-import { updateWholeUserObject } from '../redux-elements/userDetails'
+import { updateUserDetails, updateWholeUserObject } from '../redux-elements/userDetails'
 
 // entry point to video chat component.
 const VideoPage = () => {
@@ -33,7 +33,7 @@ const VideoPage = () => {
     // current user details.
     // const userDetails = useSelector(state => state.userDetails);
     const userDetails = JSON.parse(sessionStorage.getItem('userData'))
-
+    const user = useSelector(state=> state.userDetails);
     const [translatedText, setTranslatedText] = useState('')
 
     useEffect(() => {
@@ -44,9 +44,13 @@ const VideoPage = () => {
     useEffect(()=> {
         const checkRespondentConnected = async () => {
             const uuid = userDetails.uuid;
-            const connectedStatus = await callStatus.socket.emitWithAck("isRespondentConnected", uuid)
-            if (connectedStatus === true) {
+            const {res, translatingFrom} = await callStatus.socket.emitWithAck("isRespondentConnected", uuid)
+            if (res === true) {
                 dispatch(updateCallStatus(pair("respondentConnected", true)));
+                dispatch(updateUserDetails(pair("sourceLanguage", translatingFrom)))
+                console.log("getting respondents language", translatingFrom)
+                userDetails.sourceLanguage = translatingFrom;
+                sessionStorage.setItem('userData', JSON.stringify(userDetails));
             }
         }
         if (callStatus.socket && userDetails.isRespondent === false) {
@@ -79,7 +83,7 @@ const VideoPage = () => {
 
                 // add event listener to peer to detect if other peer leaves call
                 peerConnection.oniceconnectionstatechange = () => {
-                    if (peerConnection.iceConnectionState == 'disconnected') {
+                    if (peerConnection.iceConnectionState === 'closed') {
                         if (callStatus.status !== "localEnded") {
                             dispatch(updateCallStatus(pair('status', 'remoteEnded')));
                         }   
@@ -91,8 +95,7 @@ const VideoPage = () => {
 
                 largeFeedEl.current.srcObject = remoteStream;
 
-                // send remoteStream to translation api.
-                translate(remoteStream, setTranslatedText);
+                
 
             } catch (e) {
                 console.log(e);
@@ -141,6 +144,13 @@ const VideoPage = () => {
       
     }, [callStatus.socket])
 
+    useEffect(()=> {
+        if (user.sourceLanguage != null && callStatus.socket && callStatus.remoteStream) {
+            // send remoteStream to translation api.
+            translate(callStatus.remoteStream, user.sourceLanguage, userDetails.hearingIn, setTranslatedText, stopTranslation);
+        }
+    }, [user.sourceLanguage, callStatus.socket, callStatus.remoteStream])
+
     // listen for a remoteStream and socket.
     // useEffect(() => {
     //     if (callStatus.socket && callStatus.remoteStream) {
@@ -148,7 +158,9 @@ const VideoPage = () => {
     //     }  
     // }, [callStatus.socket, callStatus.remoteStream])
 
-    
+    const stopTranslation = () => {
+        return callStatus.status === "localEnded" || callStatus.status === "remoteEnded";
+    }
 
     // set redux state with offer from inquirer.
     // set remoteDescription.

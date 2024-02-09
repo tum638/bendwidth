@@ -387,7 +387,7 @@ const SignUp = ({ setPage }) => {
               <i className="fa-solid fa-heart"></i>
               <textarea
                 name="interests"
-                placeholder="interests"
+                placeholder="interests e.g AI, Cultures, Music And Film..."
                 rows="2"
                 value={userData.interests}
                 onChange={handleChange}
@@ -401,7 +401,7 @@ const SignUp = ({ setPage }) => {
               <textarea
                 name="skills"
                 rows="2"
-                placeholder="skills"
+                placeholder="skills e.g Data Analysis, Cloud Computing, Investment Strategies..."
                 value={userData.skills}
                 onChange={handleChange}
               >
@@ -414,7 +414,7 @@ const SignUp = ({ setPage }) => {
               <textarea
                 name="hobbies"
                 rows="2"
-                placeholder="hobbies"
+                placeholder="hobbies e.g Photography, Cooking, Reading, Hiking..."
                 value={userData.hobbies}
                 onChange={handleChange}
               >
