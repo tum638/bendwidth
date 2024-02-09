@@ -11,7 +11,9 @@ const initialState = {
     userEmail: null,
     gradDate: null,
     isLoggedIn: false,
-    preferredLanguage: null,
+    hearingIn: null,
+    translatingFrom: null,
+    sourceLanguage: null
 }
 
 export const userDetailsSlice = createSlice({

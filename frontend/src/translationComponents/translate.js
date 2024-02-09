@@ -2,13 +2,13 @@ import {SpeechTranslationConfig, AudioConfig, TranslationRecognizer, ResultReaso
 import callStatus from '../redux-elements/callStatus';
 const SPEECH_KEY = "dead98ba198948f59a91b61987e616d6"
 const SPEEECH_REGION = "eastus"
-const translate = (stream, setTranslatedText) => {
+const translate = (stream, sourceLanguage, targetLanguage, setTranslatedText, stopTranslation) => {
     console.log("in translate function")
     let audioStream = new MediaStream(stream.getAudioTracks());
 
     const speechTranslationConfig = SpeechTranslationConfig.fromSubscription(SPEECH_KEY, SPEEECH_REGION);
-    speechTranslationConfig.speechRecognitionLanguage = "en-US";
-    speechTranslationConfig.addTargetLanguage("lzh");
+    speechTranslationConfig.speechRecognitionLanguage = sourceLanguage;
+    speechTranslationConfig.addTargetLanguage(targetLanguage);
 
     const audioConfig = AudioConfig.fromStreamInput(audioStream);
 
@@ -16,14 +16,19 @@ const translate = (stream, setTranslatedText) => {
 
     translationRecognizer.startContinuousRecognitionAsync();
 
-    translationRecognizer.recognizing = (s, e) => {
-        if (callStatus.status === "localEnded" || callStatus.status === "remoteEnded") {
-            translationRecognizer.startContinuousRecognitionAsync();
+    // Function to check if translation should stop
+    const checkTranslationStatus = () => {
+        if (stopTranslation()) {
+            translationRecognizer.stopContinuousRecognitionAsync();
         }
-        console.log(e.result.reason)
-        setTranslatedText(e.result.text);
+    }
+    translationRecognizer.recognizing = (s, e) => {
+
+        checkTranslationStatus();
+        setTranslatedText(e.result.translations.get(targetLanguage) || e.result.translations.get("en")) 
         if (e.result.reason == ResultReason.RecognizedSpeech) {
-            console.log(`TRANSLATED: Text=${e.result.translations.get("lzh")}`);
+            // console.log(`TRANSLATED: Text=${e.result.translations.get(targetLanguage)}`);
+            
         }
         else if (e.result.reason == ResultReason.NoMatch) {
             console.log("NOMATCH: Speech could not be translated.");

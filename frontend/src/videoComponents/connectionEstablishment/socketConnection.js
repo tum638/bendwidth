@@ -14,7 +14,8 @@ const socketConnection = async (userDetails) => {
             userName: userDetails.userName,
             userEmail: userDetails.email,
             isInquirer: userDetails.isInquirer,
-            isRespondent:userDetails.isRespondent
+            isRespondent:userDetails.isRespondent,
+            translatingFrom: userDetails.translatingFrom
         }
     console.log(userInfo)
 
