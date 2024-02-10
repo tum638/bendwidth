@@ -2,7 +2,7 @@ import { addAnswer, updateCallStatus } from "../../redux-elements/callStatus";
 import pair from "../../redux-elements/pair";
 import { updateUserDetails } from "../../redux-elements/userDetails";
 
-const serverListeners = (socket, isRespondent, dispatch) => {
+const serverListeners = (socket, isRespondent, dispatch, setTranslatedText) => {
     const userDetails = JSON.parse(sessionStorage.getItem('userData'));
     // listener for respondent to get offer.
     socket.on('newOfferAwaiting', ({offerData, translatingFrom}) => {
@@ -32,6 +32,11 @@ const serverListeners = (socket, isRespondent, dispatch) => {
             
             
         }
+    })
+
+    // get translated text.
+    socket.on("yourTranslatedText", chunk=> {
+        setTranslatedText(chunk);
     })
     
 

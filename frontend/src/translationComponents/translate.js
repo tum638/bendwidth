@@ -2,7 +2,8 @@ import {SpeechTranslationConfig, AudioConfig, TranslationRecognizer, ResultReaso
 import callStatus from '../redux-elements/callStatus';
 const SPEECH_KEY = "dead98ba198948f59a91b61987e616d6"
 const SPEEECH_REGION = "eastus"
-const translate = (stream, sourceLanguage, targetLanguage, setTranslatedText, stopTranslation) => {
+
+const translate = (stream, sourceLanguage, targetLanguage, stopTranslation, socket, uuid, isRespondent) => {
     console.log("in translate function")
     console.log("source language", sourceLanguage, "target language", targetLanguage);
     let audioStream = new MediaStream(stream.getAudioTracks());
@@ -19,7 +20,7 @@ const translate = (stream, sourceLanguage, targetLanguage, setTranslatedText, st
     }
     
 
-    const audioConfig = AudioConfig.fromDefaultSpeakerOutput();
+    const audioConfig = AudioConfig.fromStreamInput(audioStream);
 
     const translationRecognizer = new TranslationRecognizer(speechTranslationConfig, audioConfig);
 
@@ -34,7 +35,8 @@ const translate = (stream, sourceLanguage, targetLanguage, setTranslatedText, st
     translationRecognizer.recognizing = (s, e) => {
 
         checkTranslationStatus();
-        setTranslatedText(e.result.translations.get(targetLanguage) || e.result.translations.get("en")) 
+        const chunk = e.result.translations.get(targetLanguage) || e.result.translations.get("en");
+        socket.emit("translatedChunk", {uuid, chunk, isRespondent})
         if (e.result.reason == ResultReason.RecognizedSpeech) {
             // console.log(`TRANSLATED: Text=${e.result.translations.get(targetLanguage)}`);
             

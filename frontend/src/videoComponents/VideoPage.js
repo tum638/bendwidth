@@ -140,17 +140,18 @@ const VideoPage = () => {
     // start listenining to server events.
     useEffect(() => {
         if (callStatus.socket) {
-            serverListeners(callStatus.socket,userDetails.isRespondent, dispatch);       
+            serverListeners(callStatus.socket,userDetails.isRespondent, dispatch, setTranslatedText);       
         }
       
     }, [callStatus.socket])
 
     useEffect(()=> {
-        if (user.sourceLanguage && callStatus.socket && callStatus.remoteStream) {
+        if (user.sourceLanguage && callStatus.socket && callStatus.remoteStream && callStatus.respondentConnected) {
+            const uuid = userDetails.uuid;
             // send remoteStream to translation api.
-            translate(callStatus.remoteStream, user.sourceLanguage, user.hearingIn, setTranslatedText, stopTranslation);
+            translate(callStatus.remoteStream, user.sourceLanguage, user.hearingIn, stopTranslation, callStatus.socket, uuid, callStatus.isRespondent);
         }
-    }, [user.sourceLanguage, callStatus.socket, callStatus.remoteStream, user.hearingIn])
+    }, [user.sourceLanguage, callStatus.socket, callStatus.remoteStream, user.hearingIn, callStatus.respondentConnected])
 
     // listen for a remoteStream and socket.
     // useEffect(() => {

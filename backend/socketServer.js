@@ -130,7 +130,17 @@ io.on('connection', socket => {
             ackFunc({res:false, translatingFrom: null});
         }
     })
-
+    
+    // listen for translation chunks
+    socket.on("translatedChunk", ({uuid, chunk, isRespondent})=> {
+        let socketId;
+        if (isRespondent===true) {
+            socketId = allConnectedInquirers[uuid].socketId;
+        } else {
+            socketId = allConnectedRespondents[uuid].socketId
+        }
+        socket.to(socketId).emit("yourTranslatedText", chunk)
+    })
 
 })
 
