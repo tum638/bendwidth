@@ -172,7 +172,7 @@ def accept_match(request,sender_id,receiver_id):
     uuid = invitation.uuid
     generate_jwt_token(receiver_id,uuid)
     invitation.delete()
-    return HttpResponse('Thank you for accepting the invitation! You will receive an email meeting link shortly.q')
+    return HttpResponse('Thank you for accepting the invitation! You will receive an email meeting link shortly.')
 
 @api_view(["GET"])
 def reject_match(request,sender_id, receiver_id):
