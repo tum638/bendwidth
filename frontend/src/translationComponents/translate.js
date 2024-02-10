@@ -5,7 +5,7 @@ const SPEEECH_REGION = "eastus"
 const translate = (stream, sourceLanguage, targetLanguage, setTranslatedText, stopTranslation) => {
     console.log("in translate function")
     console.log("source language", sourceLanguage, "target language", targetLanguage);
-    let audioStream = new MediaStream(stream.getAudioTracks());
+    let audioStream = stream.getAudioTracks();
 
     const speechTranslationConfig = SpeechTranslationConfig.fromSubscription(SPEECH_KEY, SPEEECH_REGION);
     speechTranslationConfig.speechRecognitionLanguage = sourceLanguage;
@@ -19,7 +19,7 @@ const translate = (stream, sourceLanguage, targetLanguage, setTranslatedText, st
     }
     
 
-    const audioConfig = AudioConfig.fromStreamOutput(audioStream);
+    const audioConfig = AudioConfig.fromStreamInput(audioStream);
 
     const translationRecognizer = new TranslationRecognizer(speechTranslationConfig, audioConfig);
 
