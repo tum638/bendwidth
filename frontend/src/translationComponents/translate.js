@@ -6,6 +6,7 @@ const SPEEECH_REGION = "eastus"
 const translate = (stream, sourceLanguage, targetLanguage, stopTranslation, socket, uuid, isRespondent) => {
     console.log("in translate function")
     console.log("source language", sourceLanguage, "target language", targetLanguage);
+    console.log(uuid)
     let audioStream = new MediaStream(stream.getAudioTracks());
 
     const speechTranslationConfig = SpeechTranslationConfig.fromSubscription(SPEECH_KEY, SPEEECH_REGION);
