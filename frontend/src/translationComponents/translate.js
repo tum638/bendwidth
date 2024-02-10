@@ -19,7 +19,7 @@ const translate = (stream, sourceLanguage, targetLanguage, setTranslatedText, st
     }
     
 
-    const audioConfig = AudioConfig.fromStreamInput(audioStream);
+    const audioConfig = AudioConfig.fromStreamOutput(audioStream);
 
     const translationRecognizer = new TranslationRecognizer(speechTranslationConfig, audioConfig);
 
