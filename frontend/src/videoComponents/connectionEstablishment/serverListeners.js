@@ -26,8 +26,8 @@ const serverListeners = (socket, isRespondent, dispatch) => {
         if (isRespondent === false && uuid == userDetails.uuid) {
             userDetails.sourceLanguage = translatingFrom;
             sessionStorage.setItem('userData', JSON.stringify('userData'));
-            dispatch(updateCallStatus(pair("respondentConnected", true)));
             dispatch(updateUserDetails(pair("sourceLanguage", translatingFrom)))
+            dispatch(updateCallStatus(pair("respondentConnected", true)));
             console.log("got respondents language", translatingFrom)
             
             

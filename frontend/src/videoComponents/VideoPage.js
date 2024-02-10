@@ -148,9 +148,9 @@ const VideoPage = () => {
     useEffect(()=> {
         if (user.sourceLanguage && callStatus.socket && callStatus.remoteStream) {
             // send remoteStream to translation api.
-            translate(callStatus.remoteStream, userDetails.sourceLanguage, userDetails.hearingIn, setTranslatedText, stopTranslation);
+            translate(callStatus.remoteStream, user.sourceLanguage, user.hearingIn, setTranslatedText, stopTranslation);
         }
-    }, [user.sourceLanguage, callStatus.socket, callStatus.remoteStream])
+    }, [user.sourceLanguage, callStatus.socket, callStatus.remoteStream, user.hearingIn])
 
     // listen for a remoteStream and socket.
     // useEffect(() => {
@@ -164,7 +164,7 @@ const VideoPage = () => {
     }
 
     // set redux state with offer from inquirer.
-    // set remoteDescription.
+    // set remoteDescription.n
     useEffect(() => {
         
         const setOffer = async () => {
