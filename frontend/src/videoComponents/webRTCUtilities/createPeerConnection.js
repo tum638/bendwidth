@@ -28,7 +28,7 @@ const createPeerConnection = (sendICECandidatesToServer) => {
         peerConnection.addEventListener('track',e=>{
             console.log("Got a track from the remote!")
             e.streams[0].getTracks().forEach(track=>{
-                remoteStream.addTrack(track,remoteStream);
+                peerConnection.addTrack(track,remoteStream);
                 console.log("Fingers crossed...")
             })
         })
