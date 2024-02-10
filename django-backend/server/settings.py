@@ -25,8 +25,9 @@ SECRET_KEY = 'django-insecure-0hbtlx^btsa81!!%!z)ha7$8t!ae2_k=cxz0ldc)%dp6imum!5
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+CSRF_ALLOWED_HOSTS = ['https://api.drf.bendwidth.com', 'https://www.bendwidth.com']
 ALLOWED_HOSTS = ["api.drf.bendwidth.com"]
-CSRF_ALLOWED_HOSTS = ['https://api.drf.bendwidth.com']
+
 
 # Application definition
 
