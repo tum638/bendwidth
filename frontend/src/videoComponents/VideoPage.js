@@ -148,8 +148,9 @@ const VideoPage = () => {
     useEffect(()=> {
         if (user.sourceLanguage && callStatus.socket && callStatus.remoteStream && callStatus.respondentConnected) {
             const uuid = userDetails.uuid;
+            console.log(uuid)
             // send remoteStream to translation api.
-            translate(callStatus.remoteStream, user.sourceLanguage, user.hearingIn, stopTranslation, callStatus.socket, uuid, callStatus.isRespondent);
+            translate(callStatus.remoteStream, user.sourceLanguage, user.hearingIn, stopTranslation, callStatus.socket, user.uuid, callStatus.isRespondent);
         }
     }, [user.sourceLanguage, callStatus.socket, callStatus.remoteStream, user.hearingIn, callStatus.respondentConnected])
 
