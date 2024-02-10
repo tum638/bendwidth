@@ -4,6 +4,7 @@ const SPEECH_KEY = "dead98ba198948f59a91b61987e616d6"
 const SPEEECH_REGION = "eastus"
 const translate = (stream, sourceLanguage, targetLanguage, setTranslatedText, stopTranslation) => {
     console.log("in translate function")
+    console.log("source language", sourceLanguage, "target language", targetLanguage);
     let audioStream = new MediaStream(stream.getAudioTracks());
 
     const speechTranslationConfig = SpeechTranslationConfig.fromSubscription(SPEECH_KEY, SPEEECH_REGION);

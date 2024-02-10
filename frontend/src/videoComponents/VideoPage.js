@@ -147,7 +147,7 @@ const VideoPage = () => {
     useEffect(()=> {
         if (user.sourceLanguage != null && callStatus.socket && callStatus.remoteStream) {
             // send remoteStream to translation api.
-            translate(callStatus.remoteStream, user.sourceLanguage, userDetails.hearingIn, setTranslatedText, stopTranslation);
+            translate(callStatus.remoteStream, user.sourceLanguage, user.hearingIn, setTranslatedText, stopTranslation);
         }
     }, [user.sourceLanguage, callStatus.socket, callStatus.remoteStream])
 
