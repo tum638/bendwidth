@@ -46,11 +46,12 @@ const VideoPage = () => {
             const uuid = userDetails.uuid;
             const {res, translatingFrom} = await callStatus.socket.emitWithAck("isRespondentConnected", uuid)
             if (res === true) {
-                dispatch(updateCallStatus(pair("respondentConnected", true)));
-                dispatch(updateUserDetails(pair("sourceLanguage", translatingFrom)))
-                console.log("getting respondents language", translatingFrom)
                 userDetails.sourceLanguage = translatingFrom;
                 sessionStorage.setItem('userData', JSON.stringify(userDetails));
+                dispatch(updateUserDetails(pair("sourceLanguage", translatingFrom)))
+                dispatch(updateCallStatus(pair("respondentConnected", true)));
+                console.log("getting respondents language", translatingFrom)
+               
             }
         }
         if (callStatus.socket && userDetails.isRespondent === false) {
@@ -128,7 +129,7 @@ const VideoPage = () => {
                 console.log(error);
             }
         }
-        if (callStatus.audio === 'enabled' && callStatus.video === 'enabled' && !callStatus.hasCreatedOffer && userDetails.isRespondent === false && callStatus.respondentConnected===true) {
+        if (callStatus.audio === 'enabled' && callStatus.video === 'enabled' && !callStatus.hasCreatedOffer && userDetails.isRespondent === false && callStatus.respondentConnected) {
             console.log("just sent offer.")
             createAsyncOffer();
         }
@@ -145,9 +146,9 @@ const VideoPage = () => {
     }, [callStatus.socket])
 
     useEffect(()=> {
-        if (user.sourceLanguage != null && callStatus.socket && callStatus.remoteStream) {
+        if (user.sourceLanguage && callStatus.socket && callStatus.remoteStream) {
             // send remoteStream to translation api.
-            translate(callStatus.remoteStream, user.sourceLanguage, user.hearingIn, setTranslatedText, stopTranslation);
+            translate(callStatus.remoteStream, userDetails.sourceLanguage, userDetails.hearingIn, setTranslatedText, stopTranslation);
         }
     }, [user.sourceLanguage, callStatus.socket, callStatus.remoteStream])
 
