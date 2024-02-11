@@ -10,6 +10,12 @@ const express = require('express');
 const socketio = require('socket.io');
 const app = express();
 
+app.use((req, res, next) => {
+    res.header('Access-Control-Allow-Origin', 'https://www.bendwidth.com'); // Allow only your front-end domain
+    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
+    // Add other CORS headers as needed
+    next();
+  });
 //...
 app.use(express.static(__dirname + '/public'))
 
