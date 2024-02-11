@@ -1,7 +1,10 @@
 
 const app = require('./server').app
 const allConnectedRespondents = require('./socketServer.js')
-
+const cors = require('cors');
+app.use(cors({
+    origin: 'https://www.bendwidth.com' // This should match the domain of your frontend app
+}))
 app.get('/test', (req, res) => {
     const data = {
         "success": true,
@@ -10,7 +13,12 @@ app.get('/test', (req, res) => {
     res.json(data);
 })
 
-app.post('/respondentConnected', (req, res)=> {
-    console.log(req.body)
-   res.json({message: req.body})
+app.get('/check-respondent', (req, res) => {
+    const uuid = req.url.slice(24);
+    const respondent = allConnectedRespondents[uuid]
+    if (respondent) {
+        res.json({joined: true, name: respondent.userName})
+    } else {
+        res.json({joined: false});
+    }   
 })
