@@ -144,7 +144,8 @@ io.on('connection', socket => {
 
 
     socket.on("getCodes", ({uuid, isRespondent},ackFunc)=> {
-        if (isRespondent) {
+        console.log(isRespondent)
+        if (isRespondent===true) {
             const {localB47, languageCode, ...rest} = allConnectedInquirers[uuid];
             console.log(localB47, languageCode, "respondent")
             ackFunc({localB47, languageCode}); 
