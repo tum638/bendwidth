@@ -7,8 +7,17 @@ const http = require('http');
 
 //Other imports
 const express = require('express');
+const cors = require('cors');
 const socketio = require('socket.io');
 const app = express();
+
+// Setup CORS
+const corsOptions = {
+    origin: 'https://www.bendwidth.com', // Allow only your front-end domain
+    optionsSuccessStatus: 200 // For legacy browser support
+  };
+
+app.use(cors(corsOptions));
 
 //...
 app.use(express.static(__dirname + '/public'))
