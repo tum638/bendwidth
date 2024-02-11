@@ -82,7 +82,7 @@ const CallLobby = () => {
   useEffect(()=> {
     const intervalId = setInterval(async ()=>{
       const uuid = JSON.parse(sessionStorage.getItem('userData'))["uuid"];
-      const response = await axios.get(`https://localhost:9000/check-respondent/?uuid=${uuid}`)
+      const response = await axios.get(`https://api.nde.bendwidth.com/check-respondent/?uuid=${uuid}`)
       if (response.data.joined) {
         const name = response.data.name
         setConnected(`${name} joined the call. Please join when you're ready.`)
