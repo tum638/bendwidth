@@ -147,7 +147,7 @@ const VideoPage = () => {
 
      // if the user is the respondent and they have a socket and peer connection this code runs
      useEffect(()=>{
-        if (callStatus.socket && callStatus.peerConnection && userDetails.isRespondent === true) {
+        if (callStatus.socket && callStatus.peerConnection && userDetails.isRespondent) {
             dispatch(updateCallStatus(pair("respondentConnected", true)))
         }
     }, [callStatus.socket, callStatus.peerConnection])
@@ -157,7 +157,7 @@ const VideoPage = () => {
             console.log("sessisonStorage", sessionStorage.getItem('userData'))
             const uuid = JSON.parse(sessionStorage.getItem('userData'))["uuid"]
             // send remoteStream to translation api.
-            translate(callStatus.remoteStream, user.sourceLanguage, user.hearingIn, stopTranslation, callStatus.socket, uuid, callStatus.isRespondent);
+            translate(callStatus.remoteStream, user.sourceLanguage, user.hearingIn, stopTranslation, callStatus.socket, uuid, user.isRespondent);
         }
     }, [user.sourceLanguage, callStatus.socket, callStatus.remoteStream, user.hearingIn, callStatus.respondentConnected])
 
