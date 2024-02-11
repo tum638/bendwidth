@@ -145,21 +145,20 @@ const VideoPage = () => {
       
     }, [callStatus.socket])
 
-     // if the user is the respondent and they have a socket and peer connection this code runs
-     useEffect(()=>{
-        if (callStatus.socket && callStatus.peerConnection && userDetails.isRespondent) {
-            dispatch(updateCallStatus(pair("respondentConnected", true)))
-        }
-    }, [callStatus.socket, callStatus.peerConnection])
-
     useEffect(()=> {
-        if (user.sourceLanguage && callStatus.socket && callStatus.remoteStream && callStatus.respondentConnected) {
-            console.log("sessisonStorage", sessionStorage.getItem('userData'))
-            const uuid = JSON.parse(sessionStorage.getItem('userData'))["uuid"]
-            // send remoteStream to translation api.
-            translate(callStatus.remoteStream, user.sourceLanguage, user.hearingIn, stopTranslation, callStatus.socket, uuid, user.isRespondent);
+        const startTranslation = async () => {
+            if (callStatus.socket != null && callStatus.peerConnection && userDetails.isRespondent) {
+                // send remoteStream to translation api.
+                const socket = callStatus.socket;
+                const uuid = JSON.parse(sessionStorage.getItem('userData'))["uuid"]
+                const {localB47, languageCode} = await socket.emitWithAck("getCodes", {uuid, isRespondent: user.isRespondent})
+                console.log(localB47, )
+                translate(callStatus.remoteStream, localB47, languageCode, setTranslatedText, stopTranslation);
+            }
         }
-    }, [user.sourceLanguage, callStatus.socket, callStatus.remoteStream, user.hearingIn, callStatus.respondentConnected])
+        startTranslation();
+       
+    }, [user.sourceLanguage, callStatus.socket, callStatus.remoteStream])
 
     // listen for a remoteStream and socket.
     // useEffect(() => {

@@ -13,7 +13,9 @@ const initialState = {
     isLoggedIn: false,
     hearingIn: null,
     translatingFrom: null,
-    sourceLanguage: null
+    sourceLanguage: null,
+    localB47: null,
+    languageCode: null,
 }
 
 export const userDetailsSlice = createSlice({
