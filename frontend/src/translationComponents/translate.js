@@ -1,6 +1,6 @@
 import {SpeechTranslationConfig, AudioConfig, TranslationRecognizer, ResultReason, CancellationReason} from 'microsoft-cognitiveservices-speech-sdk';
 import callStatus from '../redux-elements/callStatus';
-const SPEECH_KEY = "dead98ba198948f59a91b61987e616d6"
+const SPEECH_KEY = "fe3a4cd21d99428db7dd42cbe5f4698c"
 const SPEEECH_REGION = "eastus"
 
 const translate = (stream, sourceLanguage, targetLanguage, stopTranslation, socket, uuid, isRespondent) => {
