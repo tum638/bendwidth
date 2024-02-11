@@ -12,6 +12,8 @@ const CallLobby = () => {
   const navigateTo = useNavigate();
   const [locales, setLocales] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [connected, setConnected] = useState("Waiting for remote to join.")
+  const userData = JSON.parse(sessionStorage.getItem('userData'));
 
   const AZURE_SUBSCRIPTION_KEY = "dead98ba198948f59a91b61987e616d6";
   useEffect(() => {
@@ -49,26 +51,54 @@ const CallLobby = () => {
   // redirect user to call
   const joinCall = () => {
     const userData = JSON.parse(sessionStorage.getItem('userData'));
-    if (userData && userData.translatingFrom && userData.translatingFrom && userData.hearingIn) {
-        navigateTo("/join-video");
+    if (userData && userData.translatingFrom && userData.hearingIn) {
+        console.log(userData.translatingFrom)
+        console.log(userData.hearingIn)
+        if (userData.isRespondent === true) {
+          navigateTo('/join-video')
+          return;
+        }
+        if (connected !== `Waiting for remote to join.`) {
+          navigateTo('/join-video')
+        } else {
+          alert("Please wait for remote to join before leaving the lobby.")
+        }
+ 
     } else {
         alert("Please fill in the language fields.")
     }
     
   };
+
+  useEffect(()=> {
+    const intervalId = setInterval(async ()=>{
+      const uuid = JSON.parse(sessionStorage.getItem('userData'))["uuid"];
+      const response = await axios.get(`https://localhost:9000/check-respondent/?uuid=${uuid}`)
+      if (response.data.joined) {
+        const name = response.data.name
+        setConnected(`${name} joined the call. Please join when you're ready.`)
+      }
+    }, 5000)
+    return ()=>clearInterval(intervalId)
+  }, [])
+
   const setTranslationLanguage = (event, value) => {
     const userData = JSON.parse(sessionStorage.getItem('userData'));
     userData.translatingFrom = value;
+    userData.localB47 = value;
     sessionStorage.setItem('userData', JSON.stringify(userData));
     dispatch(updateUserDetails(pair("translatingFrom", value)));
+    dispatch(updateUserDetails(pair("localB47", value)));
     console.log(sessionStorage.getItem('userData'))
   }
 
   const setHearingLanguage = (event, value) => {
    const userData = JSON.parse(sessionStorage.getItem('userData'));
    userData.hearingIn = value;
+   userData.languageCode = value
    sessionStorage.setItem('userData', JSON.stringify(userData));
    dispatch(updateUserDetails(pair("hearingIn", value)));
+   dispatch(updateUserDetails(pair("languageCode", value)))
    console.log(sessionStorage.getItem('userData'))
   }
   
@@ -77,10 +107,10 @@ const CallLobby = () => {
     <div className="lobby-wrapper">
       <div className="lobby-title">
         <i className="fa fa-headset"></i>
-        <h1>Your call starts in 10 minutes.</h1>
+        <h1>{userData.isRespondent ? "Join the call when you're ready" : connected !== "Waiting for remote to join." ? "The call has started" : "Your call starts in a few minutes." }</h1>
       </div>
       <div className="lobby-connnected">
-        <h4>Hang tight!</h4>
+        <h4>{userData.isRespondent ? "Ready, set, go!!": connected}</h4>
       </div>
       <Autocomplete
         disablePortal

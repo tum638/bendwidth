@@ -17,19 +17,19 @@ io.on('connection', socket => {
         console.log("could not find a valid auth object")
         return;
     }
-    const {uuid, userName, userEmail, isRespondent, isInquirer, translatingFrom } = socket.handshake.auth.userInfo;
+    const {uuid, userName, userEmail, isRespondent, isInquirer, translatingFrom, localB47, languageCode } = socket.handshake.auth.userInfo;
      
     // add the user to their category.
     if (isInquirer) {
         console.log("UUID inquirer", uuid)
         console.log(translatingFrom)
         allConnectedInquirers[uuid] = {
-            userName, userEmail, isInquirer, socketId: socket.id, translatingFrom
+            userName, userEmail, isInquirer, socketId: socket.id, translatingFrom, localB47, languageCode
         }
     } else if (isRespondent) {
         console.log("UUID respondent", uuid)
         allConnectedRespondents[uuid] = {
-            userName, userEmail, isRespondent, socketId: socket.id, translatingFrom
+            userName, userEmail, isRespondent, socketId: socket.id, translatingFrom, localB47, languageCode
         }
         console.log("sent respondent connection event")
         if (uuid in allConnectedInquirers) {
@@ -131,6 +131,16 @@ io.on('connection', socket => {
         }
     })
 
-
+    socket.on("getCodes", ({uuid, isRespondent},ackFunc)=> {
+        if (isRespondent) {
+            const {localB47, languageCode, ...rest} = allConnectedInquirers[uuid];
+            console.log(localB47, languageCode, "respondent")
+            ackFunc({localB47, languageCode}); 
+        } else {
+            const {localB47, languageCode, ...rest}= allConnectedRespondents[uuid];
+            ackFunc({localB47, languageCode})
+            console.log(localB47, languageCode, "inquirer")
+        }
+    })
 })
-
+module.exports = allConnectedRespondents;

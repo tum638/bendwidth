@@ -144,10 +144,18 @@ const VideoPage = () => {
     }, [callStatus.socket])
 
     useEffect(()=> {
-        if (user.sourceLanguage != null && callStatus.socket && callStatus.remoteStream) {
-            // send remoteStream to translation api.
-            translate(callStatus.remoteStream, user.sourceLanguage, userDetails.hearingIn, setTranslatedText, stopTranslation);
+        const startTranslation = async () => {
+            if (user.sourceLanguage != null && callStatus.socket && callStatus.remoteStream) {
+                // send remoteStream to translation api.
+                const socket = callStatus.socket;
+                const uuid = JSON.parse(sessionStorage.getItem('userData'))["uuid"]
+                const {localB47, languageCode} = await socket.emitWithAck("getCodes", {uuid, isRespondent: user.isRespondent})
+                console.log(localB47, )
+                translate(callStatus.remoteStream, localB47, languageCode, setTranslatedText, stopTranslation);
+            }
         }
+        startTranslation();
+       
     }, [user.sourceLanguage, callStatus.socket, callStatus.remoteStream])
 
     // listen for a remoteStream and socket.
