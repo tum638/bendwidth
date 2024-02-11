@@ -145,6 +145,13 @@ const VideoPage = () => {
       
     }, [callStatus.socket])
 
+     // if the user is the respondent and they have a socket and peer connection this code runs
+     useEffect(()=>{
+        if (callStatus.socket && callStatus.peerConnection && userDetails.isRespondent === true) {
+            dispatch(updateCallStatus(pair("respondentConnected", true)))
+        }
+    }, [callStatus.socket, callStatus.peerConnection])
+
     useEffect(()=> {
         if (user.sourceLanguage && callStatus.socket && callStatus.remoteStream && callStatus.respondentConnected) {
             console.log("sessisonStorage", sessionStorage.getItem('userData'))
@@ -268,6 +275,8 @@ const VideoPage = () => {
             establishConnection();
         }
     }, [])
+
+   
 
     return (
         <div>
