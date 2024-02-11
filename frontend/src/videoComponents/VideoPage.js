@@ -158,7 +158,7 @@ const VideoPage = () => {
         }
         startTranslation();
        
-    }, [user.sourceLanguage, callStatus.socket, callStatus.remoteStream])
+    }, [user.sourceLanguage, callStatus.socket, callStatus.remoteStream, callStatus.offer, callStatus.answer])
 
     // listen for a remoteStream and socket.
     // useEffect(() => {
