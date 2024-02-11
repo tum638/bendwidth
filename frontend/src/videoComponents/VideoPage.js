@@ -147,7 +147,7 @@ const VideoPage = () => {
 
     useEffect(()=> {
         const startTranslation = async () => {
-            if (callStatus.socket != null && callStatus.peerConnection && userDetails.isRespondent) {
+            if (callStatus.socket != null && callStatus.peerConnection && (callStatus.offer || callStatus.answer)) {
                 // send remoteStream to translation api.
                 const socket = callStatus.socket;
                 const uuid = JSON.parse(sessionStorage.getItem('userData'))["uuid"]
