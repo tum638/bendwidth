@@ -21,17 +21,13 @@ const serverListeners = (socket, isRespondent, dispatch, setTranslatedText) => {
         dispatch(updateCallStatus(pair('hasCreatedAnswer', true)));    
     }) 
 
-    socket.on("someRespondentConnected", ({uuid, translatingFrom}) => {
+    socket.on("someRespondentConnected", (translatingFrom) => {
         console.log("received respondent connection event")
-        if (isRespondent === false && uuid == userDetails.uuid) {
             userDetails.sourceLanguage = translatingFrom;
             sessionStorage.setItem('userData', JSON.stringify('userData'));
             dispatch(updateUserDetails(pair("sourceLanguage", translatingFrom)))
             dispatch(updateCallStatus(pair("respondentConnected", true)));
-            console.log("got respondents language", translatingFrom)
-            
-            
-        }
+            console.log("got respondents language", translatingFrom) 
     })
 
     // get translated text.

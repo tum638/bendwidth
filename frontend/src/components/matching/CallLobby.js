@@ -10,6 +10,7 @@ import pair from "../../redux-elements/pair";
 const CallLobby = () => {
   const dispatch = useDispatch();
   const navigateTo = useNavigate();
+  const [connected, setConnected] = useState('Waiting for remote to join.')
   const [locales, setLocales] = useState([]);
   const [loading, setLoading] = useState(false);
 
@@ -46,11 +47,28 @@ const CallLobby = () => {
     fetchData();
   }, []); // Empty dependency array means this effect runs once on mount
 
+  // check remote connection
+  useEffect(()=> {
+    const intervalId = setInterval(async ()=>{
+      const response = await axios.post("https://api.nde.bendwidth.com");
+      console.log(response)
+    }, 5000)
+    return ()=>clearInterval(intervalId);
+  }, [])
+
   // redirect user to call
-  const joinCall = () => {
+  const joinCall = async () => {
     const userData = JSON.parse(sessionStorage.getItem('userData'));
     if (userData && userData.translatingFrom && userData.translatingFrom && userData.hearingIn) {
-        navigateTo("/join-video");
+        if (userData.isRespondent === true) {
+          navigateTo("/join-video");
+          return;
+        }
+        if (connected === "Remote has joined! Please join the call.") {
+          navigateTo("/join-video");
+        } else {
+          alert("Please wait for remote to join call first.")
+        }
     } else {
         alert("Please fill in the language fields.")
     }
@@ -80,7 +98,7 @@ const CallLobby = () => {
         <h1>Your call starts in 10 minutes.</h1>
       </div>
       <div className="lobby-connnected">
-        <h4>Hang tight!</h4>
+        <h4>{connected}</h4>
       </div>
       <Autocomplete
         disablePortal

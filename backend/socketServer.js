@@ -35,7 +35,7 @@ io.on('connection', socket => {
         if (uuid in allConnectedInquirers) {
             const socketId = allConnectedInquirers[uuid].socketId
             console.log("sending language to inquirer", translatingFrom)
-            socket.to(socketId).emit("someRespondentConnected", {uuid, translatingFrom});
+            socket.to(socketId).emit("someRespondentConnected", translatingFrom);
         }
 
     }
@@ -144,3 +144,4 @@ io.on('connection', socket => {
 
 })
 
+module.exports = allConnectedRespondents;

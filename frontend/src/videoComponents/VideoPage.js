@@ -129,7 +129,7 @@ const VideoPage = () => {
                 console.log(error);
             }
         }
-        if (callStatus.audio === 'enabled' && callStatus.video === 'enabled' && !callStatus.hasCreatedOffer && userDetails.isRespondent === false && callStatus.respondentConnected) {
+        if (callStatus.audio === 'enabled' && callStatus.video === 'enabled' && !callStatus.hasCreatedOffer && userDetails.isRespondent === false && callStatus.respondentConnected === true) {
             console.log("just sent offer.")
             createAsyncOffer();
         }
