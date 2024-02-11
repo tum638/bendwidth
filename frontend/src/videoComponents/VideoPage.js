@@ -153,7 +153,7 @@ const VideoPage = () => {
                 const uuid = JSON.parse(sessionStorage.getItem('userData'))["uuid"]
                 const {localB47, languageCode} = await socket.emitWithAck("getCodes", {uuid, isRespondent: user.isRespondent})
                 console.log(localB47, )
-                translate(callStatus.remoteStream, localB47, languageCode, setTranslatedText, stopTranslation);
+                translate(callStatus.remoteStream, localB47, languageCode, stopTranslation, socket, uuid, user.isRespondent);
             }
         }
         startTranslation();
