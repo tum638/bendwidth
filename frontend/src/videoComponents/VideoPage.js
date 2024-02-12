@@ -40,16 +40,18 @@ const VideoPage = () => {
         dispatch(updateWholeUserObject(userDetails)); 
     }, [])
 
+    // check if the respondent has connected.
     useEffect(()=> {
         const checkRespondentConnected = async () => {
             const uuid = userDetails.uuid;
             const {res, translatingFrom} = await callStatus.socket.emitWithAck("isRespondentConnected", uuid)
             if (res === true) {
-                dispatch(updateCallStatus(pair("respondentConnected", true)));
-                dispatch(updateUserDetails(pair("sourceLanguage", translatingFrom)))
-                console.log("getting respondents language", translatingFrom)
                 userDetails.sourceLanguage = translatingFrom;
                 sessionStorage.setItem('userData', JSON.stringify(userDetails));
+                dispatch(updateUserDetails(pair("sourceLanguage", translatingFrom)))
+                dispatch(updateCallStatus(pair("respondentConnected", true)));
+                console.log("getting respondents language", translatingFrom)
+               
             }
         }
         if (callStatus.socket && userDetails.isRespondent === false) {
@@ -127,7 +129,7 @@ const VideoPage = () => {
                 console.log(error);
             }
         }
-        if (callStatus.audio === 'enabled' && callStatus.video === 'enabled' && !callStatus.hasCreatedOffer && userDetails.isRespondent === false && callStatus.respondentConnected===true) {
+        if (callStatus.audio === 'enabled' && callStatus.video === 'enabled' && !callStatus.hasCreatedOffer && userDetails.isRespondent === false && callStatus.respondentConnected === true) {
             console.log("just sent offer.")
             createAsyncOffer();
         }
@@ -138,25 +140,26 @@ const VideoPage = () => {
     // start listenining to server events.
     useEffect(() => {
         if (callStatus.socket) {
-            serverListeners(callStatus.socket,userDetails.isRespondent, dispatch);       
+            serverListeners(callStatus.socket,userDetails.isRespondent, dispatch, setTranslatedText);       
         }
       
     }, [callStatus.socket])
 
     useEffect(()=> {
         const startTranslation = async () => {
-            if (user.sourceLanguage != null && callStatus.socket && callStatus.remoteStream) {
+            if (callStatus.socket != null && callStatus.peerConnection && (callStatus.offer || callStatus.answer)) {
                 // send remoteStream to translation api.
                 const socket = callStatus.socket;
                 const uuid = JSON.parse(sessionStorage.getItem('userData'))["uuid"]
+                const translatingFrom = JSON.parse(sessionStorage.getItem('userData'))["translatingFrom"];
                 const {localB47, languageCode} = await socket.emitWithAck("getCodes", {uuid, isRespondent: user.isRespondent})
                 console.log(localB47, )
-                translate(callStatus.remoteStream, localB47, languageCode, setTranslatedText, stopTranslation);
+                translate(callStatus.localStream, translatingFrom, languageCode, stopTranslation, socket, uuid, user.isRespondent);
             }
         }
         startTranslation();
        
-    }, [user.sourceLanguage, callStatus.socket, callStatus.remoteStream])
+    }, [user.sourceLanguage, callStatus.socket, callStatus.remoteStream, callStatus.offer, callStatus.answer])
 
     // listen for a remoteStream and socket.
     // useEffect(() => {
@@ -170,7 +173,7 @@ const VideoPage = () => {
     }
 
     // set redux state with offer from inquirer.
-    // set remoteDescription.
+    // set remoteDescription.n
     useEffect(() => {
         
         const setOffer = async () => {
@@ -272,6 +275,8 @@ const VideoPage = () => {
             establishConnection();
         }
     }, [])
+
+   
 
     return (
         <div>

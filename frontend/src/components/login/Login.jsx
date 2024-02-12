@@ -43,6 +43,7 @@ const Login = ({ setPage }) => {
                 dispatch(updateUserDetails(pair("uuid", userData.uuid)))
                 dispatch(updateUserDetails(pair("gradDate", userData.gradDate)));
                 navigate("/main/lobby")
+                
             } catch (err) {
                 navigate("/")
             }

@@ -3,7 +3,7 @@ const app = require('./server').app
 const allConnectedRespondents = require('./socketServer.js')
 const cors = require('cors');
 app.use(cors({
-    origin: 'https://localhost:3000' // This should match the domain of your frontend app
+    origin: 'https://www.bendwidth.com' // This should match the domain of your frontend app
 }))
 app.get('/test', (req, res) => {
     const data = {

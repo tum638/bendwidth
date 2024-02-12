@@ -10,9 +10,9 @@ import pair from "../../redux-elements/pair";
 const CallLobby = () => {
   const dispatch = useDispatch();
   const navigateTo = useNavigate();
+  const [connected, setConnected] = useState('Waiting for remote to join.')
   const [locales, setLocales] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [connected, setConnected] = useState("Waiting for remote to join.")
   const userData = JSON.parse(sessionStorage.getItem('userData'));
 
   const AZURE_SUBSCRIPTION_KEY = "dead98ba198948f59a91b61987e616d6";
@@ -48,8 +48,17 @@ const CallLobby = () => {
     fetchData();
   }, []); // Empty dependency array means this effect runs once on mount
 
+  // check remote connection
+  useEffect(()=> {
+    const intervalId = setInterval(async ()=>{
+      const response = await axios.post("https://api.nde.bendwidth.com");
+      console.log(response)
+    }, 5000)
+    return ()=>clearInterval(intervalId);
+  }, [])
+
   // redirect user to call
-  const joinCall = () => {
+  const joinCall = async () => {
     const userData = JSON.parse(sessionStorage.getItem('userData'));
     if (userData && userData.translatingFrom && userData.hearingIn) {
         console.log(userData.translatingFrom)
@@ -73,7 +82,7 @@ const CallLobby = () => {
   useEffect(()=> {
     const intervalId = setInterval(async ()=>{
       const uuid = JSON.parse(sessionStorage.getItem('userData'))["uuid"];
-      const response = await axios.get(`https://localhost:9000/check-respondent/?uuid=${uuid}`)
+      const response = await axios.get(`https://api.nde.bendwidth.com/check-respondent/?uuid=${uuid}`)
       if (response.data.joined) {
         const name = response.data.name
         setConnected(`${name} joined the call. Please join when you're ready.`)

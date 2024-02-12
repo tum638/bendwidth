@@ -35,7 +35,7 @@ io.on('connection', socket => {
         if (uuid in allConnectedInquirers) {
             const socketId = allConnectedInquirers[uuid].socketId
             console.log("sending language to inquirer", translatingFrom)
-            socket.to(socketId).emit("someRespondentConnected", {uuid, translatingFrom});
+            socket.to(socketId).emit("someRespondentConnected", translatingFrom);
         }
 
     }
@@ -130,9 +130,22 @@ io.on('connection', socket => {
             ackFunc({res:false, translatingFrom: null});
         }
     })
+    
+    // listen for translation chunks
+    socket.on("translatedChunk", ({uuid, chunk, isRespondent})=> {
+        let socketId;
+        if (isRespondent===true) {
+            socketId = allConnectedInquirers[uuid].socketId;
+        } else {
+            socketId = allConnectedRespondents[uuid].socketId
+        }
+        socket.to(socketId).emit("yourTranslatedText", chunk)
+    })
+
 
     socket.on("getCodes", ({uuid, isRespondent},ackFunc)=> {
-        if (isRespondent) {
+        console.log(isRespondent)
+        if (isRespondent===true) {
             const {localB47, languageCode, ...rest} = allConnectedInquirers[uuid];
             console.log(localB47, languageCode, "respondent")
             ackFunc({localB47, languageCode}); 

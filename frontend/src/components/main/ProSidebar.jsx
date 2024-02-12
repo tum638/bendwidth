@@ -6,7 +6,7 @@ const ProSidebar = () => {
   const navigate = useNavigate();
 
   const handleLogout = async () => {
-    const response = await axios.get("http://localhost:8000/logout/");
+    const response = await axios.get("https://api.drf.bendwidth.com/logout/");
     console.log(response)
     sessionStorage.clear();
     navigate('/');

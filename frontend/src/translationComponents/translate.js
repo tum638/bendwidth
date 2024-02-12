@@ -1,10 +1,12 @@
 import {SpeechTranslationConfig, AudioConfig, TranslationRecognizer, ResultReason, CancellationReason} from 'microsoft-cognitiveservices-speech-sdk';
 import callStatus from '../redux-elements/callStatus';
-const SPEECH_KEY = "dead98ba198948f59a91b61987e616d6"
+const SPEECH_KEY = "fe3a4cd21d99428db7dd42cbe5f4698c"
 const SPEEECH_REGION = "eastus"
-const translate = (stream, sourceLanguage, targetLanguage, setTranslatedText, stopTranslation) => {
+
+const translate = (stream, sourceLanguage, targetLanguage, stopTranslation, socket, uuid, isRespondent) => {
     console.log("in translate function")
     console.log("source language", sourceLanguage, "target language", targetLanguage);
+    console.log(uuid)
     let audioStream = new MediaStream(stream.getAudioTracks());
 
     const speechTranslationConfig = SpeechTranslationConfig.fromSubscription(SPEECH_KEY, SPEEECH_REGION);
@@ -34,7 +36,13 @@ const translate = (stream, sourceLanguage, targetLanguage, setTranslatedText, st
     translationRecognizer.recognizing = (s, e) => {
 
         checkTranslationStatus();
-        setTranslatedText(e.result.translations.get(targetLanguage) || e.result.translations.get("en")) 
+        let chunk;
+        try {
+            chunk = e.result.translations.get(targetLanguage);
+        } catch (error) {
+            chunk = e.result.translations.get("en");
+        }
+        socket.emit("translatedChunk", {uuid, chunk, isRespondent})
         if (e.result.reason == ResultReason.RecognizedSpeech) {
             // console.log(`TRANSLATED: Text=${e.result.translations.get(targetLanguage)}`);
             
