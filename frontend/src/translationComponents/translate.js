@@ -36,7 +36,12 @@ const translate = (stream, sourceLanguage, targetLanguage, stopTranslation, sock
     translationRecognizer.recognizing = (s, e) => {
 
         checkTranslationStatus();
-        const chunk = e.result.translations.get(targetLanguage) || e.result.translations.get("en");
+        let chunk;
+        try {
+            chunk = e.result.translations.get(targetLanguage);
+        } catch (error) {
+            chunk = e.result.translations.get("en");
+        }
         socket.emit("translatedChunk", {uuid, chunk, isRespondent})
         if (e.result.reason == ResultReason.RecognizedSpeech) {
             // console.log(`TRANSLATED: Text=${e.result.translations.get(targetLanguage)}`);
