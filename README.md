@@ -34,7 +34,7 @@ Bendwidth leverages artificial intelligence to match students for study sessions
 
 1. [Lee Mabhena](https://www.leemabhena.github.io)
 2. [Tanatswa Manyakara](https://www.bendwidth.com)
-3. [Tashrique Ahmed](https://www.bendwidth.com)
+3. [Tashrique Ahmed](https://www.tashrique.com)
 4. [Milton Vento](https://www.bendwidth.com)
 
 ### Video
